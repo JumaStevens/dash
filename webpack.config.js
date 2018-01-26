@@ -67,6 +67,11 @@ const config = {
       '/api': {
         target: 'http://localhost:4000',
         secure: false
+      },
+      '/socket.io': {
+        target: 'http://localhost:4000',
+        ws: true,
+        secure: false
       }
     }
   },
