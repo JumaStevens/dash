@@ -7,14 +7,7 @@ const server = require('http').Server(app)
 
 // attach socket.io to server
 const io = require('socket.io')(server)
-app.set('io', io)
-
-io.on('connection', (socket) => {
-  console.log('a user connected!')
-  socket.on('disconnect', () => {
-    console.log('user disconnected')
-  })
-})
+const ws = require('./routes/ws')(io)
 
 // routes
 app.use(routes)

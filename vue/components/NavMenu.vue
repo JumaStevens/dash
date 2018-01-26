@@ -28,7 +28,7 @@ export default {
       this.menuList = list
     }
   },
-  beforeMount() {
+  beforeMount () {
     this.setMenuList()
   }
 }

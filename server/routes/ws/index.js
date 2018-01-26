@@ -1,7 +1,12 @@
-const router = require('express').Router()
-const chat = require('./chat')
+const ws = (io) => {
+  io.on('connection', (socket) => {
+    console.log('a user connected!')
+    console.log(`Socket ID: ${socket.id}`)
+    //
+    const chat = require('./chat')(io, socket)
 
-router.use(chat)
+  })
+}
 
 // export
-module.exports = router
+module.exports = ws

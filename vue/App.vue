@@ -10,21 +10,11 @@ div.app
 import Error404View from './views/Error404View.vue'
 import Navigation from './components/Navigation.vue'
 
-console.log('app: ', this.Vue)
-
 export default {
   components: {
     Error404View,
     Navigation
   },
-  sockets:{
-  connect: function(){
-    console.log('socket connected')
-  },
-  customEmit: function(val){
-    console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-  }
-},
   data () {
     return {}
   },

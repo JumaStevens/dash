@@ -38,7 +38,9 @@ main.chat
 
   // message form
   div.chat__message-form
-    form.message-form
+    form.message-form(
+      @submit.prevent='sendMessage'
+    )
       input.message-form__input(
         v-model='inputMessage'
         placeholder='Type a message...'
@@ -60,10 +62,51 @@ export default {
     setChatRoom () {
       const data = chatData.room
       this.chatRoom = data
+    },
+    joinRoom () {
+      this.$socket.emit('chatJoin', 'winners')
+    },
+    leaveRoom () {
+      this.$socket.emit('chatLeave')
+    },
+    sendMessage () {
+      this.$socket.emit('chatMessage', this.inputMessage)
     }
   },
-  beforeMount() {
+  sockets: {
+    connect () {
+      console.log('socket connected')
+    },
+    disconnect () {
+      console.log('socket disconnected')
+    },
+    error () {
+      console.log('socket error')
+    },
+    chatUserDisconnected () {
+      console.log('user disconnected')
+    },
+    chatJoined (val) {
+      console.log('chatJoined: ', val)
+    },
+    chatLeft () {
+      console.log('chatLeft')
+    },
+    chatNewConnection () {
+      console.log('chatNewConnection')
+    },
+    chatMessage (e) {
+      console.log('chatMessage: ', e)
+    }
+  },
+  beforeMount () {
     this.setChatRoom()
+  },
+  created () {
+    this.joinRoom()
+  },
+  beforeDestroy () {
+    this.leaveRoom()
   }
 }
 </script>

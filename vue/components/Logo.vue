@@ -29,7 +29,7 @@ export default {
       this.url = logo.url
     }
   },
-  beforeMount() {
+  beforeMount () {
     this.setLogo()
   }
 }
@@ -37,11 +37,5 @@ export default {
 
 
 <style lang='sass'>
-@import '../assets/sass/main.sass'
-.logo
 
-  &__text
-    color: $grey
-    &::first-letter
-      color: $black !important
 </style>
