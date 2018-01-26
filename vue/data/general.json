@@ -1,0 +1,13 @@
+{
+  "logo": {
+    "text": "dash",
+    "url": "/"
+  },
+  "navMenu": {
+    "menuList": [
+      { "text": "Chat", "url": "/chat" },
+      { "text": "Shop", "url": "" },
+      { "text": "News", "url": "" }
+    ]
+  }
+}

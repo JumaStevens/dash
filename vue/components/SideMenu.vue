@@ -1,20 +1,20 @@
 <template lang='pug'>
-main.container
-  h1 index view
+div
+  h1 side hussel
 </template>
 
 
 <script>
 
 export default {
+  components: {},
   data () {
     return {}
   }
 }
 </script>
 
-<style lang='sass' scoped>
-.container
-  background: lightgrey
+
+<style lang='sass'>
 
 </style>
