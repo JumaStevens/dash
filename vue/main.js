@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import store from './store/store'
-import router from './router/router'
-import './utilities/vue-lazyload'
+import router from './router'
+import './util/vue-lazyload'
 
 window.onload = () => {
   new Vue({

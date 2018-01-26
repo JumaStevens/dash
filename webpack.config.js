@@ -8,7 +8,8 @@ const config = {
   entry: ['babel-polyfill', './vue/main.js'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, './dist/')
+    path: path.resolve(__dirname, 'server/public'),
+    publicPath: '/server/public/'
   },
   module: {
     rules: [
@@ -17,13 +18,9 @@ const config = {
         loader: 'vue-loader',
         options: {
           loaders: {
-            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-            // the "scss" and "sass" values for the lang attribute to the right configs here.
-            // other preprocessors should work out of the box, no loader config like this necessary.
             'scss': 'vue-style-loader!css-loader!sass-loader',
             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
           }
-          // other vue-loader options go here
         }
       },
       {
@@ -64,7 +61,14 @@ const config = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    contentBase: path.join(__dirname, 'server/views'),
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        secure: false
+      }
+    }
   },
   performance: {
     hints: false

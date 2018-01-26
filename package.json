@@ -2,11 +2,13 @@
   "name": "dash",
   "description": "dashboard app",
   "version": "1.0.0",
-  "author": "Juma Stevens",
+  "author": "Juma Stevens <jumastevens@gmail.com>",
   "license": "ISC",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --watch"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --watch",
+    "start": "node server",
+    "server": "nodemon server"
   },
   "dependencies": {
     "axios": "^0.17.0",
@@ -27,6 +29,7 @@
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
     "node-sass": "^4.5.3",
+    "nodemon": "^1.14.11",
     "pug": "^2.0.0-rc.4",
     "sass-loader": "^6.0.6",
     "vue-loader": "^13.0.5",

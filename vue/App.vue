@@ -1,6 +1,6 @@
 <template lang='pug'>
 div
-
+  navigation
   error-404-view(v-if='error.isError && error.type == "404"')
   router-view(v-else)
 </template>
@@ -8,10 +8,12 @@ div
 
 <script>
 import Error404View from './views/Error404View.vue'
+import Navigation from './components/Navigation.vue'
 
 export default {
   components: {
-    Error404View
+    Error404View,
+    Navigation
   },
   data () {
     return {}
