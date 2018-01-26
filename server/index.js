@@ -1,5 +1,6 @@
 const express = require('express')
 const routes = require('./routes')
+require('dotenv').config()
 
 // express instance
 const app = express()

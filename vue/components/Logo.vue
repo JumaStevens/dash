@@ -37,5 +37,11 @@ export default {
 
 
 <style lang='sass'>
+@import '../assets/sass/main.sass'
+
+.logo
+
+  &__text
+    font-size: $fs1
 
 </style>

@@ -1,8 +1,8 @@
 <template lang='pug'>
 div.nav
-  logo.nav__logo
-  nav-menu.nav__nav-menu
   avatar.nav__avatar
+  nav-menu.nav__nav-menu
+  logo.nav__logo
 </template>
 
 
@@ -29,13 +29,6 @@ export default {
   display: flex
   align-items: center
 
-  &__logo
-    margin-right: auto
-
   &__avatar
-    margin-left: 1rem
-
-  &__nav-menu
-
-
+    margin-right: auto
 </style>

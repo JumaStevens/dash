@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "axios": "^0.17.0",
+    "dotenv": "^4.0.0",
     "dotenv-webpack": "^1.5.4",
+    "firebase": "^4.9.0",
+    "firebase-admin": "^5.8.1",
     "socket.io": "^2.0.4",
-    "socket.io-client": "^2.0.4",
     "vue": "^2.4.4",
     "vue-lazyload": "^1.1.4",
     "vue-router": "^3.0.1",

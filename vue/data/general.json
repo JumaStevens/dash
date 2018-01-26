@@ -6,6 +6,7 @@
   "navMenu": {
     "menuList": [
       { "text": "Chat", "url": "/chat" },
+      { "text": "Friends", "url": "" },
       { "text": "Shop", "url": "" },
       { "text": "News", "url": "" }
     ]

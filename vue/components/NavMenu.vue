@@ -42,9 +42,6 @@ export default {
     display: flex
 
   &__item
-    margin-right: 0.5rem
-
-    &:last-child
-      margin-right: unset
+    margin-right: 2rem
 
 </style>
