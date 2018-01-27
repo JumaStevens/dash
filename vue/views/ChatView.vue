@@ -50,6 +50,30 @@ main.chat
 
 <script>
 import chatData from '../data/chat.json'
+import db from '../utils/firebase.js'
+
+const peer = new Peer({host: 'localhost', port: 4000, path: '/peerjs' })
+
+const conn = peer.connect()
+
+console.log('firebase >>: ', db)
+
+// connect
+conn.on('open', () => {
+  console.log('open')
+  conn.send('hi!')
+})
+
+peer.listAllPeers((e) => { console.log('list: ', e) })
+
+// receive
+conn.on('connection', (conn) => {
+  conn.on('data', (data) => {
+    console.log('data: ', data)
+  })
+})
+
+console.log('ddd ', peer)
 
 export default {
   data () {

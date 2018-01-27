@@ -2,8 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store/store'
 import router from './router'
-import './util/vue-lazyload'
-import './util/vue-socketio'
+import utils from './utils'
 
 window.onload = () => {
   new Vue({

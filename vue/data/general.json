@@ -8,7 +8,7 @@
       { "text": "Chat", "url": "/chat" },
       { "text": "Friends", "url": "" },
       { "text": "Shop", "url": "" },
-      { "text": "News", "url": "" }
+      { "text": "Auth", "url": "/auth" }
     ]
   }
 }

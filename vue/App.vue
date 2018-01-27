@@ -9,8 +9,12 @@ div.app
 <script>
 import Error404View from './views/Error404View.vue'
 import Navigation from './components/Navigation.vue'
+import firebaseAuth from './mixins/firebaseAuth'
 
 export default {
+  mixins: [
+    firebaseAuth
+  ],
   components: {
     Error404View,
     Navigation
@@ -22,6 +26,9 @@ export default {
     error () {
       return this.$store.state.error
     }
+  },
+  beforeMount () {
+    this.initAuth()
   }
 }
 </script>
