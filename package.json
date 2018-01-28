@@ -16,6 +16,7 @@
     "dotenv-webpack": "^1.5.4",
     "firebase": "^4.9.0",
     "firebase-admin": "^5.8.1",
+    "moment": "^2.20.1",
     "peer": "^0.2.8",
     "socket.io": "^2.0.4",
     "vee-validate": "^2.0.3",

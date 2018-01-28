@@ -1,7 +1,7 @@
 <template lang='pug'>
 div.app
   navigation.app__nav
-  p(style='position: fixed') user active: {{ active }}
+  p(style='position: fixed') Auth: {{ active }}
   error-404-view(v-if='error.isError && error.type == "404"').app__error
   router-view(v-else).app__view
 </template>

@@ -1,6 +1,5 @@
 <template lang='pug'>
-main.chat
-
+main.chat {{ cup }}
   // room
   aside.chat__room
     div.room
@@ -15,42 +14,44 @@ main.chat
             ).room__img
           p.room__text {{ item.fullName }}
 
+  // header
+  div.chat__header
+    header.header
+      div.header__avatar
+        img(
+          v-lazy='chatRoom[0].avatarSrc'
+        ).header__image
+      p.header__text name dawg
+      p.header__status Active
+
   // message
   div.chat__message
     div.message
-
-      header.message__header
-        div.message__avatar
-          img(
-            v-lazy='chatRoom[0].avatarSrc'
-          ).message__image
-        p.message__text {{ chatRoom[0].fullName }}
-        p.message__status Active
-
       ul.message__list
         li(
-          v-for='(item, index) in chat'
+          v-for='(item, index) in anArray'
           :key='index'
         ).message__item
-          p.message__text {{ item }} -- {{ item.id }}
-      div
-        p {{ inputMessage }}
+          p(
+            @click='deleteMessage(item)'
+          ).message__text {{ item.message }} -- {{ item.timestamp | formatDate }}
 
   // message form
   div.chat__message-form
-    form.message-form(
-      @submit.prevent='sendMessage'
-    )
-      input.message-form__input(
-        v-model='inputMessage'
+    form(
+      @submit.prevent='addMessage'
+    ).message-form
+      input(
+        v-model='newMessage'
         placeholder='Type a message...'
-      )
+      ).message-form__input
 </template>
 
 
 <script>
 import chatData from '~/data/chat.json'
 import firebase, { chatRef } from '~/firebase'
+import moment from 'moment'
 
 const peer = new Peer({host: 'localhost', port: 4000, path: '/peerjs' })
 
@@ -79,7 +80,6 @@ export default {
   data () {
     return {
       chatRoom: [],
-      inputMessage: '',
       message: '',
       newMessage: ''
     }
@@ -91,12 +91,15 @@ export default {
         chatRef.push({
           message: this.message,
           name: this.getUserName(),
-          timestamp: 'now',
+          timestamp: moment().unix(),
           userId: this.getUserId(),
-          photo_url: this.getPhotoUrl()
+          photo_url: this.getPhotoUrl() || 'empty'
         })
         this.newMessage = ''
       }
+    },
+    deleteMessage (item) {
+      this.$firebaseRefs.anArray.child(item['.key']).remove()
     },
     getUserId () {
       return firebase.auth().currentUser.uid
@@ -121,14 +124,22 @@ export default {
       this.$socket.emit('chatMessage', this.inputMessage)
     }
   },
+  computed: {
+    cup () {
+      console.log(this.anArray)
+    }
+  },
   firebase: {
-     chat: chatRef,
-     cancelCallback: function () {
-       console.log('canceled!')
-     }
-    // readyCallback () {
-    //   console.log('data has been grabbed yo! sick')
-    // }
+    anArray: {
+      source: chatRef,
+      //asObject: true,
+      cancelCallback (e) {
+        console.log('canceled! ', e)
+      },
+      readyCallback (e) {
+        console.log('readyCallback! ', e)
+      }
+    }
   },
   sockets: {
     connect () {
@@ -175,30 +186,40 @@ export default {
 .chat
   background: $pri-cl
   display: grid
-  grid-template-rows: 1fr auto
-  grid-template-columns: repeat(2, auto)
+  grid-template-rows: minmax(3rem, 6rem) 1fr minmax(3rem, 6rem)
+  grid-template-columns: minmax(10rem, 16rem) 1fr
   box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
   border-radius: 0.75%
   overflow: hidden
 
   &__room
     background: $white
-    grid-row: 1 / 3
+    grid-row: 1 / 4
     grid-column: 1 / 2
     @extend %flex--column
     align-items: center
 
-  &__message
+  &__header
     grid-row: 1 / 2
     grid-column: 2 / 3
+    @extend %flex
+    align-items: center
+
+  &__message
+    grid-row: 2 / 3
+    grid-column: 2 / 3
+    overflow-y: auto
+
+  &__message-form
+    grid-row: 3 / 4
+    grid-column: 2 / 3
+
+  &__header,
+  &__message,
+  &__message-form
     width: 75%
     margin: 0 auto
 
-  &__message-form
-    grid-row: 2 / 3
-    grid-column: 2 / 3
-    width: 75%
-    margin: 0 auto
 
 
 .room
@@ -216,13 +237,18 @@ export default {
     @extend %avatar--sm
     margin-right: 0.5rem
 
+.header
+  @extend %flex
+  width: 100%
+
+  &__avatar
+    @extend %avatar--sm
+    margin-right: 0.5rem
+
+  &__status
+    margin-left: auto
 
 .message
-
-  &__header
-    @extend %flex
-    align-items: center
-    margin: 2rem 0
 
   &__list
     @extend %flex--column
@@ -249,14 +275,6 @@ export default {
         background: $white
         color: $black
         border-bottom-left-radius: unset
-
-
-  &__avatar
-    @extend %avatar--sm
-    margin-right: 0.5rem
-
-  &__status
-    margin-left: auto
 
 
 .message-form

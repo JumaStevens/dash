@@ -3,7 +3,8 @@ import { config } from './config'
 
 firebase.initializeApp(config)
 
-const firebaseRef = firebase.database().ref()
+export const firebaseRef = firebase.database().ref()
 
 export const chatRef = firebaseRef.child('chat')
+
 export default firebase
