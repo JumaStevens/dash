@@ -29,10 +29,10 @@ main.chat
 
       ul.message__list
         li(
-          v-for='(item, index) in chatRoom'
+          v-for='(item, index) in chat'
           :key='index'
         ).message__item
-          p.message__text {{ item.text }}
+          p.message__text {{ item }} -- {{ item.id }}
       div
         p {{ inputMessage }}
 
@@ -49,14 +49,14 @@ main.chat
 
 
 <script>
-import chatData from '../data/chat.json'
-import db from '../utils/firebase.js'
+import chatData from '~/data/chat.json'
+import firebase, { chatRef } from '~/firebase'
 
 const peer = new Peer({host: 'localhost', port: 4000, path: '/peerjs' })
 
 const conn = peer.connect()
 
-console.log('firebase >>: ', db)
+console.log('firebase >>: ', firebase)
 
 // connect
 conn.on('open', () => {
@@ -79,10 +79,34 @@ export default {
   data () {
     return {
       chatRoom: [],
-      inputMessage: ''
+      inputMessage: '',
+      message: '',
+      newMessage: ''
     }
   },
   methods: {
+    addMessage () {
+      if (this.newMessage !== '') {
+        this.message = this.newMessage.trim()
+        chatRef.push({
+          message: this.message,
+          name: this.getUserName(),
+          timestamp: 'now',
+          userId: this.getUserId(),
+          photo_url: this.getPhotoUrl()
+        })
+        this.newMessage = ''
+      }
+    },
+    getUserId () {
+      return firebase.auth().currentUser.uid
+    },
+    getUserName () {
+      return firebase.auth().currentUser.displayName
+    },
+    getPhotoUrl () {
+      return firebase.auth().currentUser.photoURL
+    },
     setChatRoom () {
       const data = chatData.room
       this.chatRoom = data
@@ -96,6 +120,15 @@ export default {
     sendMessage () {
       this.$socket.emit('chatMessage', this.inputMessage)
     }
+  },
+  firebase: {
+     chat: chatRef,
+     cancelCallback: function () {
+       console.log('canceled!')
+     }
+    // readyCallback () {
+    //   console.log('data has been grabbed yo! sick')
+    // }
   },
   sockets: {
     connect () {
@@ -123,11 +156,11 @@ export default {
       console.log('chatMessage: ', e)
     }
   },
-  beforeMount () {
-    this.setChatRoom()
-  },
   created () {
     this.joinRoom()
+  },
+  beforeMount () {
+    this.setChatRoom()
   },
   beforeDestroy () {
     this.leaveRoom()

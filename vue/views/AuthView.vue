@@ -3,8 +3,9 @@ main.auth
   form(
     @submit.prevent=''
   ).auth__form
+    // email
     input(
-      v-model='email'
+      v-model='form.email'
       type='email'
       name='email'
       v-validate='"required|email"'
@@ -12,17 +13,26 @@ main.auth
       placeholder='Email'
       required
     ).auth__input
+    // password
     input(
-      v-model='password'
+      v-model='form.password'
       type='password'
       placeholder='Password'
       required
     ).auth__input
+    // login
     input(
       type='submit'
       value='Login'
       @click='submitForm("signIn")'
     ).auth__submit
+    // logout
+    input(
+      type='button'
+      value='Logout'
+      @click='signOut()'
+    ).auth__submit
+    // create user
     input(
       type='submit'
       value='Create Account'
@@ -49,27 +59,14 @@ export default {
   methods: {
     async submitForm (type) {
       try {
-        await this.validateForm()
+        const valid = await this.$validator.validateAll()
+        if (!valid) throw this.errors // $validator provided object
 
-        if (type === 'signIn') {
-          await this.signIn(this.form)
-        }
-
-        else if (type === 'createUser') {
-          await !this.isEmailTaken(this.form.email) ? await this.createUser(this.form) : await this.signOut()
-        }
-
+        if (type === 'signIn') await this.signIn(this.form)
+        else if (type === 'createUser') await this.createUser(this.form)
       }
       catch (e) {
-        console.log('submitForm error: ', e)
-      }
-    },
-    async validateForm () {
-      try {
-        return await this.$validator.validateAll()
-      }
-      catch (e) {
-        console.log('validateForm error: ', e)
+        console.error(e)
       }
     }
   }

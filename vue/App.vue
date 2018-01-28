@@ -1,6 +1,7 @@
 <template lang='pug'>
 div.app
   navigation.app__nav
+  p(style='position: fixed') user active: {{ active }}
   error-404-view(v-if='error.isError && error.type == "404"').app__error
   router-view(v-else).app__view
 </template>
@@ -9,12 +10,8 @@ div.app
 <script>
 import Error404View from './views/Error404View.vue'
 import Navigation from './components/Navigation.vue'
-import firebaseAuth from './mixins/firebaseAuth'
 
 export default {
-  mixins: [
-    firebaseAuth
-  ],
   components: {
     Error404View,
     Navigation
@@ -25,10 +22,20 @@ export default {
   computed: {
     error () {
       return this.$store.state.error
+    },
+    active () {
+      return this.$store.state.user.isUser
+    }
+  },
+  methods: {
+    revealState () {
+      const state = this.$store.state
+      console.log('state: ', state)
     }
   },
   beforeMount () {
-    this.initAuth()
+    this.revealState()
+    this.$store.dispatch('user/watchAuthState')
   }
 }
 </script>
