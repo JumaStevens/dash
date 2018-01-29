@@ -5,6 +5,4 @@ firebase.initializeApp(config)
 
 export const firebaseRef = firebase.database().ref()
 
-export const chatRef = firebaseRef.child('chat')
-
 export default firebase

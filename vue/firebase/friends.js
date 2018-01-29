@@ -1,5 +1,5 @@
 import firebase, { firebaseRef } from './index'
 
-export const friends = () => {
-  
-}
+const friendsRef = firebaseRef.child('friends')
+
+export { friendsRef }

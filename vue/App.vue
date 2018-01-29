@@ -27,14 +27,7 @@ export default {
       return this.$store.state.user.isUser
     }
   },
-  methods: {
-    revealState () {
-      const state = this.$store.state
-      console.log('state: ', state)
-    }
-  },
-  beforeMount () {
-    this.revealState()
+  beforeCreate () {
     this.$store.dispatch('user/watchAuthState')
   }
 }

@@ -38,6 +38,9 @@ main.chat {{ cup }}
 
   // message form
   div.chat__message-form
+    pre {{ chats }}
+    p ----
+    pre {{ uid }}
     form(
       @submit.prevent='addMessage'
     ).message-form
@@ -50,7 +53,8 @@ main.chat {{ cup }}
 
 <script>
 import chatData from '~/data/chat.json'
-import firebase, { chatRef } from '~/firebase'
+import firebase from '~/firebase'
+import { chatRef, chatsRef } from '~/firebase/chat'
 import moment from 'moment'
 
 const peer = new Peer({host: 'localhost', port: 4000, path: '/peerjs' })
@@ -127,17 +131,33 @@ export default {
   computed: {
     cup () {
       console.log(this.anArray)
+      console.log('store: ', this.$store.state.user)
+    },
+    uid () {
+      const state = this.$store.state.user
+      if (!state.isUser || !state.data) return ''
+      console.log(state.data.uid)
+      return state.data.uid
     }
   },
   firebase: {
     anArray: {
       source: chatRef,
-      //asObject: true,
       cancelCallback (e) {
         console.log('canceled! ', e)
       },
       readyCallback (e) {
         console.log('readyCallback! ', e)
+      }
+    },
+    chats: {
+      source: chatsRef,
+      cancelCallback (e) {
+        console.log('canceled! ', e)
+      },
+      readyCallback (e) {
+        console.log('readyCallback! ', e)
+        console.log('this: ')
       }
     }
   },
