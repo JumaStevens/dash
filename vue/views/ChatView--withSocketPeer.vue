@@ -14,9 +14,6 @@ main.chat
               v-lazy='item.avatarSrc'
             ).room__img
           p.room__text {{ item.fullName }}
-      a(
-        @click='addChatRoom'
-      ) add chat room
 
   // header
   div.chat__header
@@ -56,8 +53,27 @@ main.chat
 <script>
 import chatData from '~/data/chat.json'
 import firebase from '~/firebase'
-import { chatRef, chatsRef, userChatsRef } from '~/firebase/chat'
+import { chatRef, chatsRef } from '~/firebase/chat'
 import moment from 'moment'
+
+const peer = new Peer({host: 'localhost', port: 4000, path: '/peerjs' })
+const conn = peer.connect()
+
+// connect
+conn.on('open', () => {
+  console.log('open')
+  conn.send('hi!')
+})
+
+peer.listAllPeers((e) => { console.log('list: ', e) })
+
+// receive
+conn.on('connection', (conn) => {
+  conn.on('data', (data) => {
+    console.log('data: ', data)
+  })
+})
+
 
 export default {
   data () {
@@ -84,16 +100,27 @@ export default {
     deleteMessage (item) {
       this.$firebaseRefs.anArray.child(item['.key']).remove()
     },
+    getUserId () {
+      return firebase.auth().currentUser.uid
+    },
+    getUserName () {
+      return firebase.auth().currentUser.displayName
+    },
+    getPhotoUrl () {
+      return firebase.auth().currentUser.photoURL
+    },
     setChatRoom () {
       const data = chatData.room
       this.chatRoom = data
     },
-    addChatRoom () {
-      const userChats = this.$firebaseRefs.userChats
-      const key = userChats.push().key
-      userChats.child(this.currentUser.uid).child(key).set(true)
-
-      console.log('key: ', key)
+    joinRoom () {
+      this.$socket.emit('chatJoin', 'winners')
+    },
+    leaveRoom () {
+      this.$socket.emit('chatLeave')
+    },
+    sendMessage () {
+      this.$socket.emit('chatMessage', this.inputMessage)
     }
   },
   computed: {
@@ -122,21 +149,43 @@ export default {
         console.log('readyCallback! ', chatsRef)
         console.log(this.$firebaseRefs.chats)
       }
-    },
-    userChats: {
-      source: userChatsRef,
-      cancelCallback (e) {
-        console.log('canceled! ', e)
-      },
-      readyCallback (e) {
-        console.log('readyCallback! ', chatsRef)
-        console.log(this.$firebaseRefs.chats)
-      }
     }
+  },
+  sockets: {
+    connect () {
+      console.log('socket connected')
+    },
+    disconnect () {
+      console.log('socket disconnected')
+    },
+    error () {
+      console.log('socket error')
+    },
+    chatUserDisconnected () {
+      console.log('user disconnected')
+    },
+    chatJoined (val) {
+      console.log('chatJoined: ', val)
+    },
+    chatLeft () {
+      console.log('chatLeft')
+    },
+    chatNewConnection () {
+      console.log('chatNewConnection')
+    },
+    chatMessage (e) {
+      console.log('chatMessage: ', e)
+    }
+  },
+  created () {
+    this.joinRoom()
   },
   beforeMount () {
     this.setChatRoom()
     console.log('active: ', this.$store.state.user.data)
+  },
+  beforeDestroy () {
+    this.leaveRoom()
   }
 }
 </script>

@@ -12,6 +12,8 @@ users
 
 presence
   user_id
+    status
+    last_changed
 
 friends
   user_id (jane)

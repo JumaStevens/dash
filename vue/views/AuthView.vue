@@ -24,7 +24,7 @@ main.auth
     input(
       type='submit'
       value='Login'
-      @click='submitForm("signIn")'
+      @click='signInWithEmailAndPassword'
     ).auth__submit
     // logout
     input(
@@ -36,18 +36,14 @@ main.auth
     input(
       type='submit'
       value='Create Account'
-      @click='submitForm("createUser")'
+      @click='createUserWithEmailAndPassword'
     ).auth__submit
 </template>
 
 
 <script>
-import firebaseAuth from '../mixins/firebaseAuth'
 
 export default {
-  mixins: [
-    firebaseAuth
-  ],
   data () {
     return {
       form: {
@@ -57,17 +53,24 @@ export default {
     }
   },
   methods: {
-    async submitForm (type) {
+    async signInWithEmailAndPassword () {
       try {
         const valid = await this.$validator.validateAll()
         if (!valid) throw this.errors // $validator provided object
-
-        if (type === 'signIn') await this.signIn(this.form)
-        else if (type === 'createUser') await this.createUser(this.form)
+        this.$store.dispatch('user/signInWithEmailAndPassword', this.form)
       }
-      catch (e) {
-        console.error(e)
+      catch (e) { console.error(e) }
+    },
+    async createUserWithEmailAndPassword () {
+      try {
+        const valid = await this.$validator.validateAll()
+        if (!valid) throw this.errors // $validator provided object
+        this.$store.dispatch('user/createUserWithEmailAndPassword', this.form)
       }
+      catch (e) { console.error(e) }
+    },
+    signOut () {
+      this.$store.dispatch('user/signOut')
     }
   }
 }

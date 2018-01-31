@@ -2,28 +2,36 @@ import firebase from '~/firebase'
 import { presence } from '~/firebase/presence'
 
 export default {
-  async watchAuthState ({ commit, dispatch }) {
-    const handleChange = (user) => {
+  watchAuthState ({ commit, dispatch }) {
+    const observer = (user) => {
       if (user) {
-        console.log('user >>> ', user.toJSON())
-        commit('setData', user.toJSON())
+        commit('setCurrentUser')
         dispatch('watchPresence')
       } else {
-        const res = firebase.auth().signInAnonymously()
-        this.$store.commit('user/setData', res)
-        console.log('user false: ', res)
+        commit('clearCurrentUser')
+        dispatch('signInAnonymously')
       }
     }
-
-    try {
-      const authState = await firebase.auth().onAuthStateChanged(handleChange)
-    }
-    catch (e) {
-      console.error(e)
-    }
+    firebase.auth().onAuthStateChanged(observer)
   },
   watchPresence () {
     presence()
     console.log('watchPresence')
+  },
+  async signInAnonymously () {
+    try { await firebase.auth().signInAnonymously() }
+    catch (e) { console.error(e) }
+  },
+  async createUserWithEmailAndPassword ({}, payload) {
+    try { await firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password) }
+    catch (e) { console.error(e) }
+  },
+  async signInWithEmailAndPassword ({}, payload) {
+    try { await firebase.auth().signInWithEmailAndPassword(payload.email, payload.password) }
+    catch (e) { console.error(e) }
+  },
+  async signOut () {
+    try { await firebase.auth().signOut() }
+    catch (e) { console.error(e) }
   }
 }

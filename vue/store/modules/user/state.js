@@ -1,4 +1,3 @@
 export default {
-  isUser: false,
-  data: null
+  currentUser: null
 }

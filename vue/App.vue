@@ -1,9 +1,9 @@
 <template lang='pug'>
 div.app
   navigation.app__nav
-  p(style='position: fixed') Auth: {{ active }}
+  p(style='position: fixed') Auth: {{ isCurrentUser }}
   error-404-view(v-if='error.isError && error.type == "404"').app__error
-  router-view(v-else).app__view
+  router-view(v-else-if='isCurrentUser').app__view
 </template>
 
 
@@ -23,8 +23,8 @@ export default {
     error () {
       return this.$store.state.error
     },
-    active () {
-      return this.$store.state.user.isUser
+    isCurrentUser () {
+      return this.$store.getters['user/isCurrentUser']
     }
   },
   beforeCreate () {

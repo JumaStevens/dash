@@ -1,5 +1,5 @@
 import firebase, { firebaseRef } from './index'
 
-const userRef = firebaseRef.child('users')
+const usersRef = firebaseRef.child('users')
 
-export { userRef, initializeAuth }
+export { usersRef }

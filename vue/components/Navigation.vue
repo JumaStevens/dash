@@ -2,7 +2,7 @@
 div.nav
   avatar.nav__avatar
   nav-menu.nav__nav-menu
-  //logo.nav__logo
+  logo.nav__logo
 </template>
 
 
