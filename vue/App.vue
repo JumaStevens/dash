@@ -24,11 +24,11 @@ export default {
       return this.$store.state.error
     },
     isCurrentUser () {
-      return this.$store.getters['user/isCurrentUser']
+      return this.$store.getters['auth/isCurrentUser']
     }
   },
   beforeCreate () {
-    this.$store.dispatch('user/watchAuthState')
+    this.$store.dispatch('auth/watchAuthState')
   }
 }
 </script>

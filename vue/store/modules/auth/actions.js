@@ -3,7 +3,7 @@ import { presence } from '~/firebase/presence'
 
 export default {
   watchAuthState ({ commit, dispatch }) {
-    const observer = (user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
         commit('setCurrentUser')
         dispatch('watchPresence')
@@ -11,8 +11,7 @@ export default {
         commit('clearCurrentUser')
         dispatch('signInAnonymously')
       }
-    }
-    firebase.auth().onAuthStateChanged(observer)
+    })
   },
   watchPresence () {
     presence()

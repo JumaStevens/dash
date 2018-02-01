@@ -57,7 +57,7 @@ export default {
       try {
         const valid = await this.$validator.validateAll()
         if (!valid) throw this.errors // $validator provided object
-        this.$store.dispatch('user/signInWithEmailAndPassword', this.form)
+        this.$store.dispatch('auth/signInWithEmailAndPassword', this.form)
       }
       catch (e) { console.error(e) }
     },
@@ -65,12 +65,12 @@ export default {
       try {
         const valid = await this.$validator.validateAll()
         if (!valid) throw this.errors // $validator provided object
-        this.$store.dispatch('user/createUserWithEmailAndPassword', this.form)
+        this.$store.dispatch('auth/createUserWithEmailAndPassword', this.form)
       }
       catch (e) { console.error(e) }
     },
     signOut () {
-      this.$store.dispatch('user/signOut')
+      this.$store.dispatch('auth/signOut')
     }
   }
 }

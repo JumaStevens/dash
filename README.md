@@ -10,12 +10,12 @@ users
     profile_url
     email
 
-presence
+presence (!)
   user_id
     status
     last_changed
 
-friends
+friends (!)
   user_id (jane)
     user_id (fred)
     user_id (jill)
@@ -23,14 +23,14 @@ friends
     user_id (smith)
     user_id (jill)
 
-chat
-  userChats
+messenger
+  userConversations (!)
     user_id
       convo_id
       convo_id
       convo_id
 
-  chats
+  conversationMeta
     convo_id
       from
       lastMessage

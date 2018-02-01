@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     currentUser () {
-      const user = this.$store.getters['user/getCurrentUser']
+      const user = this.$store.getters['auth/getCurrentUser']
       console.log('currentUser: ---> ', user)
       return user
     }
