@@ -24,9 +24,9 @@ export default {
 </script>
 
 
-<style lang='sass'>
+<style lang='sass' scoped>
 .nav
-  display: flex
+  @extend %flex
   align-items: center
 
   &__avatar

@@ -192,7 +192,7 @@ export default {
 
 
 <style lang='sass' scoped>
-@import '../assets/sass/main.sass'
+
 
 .chat
   background: $pri-cl

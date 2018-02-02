@@ -1,9 +1,15 @@
 <template lang='pug'>
-div.app
-  navigation.app__nav
+.vue-app
+  navigation.vue-app__nav
   p(style='position: fixed') Auth: {{ isCurrentUser }}
-  error-404-view(v-if='error.isError && error.type == "404"').app__error
-  router-view(v-else-if='isCurrentUser').app__view
+  error-404-view(
+    v-if='error.isError && error.type == "404"'
+    class='vue-app__error'
+  )
+  router-view(
+    v-else-if='isCurrentUser'
+    class='vue-app__view'
+  )
 </template>
 
 
@@ -37,7 +43,7 @@ export default {
 <style lang='sass'>
 @import './assets/sass/main.sass'
 
-.app
+.vue-app
   width: 100vw
   height: 100vh
   display: grid

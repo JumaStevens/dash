@@ -36,8 +36,7 @@ export default {
 </script>
 
 
-<style lang='sass'>
-@import '../assets/sass/main.sass'
+<style lang='sass' scoped>
 
 .logo
 

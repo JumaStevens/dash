@@ -87,7 +87,6 @@ export default {
 
 
 <style lang='sass' scoped>
-@import '../assets/sass/main.sass'
 
 .container
   display: grid

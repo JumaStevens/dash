@@ -77,7 +77,6 @@ export default {
 </script>
 
 <style lang='sass' scoped>
-@import '../assets/sass/main.sass'
 
 .auth
   background: $pri-cl

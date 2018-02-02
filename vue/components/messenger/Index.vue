@@ -1,5 +1,5 @@
 <template lang='pug'>
-div.container
+div.messenger
   //- conversation list
   conversation-list(
     v-on:newConversation='newConversation'
@@ -9,6 +9,7 @@ div.container
   //- conversation
   conversation.messenger__conversation
 </template>
+
 
 <script>
 import Conversation from './Conversation.vue'
@@ -36,10 +37,10 @@ export default {
 
 <style lang='sass' scoped>
 
-
-.container
-  background: $pri-cl
+.messenger
   @extend %flex
+  height: 100%
+  background: $pri-cl
   box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
   border-radius: 0.75%
   overflow: hidden

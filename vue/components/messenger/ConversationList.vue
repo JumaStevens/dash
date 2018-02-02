@@ -1,6 +1,5 @@
 <template lang='pug'>
 div.conversation-list
-  h1 hello
   ul.list
     li(
       v-for='(item, index) in chatRoom'
@@ -60,8 +59,7 @@ export default {
 </script>
 
 
-<style lang='sass'>
-@import '../../assets/sass/main.sass'
+<style lang='sass' scoped>
 
 .conversation-list
   @extend %flex--column

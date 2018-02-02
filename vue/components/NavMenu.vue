@@ -35,7 +35,7 @@ export default {
 </script>
 
 
-<style lang='sass'>
+<style lang='sass' scoped>
 .nav-menu
 
   &__list
