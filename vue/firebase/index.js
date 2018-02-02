@@ -3,6 +3,7 @@ import { config } from './config'
 
 firebase.initializeApp(config)
 
-export const firebaseRef = firebase.database().ref()
+export const database = firebase.database()
+export const firebaseRef = database.ref()
 
 export default firebase

@@ -4,6 +4,7 @@
   ],
   "plugins": [
     "syntax-dynamic-import",
-    "transform-regenerator"
+    "transform-regenerator",
+    "transform-object-rest-spread"
   ]
 }

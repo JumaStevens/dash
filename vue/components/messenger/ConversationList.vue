@@ -1,15 +1,18 @@
 <template lang='pug'>
 div.conversation-list
+  h1 hello
   ul.list
     li(
-      v-for='(item, index) in conversations'
+      v-for='(item, index) in chatRoom'
       :key='index'
-    ).list__item
+      class='list__item'
+    )
       div.list__avatar
         img(
           v-lazy='item.avatarSrc'
-        ).list__img
-      p.list__text {{ item.fullName }} {{ conversations }}
+          class='list__img'
+        )
+      p.list__text {{ item.fullName }} | {{ conversations }}
   a(
     @click='newConversation'
   ) add chat room
@@ -18,8 +21,7 @@ div.conversation-list
 
 
 <script>
-import firebase, { firebaseRef } from '~/firebase'
-import { chatRef, chatsRef, userChatsRef, messagesRef } from '~/firebase/chat'
+import { mapMutations, mapActions } from 'vuex'
 import chatData from '~/data/chat.json'
 
 export default {
@@ -28,25 +30,12 @@ export default {
       chatRoom: []
     }
   },
-  firebase: {
-    conversationsRef: {
-      source: userChatsRef,
-      readyCallback (e) {
-        console.log('ready: ', this.currentUser.uid)
-      }
-    }
-  },
   computed: {
     currentUser () {
       return this.$store.getters['auth/getCurrentUser']
     },
     conversations () {
-      console.log('uid: ', this.currentUser.uid)
-      firebase.database().ref(`conversations/${this.currentUser.uid}`).on('value', snap => {
-        snap.forEach(s => console.log('s: ', s))
-        console.log('snap: ', snap.val())
-      })
-      console.log('old: ', this.$firebaseRefs.conversationsRef)
+      return this.$store.state.messenger.conversationId
     }
   },
   methods: {
@@ -55,8 +44,14 @@ export default {
       this.chatRoom = data
     },
     newConversation () {
-      this.$store.commit('messenger/setActiveConversationId')
-    }
+      this.$emit('newConversation')
+    },
+    ...mapMutations({
+      setConversationId: 'messenger/setConversationId'
+    }),
+    ...mapActions({
+      createConversation: 'messenger/createConversation'
+    })
   },
   beforeMount () {
     this.setChatRoom()

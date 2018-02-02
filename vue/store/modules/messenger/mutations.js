@@ -1,5 +1,5 @@
 export default {
-  setActiveConversationId (state, payload) {
-    state.activeConversationId = payload
+  setConversationId (state, payload) {
+    state.conversationId = payload
   }
 }

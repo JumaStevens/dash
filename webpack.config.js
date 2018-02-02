@@ -18,8 +18,11 @@ const config = {
         loader: 'vue-loader',
         options: {
           loaders: {
-            'scss': 'vue-style-loader!css-loader!sass-loader',
-            'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+            scss: 'vue-style-loader!css-loader!sass-loader',
+            sass: [
+              { loader: 'vue-style-loader!css-loader!sass-loader?indentedSyntax' },
+              { loader: 'sass-resources-loader', options: { resources: path.resolve(__dirname, 'vue/assets/sass/global.sass') } }
+            ]
           }
         }
       },
@@ -37,13 +40,12 @@ const config = {
       },
       {
         test: /\.svg$/,
-        loader: 'vue-svg-loader', // `vue-svg` for webpack 1.x
+        loader: 'vue-svg-loader',
         options: {
-          // optional [svgo](https://github.com/svg/svgo) options
           svgo: {
             plugins: [
-              {removeDoctype: true},
-              {removeComments: true}
+              { removeDoctype: true },
+              { removeComments: true }
             ]
           }
         }
@@ -56,7 +58,8 @@ const config = {
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '~': path.resolve(__dirname, 'vue')
+      '~': path.resolve(__dirname, 'vue'),
+      '~comp': path.resolve(__dirname, 'vue', 'components')
     }
   },
   devServer: {

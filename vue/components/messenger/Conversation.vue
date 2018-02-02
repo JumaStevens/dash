@@ -34,34 +34,14 @@ div.conversation
 
 
 <script>
-import firebase from '~/firebase'
-import { chatRef, chatsRef, userChatsRef, messagesRef } from '~/firebase/chat'
 
 
 export default {
-  props: {
-    conversationId: {
-      type: String,
-      default: '/'
-    }
-  },
   data () {
-    return {}
-  },
-  firebase: {
-    messages: {
-      source: messagesRef,
-      cancelCallback (e) {
-        console.log('canceled! ', e)
-      },
-      readyCallback (e) {
-        console.log('readyCallback! ', e)
-      }
+    return {
+      messages: [],
+      newMessage: ''
     }
-  },
-  methods: {},
-  beforeMount () {
-    console.log('id : ', this.conversationId)
   }
 }
 </script>
