@@ -20,7 +20,7 @@ main.container
       class='friends__users users'
     )
       li(
-        @click='addFriend("testfriend2")'
+        @click='toggleShowFriends'
         class='users__item add-friend'
       )
         div(
@@ -28,41 +28,55 @@ main.container
         )
         a(
           class='add-friend__text'
-        ) Add a friend
+        ) {{ addFriendText }}
 
       li(
         v-for='(user, index) in users'
         :key='index'
         class='users__item'
       )
-        p user# {{ index }}
+        p {{ user.text }}
         a(
-          @click='addFriend(user.name)'
+          @click='addFriend(user.uid)'
         ) add friend {{ user.name }}
 </template>
 
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
-      search: ''
+      search: '',
+      showFriends: true,
     }
   },
   computed: {
     users () {
-      return []
-    }
+      return this.showFriends ? this.getFriends : this.getUsers
+    },
+
+
+    addFriendText () {
+      return this.showFriends ? 'add a friend' : 'show my friends'
+    },
+
+
+    ...mapGetters({
+      getFriends: 'friends/getFriends',
+      getUsers: 'users/getUsers'
+    })
   },
   methods: {
-    showUsers () {
-      console.log('show all users!')
+    toggleShowFriends () {
+      this.showFriends = !this.showFriends
+      console.log('show friends ', this.showFriends)
     },
 
 
     addFriend (uid) {
+      console.log('uid: ', uid)
       this.$store.dispatch('friends/addFriend', uid)
     },
 
@@ -148,6 +162,9 @@ export default {
 
     &::after
       transform: rotate(90deg)
+
+  &__text
+    font-size: $fs-1
 
 
 </style>
