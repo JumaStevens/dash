@@ -1,34 +1,38 @@
 <template lang='pug'>
 div.conversation
-  // header
+  //- header
   div.conversation__header
     header.header
       div.header__avatar
         img().header__image
       p.header__text name dawg
 
-  // message
+  //- message
   div.conversation__message
     div.message
       ul.message__list
         li(
           v-for='(item, index) in messages'
           :key='index'
-        ).message__item
+          class='message__item'
+        )
           p(
             @click='deleteMessage(item)'
-          ).message__text {{ item.message }}
+            class='message__text'
+          ) {{ item.message }}
           p {{ item.timestamp | formatDate }}
 
-  // message form
+  //- message form
   div.conversation__message-form
     form(
       @submit.prevent='addMessage'
-    ).message-form
+      class='message-form'
+    )
       input(
         v-model='newMessage'
         placeholder='Type a message...'
-      ).message-form__input
+        class='message-form__input'
+      )
 
 </template>
 
@@ -50,42 +54,32 @@ export default {
 <style lang='sass' scoped>
 
 .conversation
-  flex: 3
-
-  &__header
-    grid-row: 1 / 2
-    grid-column: 2 / 3
-    @extend %flex
-    align-items: center
-
-  &__message
-    grid-row: 2 / 3
-    grid-column: 2 / 3
-    overflow-y: auto
-
-  &__message-form
-    grid-row: 3 / 4
-    grid-column: 2 / 3
+  @extend %flex--column
+  align-items: center
 
   &__header,
   &__message,
   &__message-form
     width: 75%
-    margin: 0 auto
 
+  &__header
+    @extend %flex
+    flex: 1
+    align-items: center
 
+  &__message
+    flex: 3
+    overflow-y: auto
 
+  &__message-form
+    flex: 1
 
 .header
   @extend %flex
-  width: 100%
 
   &__avatar
     @extend %avatar--sm
     margin-right: 0.5rem
-
-  &__status
-    margin-left: auto
 
 .message
 

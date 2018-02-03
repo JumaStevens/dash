@@ -2,26 +2,25 @@
 div.conversation-list
   ul.list
     li(
-      v-for='(item, index) in chatRoom'
+      v-for='(item, index) in []'
       :key='index'
       class='list__item'
     )
       div.list__avatar
         img(
-          v-lazy='item.avatarSrc'
+          v-lazy='item.profileUrl'
           class='list__img'
         )
-      p.list__text {{ item.fullName }} | {{ conversations }}
+      p.list__text {{ item.timestamp }}
   a(
-    @click='newConversation'
+    @click='createConversation'
   ) add chat room
 
 </template>
 
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
-import chatData from '~/data/chat.json'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -31,19 +30,16 @@ export default {
   },
   computed: {
     currentUser () {
+      console.log('---> ', this.conversations)
       return this.$store.getters['auth/getCurrentUser']
     },
-    conversations () {
-      return this.$store.state.messenger.conversationId
-    }
+    ...mapState({
+      conversations: state => state.messenger.conversations
+    })
   },
   methods: {
-    setChatRoom () {
-      const data = chatData.room
-      this.chatRoom = data
-    },
     newConversation () {
-      this.$emit('newConversation')
+      console.log('state: ', this.conversations)
     },
     ...mapMutations({
       setConversationId: 'messenger/setConversationId'
@@ -51,9 +47,6 @@ export default {
     ...mapActions({
       createConversation: 'messenger/createConversation'
     })
-  },
-  beforeMount () {
-    this.setChatRoom()
   }
 }
 </script>

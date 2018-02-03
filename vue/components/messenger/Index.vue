@@ -14,6 +14,7 @@ div.messenger
 <script>
 import Conversation from './Conversation.vue'
 import ConversationList from './ConversationList.vue'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -29,7 +30,13 @@ export default {
     newConversation () {
       this.newConversationRequest = true
       console.log('truth: ', this.newConversationRequest)
-    }
+    },
+    ...mapActions({
+      getConversations: 'messenger/getConversations'
+    })
+  },
+  created () {
+    this.getConversations()
   }
 }
 </script>
