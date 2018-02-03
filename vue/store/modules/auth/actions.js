@@ -13,22 +13,32 @@ export default {
       }
     })
   },
+
+
   watchPresence () {
     presence()
     console.log('watchPresence')
   },
+
+
   async signInAnonymously () {
     try { await firebase.auth().signInAnonymously() }
     catch (e) { console.error(e) }
   },
+
+
   async createUserWithEmailAndPassword ({}, payload) {
     try { await firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password) }
     catch (e) { console.error(e) }
   },
+
+
   async signInWithEmailAndPassword ({}, payload) {
     try { await firebase.auth().signInWithEmailAndPassword(payload.email, payload.password) }
     catch (e) { console.error(e) }
   },
+
+
   async signOut () {
     try { await firebase.auth().signOut() }
     catch (e) { console.error(e) }

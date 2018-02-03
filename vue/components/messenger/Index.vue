@@ -2,7 +2,6 @@
 div.messenger
   //- conversation list
   conversation-list(
-    v-on:newConversation='newConversation'
     class='messenger__conversation-list'
   )
 
@@ -22,21 +21,15 @@ export default {
     ConversationList
   },
   data () {
-    return {
-      newConversationRequest: false
-    }
+    return {}
   },
   methods: {
-    newConversation () {
-      this.newConversationRequest = true
-      console.log('truth: ', this.newConversationRequest)
-    },
     ...mapActions({
-      getConversations: 'messenger/getConversations'
+      initConversations: 'messenger/initConversations'
     })
   },
   created () {
-    this.getConversations()
+    this.initConversations()
   }
 }
 </script>

@@ -7,6 +7,8 @@ export default {
     state.currentUser = user.toJSON()
     console.log('setCurrentUser: ', user.toJSON())
   },
+
+  
   clearCurrentUser (state) {
     state.currentUser = null
     console.log('clearCurrentUser')

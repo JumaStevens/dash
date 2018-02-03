@@ -1,15 +1,17 @@
-export default {
-  setConversations (state, payload) {
-    state.conversations = payload
-    console.log('conversations: ', state.conversations)
-  },
-  addConversation (state, payload) {
-    console.log('before state: ', state.conversations)
-    //state.conversations[payload.key] = payload.value
-    console.log('payload: ', payload)
-    console.log('state: ', state.conversations)
-  },
-  deleteConversation (state, payload) {
+import Vue from 'vue'
 
+
+export default {
+  addConversation (state, payload) {
+    Vue.set(state.conversations, payload.key, payload.value)
+    // console.log('addConversation -- state >> ', state)
+    // console.log('addConversation -- payload >> ', payload)
+  },
+
+  
+  deleteConversation (state, payload) {
+    Vue.delete(state.conversations, payload.key)
+    // console.log('deleteConversation -- state >> ', state)
+    // console.log('deleteConversation -- payload >> ', payload)
   }
 }

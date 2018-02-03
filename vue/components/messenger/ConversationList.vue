@@ -2,7 +2,7 @@
 div.conversation-list
   ul.list
     li(
-      v-for='(item, index) in []'
+      v-for='(item, index) in conversationList'
       :key='index'
       class='list__item'
     )
@@ -12,10 +12,8 @@ div.conversation-list
           class='list__img'
         )
       p.list__text {{ item.timestamp }}
-  a(
-    @click='createConversation'
-  ) add chat room
-
+  a() add chat room
+  pre {{ conversations }}
 </template>
 
 
@@ -33,6 +31,13 @@ export default {
       console.log('---> ', this.conversations)
       return this.$store.getters['auth/getCurrentUser']
     },
+
+
+    conversationList () {
+      return [] //this.conversations
+    },
+
+
     ...mapState({
       conversations: state => state.messenger.conversations
     })
@@ -41,11 +46,10 @@ export default {
     newConversation () {
       console.log('state: ', this.conversations)
     },
+
+
     ...mapMutations({
       setConversationId: 'messenger/setConversationId'
-    }),
-    ...mapActions({
-      createConversation: 'messenger/createConversation'
     })
   }
 }

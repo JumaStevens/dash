@@ -1,18 +1,30 @@
 export default {
-  getConversations (state) {
-    const data = {
+  getConversationMessages (state, getters, rootState, rootGetters) {
+    const currentUser = rootGetters['auth/getCurrentUser']
+    const activeConversation = state.activeConversation
+    const messages = state.messages[activeConversation]
+    const messagesArray = []
 
+    for (var key in messages) {
+      if (messages.hasOwnProperty(key)) {
+        const message = {
+          id: key,
+          fromSelf: currentUser.uid === messages[key].uid,
+          ...messages[key]
+        }
+        messagesArray.push(message)
+      }
     }
-    const c = state.conversations
-    c.forEach(conversation => {
 
-    })
+    return messagesArray
   },
-  getlastMessages (state) {
-    // return the last message of all conversations
-    state.conversations
 
 
+  getActiveConversationMembers (state, getters, rootState, rootGetters) {
+    const currentUser = rootGetters['auth/getCurrentUser']
+    const activeConversation = state.activeConversation
+    const members = state.members[activeConversation]
+    console.log('members: ', members)
   }
 }
 

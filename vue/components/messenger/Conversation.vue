@@ -1,26 +1,9 @@
 <template lang='pug'>
 div.conversation
-  //- header
-  div.conversation__header
-    header.header
-      div.header__avatar
-        img().header__image
-      p.header__text name dawg
 
-  //- message
-  div.conversation__message
-    div.message
-      ul.message__list
-        li(
-          v-for='(item, index) in messages'
-          :key='index'
-          class='message__item'
-        )
-          p(
-            @click='deleteMessage(item)'
-            class='message__text'
-          ) {{ item.message }}
-          p {{ item.timestamp | formatDate }}
+  ConversationHeader.conversation__header
+
+  ConversationMessage.conversation__message
 
   //- message form
   div.conversation__message-form
@@ -38,14 +21,34 @@ div.conversation
 
 
 <script>
-
+import ConversationHeader from './ConversationHeader.vue'
+import ConversationMessage from './ConversationMessage.vue'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
+  components: {
+    ConversationHeader,
+    ConversationMessage
+  },
   data () {
     return {
       messages: [],
       newMessage: ''
     }
+  },
+  methods: {
+    addMessage () {
+      const data = {
+        message: this.newMessage,
+        members: ['0001', '0002']
+      }
+      this.addNewConversation(data)
+    },
+
+
+    ...mapActions({
+      addNewConversation: 'messenger/addNewConversation'
+    })
   }
 }
 </script>
