@@ -13,12 +13,11 @@ div.conversation-list
         )
       p.list__text {{ item.timestamp }}
   a() add chat room
-  pre {{ conversations }}
 </template>
 
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -29,6 +28,7 @@ export default {
   computed: {
     currentUser () {
       console.log('---> ', this.conversations)
+      console.log('mess ', this.getConversationMessages)
       return this.$store.getters['auth/getCurrentUser']
     },
 
@@ -40,6 +40,11 @@ export default {
 
     ...mapState({
       conversations: state => state.messenger.conversations
+    }),
+
+
+    ...mapGetters({
+      getConversationMessages: 'messenger/getConversationMessages'
     })
   },
   methods: {
@@ -51,6 +56,9 @@ export default {
     ...mapMutations({
       setConversationId: 'messenger/setConversationId'
     })
+  },
+  mounted () {
+    this.currentUser
   }
 }
 </script>

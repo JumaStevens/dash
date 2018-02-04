@@ -2,7 +2,9 @@
 .vue-app
   p(style='position: fixed') Auth: {{ isCurrentUser }}
 
-  navigation.vue-app__nav
+  navigation(
+    v-if='isCurrentUser'
+  ).vue-app__nav
 
   transition(name='fade')
     error-404-view(

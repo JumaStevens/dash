@@ -51,7 +51,7 @@ export default {
   async deleteFriend ({ rootGetters }, uid) {
     const currentUserUid = currentUser(rootGetters).uid
 
-    try { await database.ref(`friends/${currentUserUid}`).set({ uid: null }) }
+    try { await database.ref(`friends/${currentUserUid}/${uid}`).set(null) }
     catch (e) { console.error(e) }
   }
 

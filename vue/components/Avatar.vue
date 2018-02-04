@@ -4,19 +4,23 @@ router-link(
   class='avatar'
 )
   img(
-    v-lazy='imgSrc'
+    v-lazy='getCurrentUserProfilePicture'
     class='avatar__img'
   )
 </template>
 
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
-    return {
-      imgSrc: 'https://tinyurl.com/y73mku5w'
-    }
+    return {}
+  },
+  computed: {
+    ...mapGetters({
+      getCurrentUserProfilePicture: 'auth/getCurrentUserProfilePicture'
+    })
   }
 }
 </script>
@@ -25,6 +29,6 @@ export default {
 <style lang='sass' scoped>
 
 .avatar
-  @extend %avatar--l
+  @extend %avatar
 
 </style>

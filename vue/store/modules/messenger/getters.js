@@ -24,7 +24,7 @@ export default {
 
   getActiveConversationMembers (state, getters, rootState, rootGetters) {
     const activeConversation = state.activeConversation
-    const members = state.members[activeConversation]
-    console.log('members: ', members)
+    console.log('getActive: ', state.members[activeConversation])
+    return state.members[activeConversation]
   }
 }

@@ -1,56 +1,49 @@
 <template lang='pug'>
-div
+div.container
+  p Upload profile image
   img(
     :src='downloadURL'
     class='image'
   )
   input(
+    @change='detectFiles($event.target.files)'
     type='file'
     multiple
     accept='image/*'
-    @change='detectFiles($event.target.files)'
   )
   div(
+    :style='{ transform: "translateX(" + uploadProgress + "%)" }'
     class='progress-bar'
-    :style='{ width: progress + '%'}'
-  ) {{ progress }} % | {{ downloadURL }}
+  )
 
 </template>
 
 
 <script>
-import { storage } from '~/firebase'
-import { mapState } from 'vuex'
+import { database, storage } from '~/firebase'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  data () {
+  props: {
+    configData: {
+      type: Object,
+      default () {
+        return {
+          url: 'users'
+        }
+      }
+    }
+  },
+  data  () {
     return {
-      progress: '',
-      file: {
-        name: ''
-      },
-      downloadURL: '',
-      showProgress: false
+      uploadProgress: -100,
+      uploadTask: '',
+      downloadURL: ''
     }
   },
   computed: {
-    uploadProgress () {
-      //const key = this.file.name
-      console.log('---> ', progress)
-      if (!this.uploadTask[this.file.name]) return
-      //return !key || progress[key] ? 100 : progress[key]
-      const progress = (snapshot) => snapshot.bytesTransferred / snapshot.totalBytes * 100
-
-      const success = (snapshot) => console.log('snap: ', snapshot)
-
-      const error = (err) => console.error(err)
-
-      this.uploadTask[this.file.name].on('state_changed', snapshot => success(snapshot), err => error(err))
-    },
-
-
-    ...mapState({
-      uploadTask: 'media/uploadTask'
+    ...mapGetters({
+      getCurrentUser: 'auth/getCurrentUser'
     })
   },
   methods: {
@@ -60,10 +53,36 @@ export default {
 
 
     upload (file) {
-      console.log('file: ', this)
-      this.file = file
-      this.$store.dispatch('media/uploadProfilePicture', file)
-      this.uploadProgress
+      const key = database.ref().push().key
+      const url = `${this.configData.url}/${this.getCurrentUser.uid}/${key}`
+
+      this.uploadTask = storage.ref(url).put(file);
+      console.log('key: ', file)
+
+      const success = (snapshot) => {
+        this.downloadURL = this.uploadTask.snapshot.downloadURL
+        console.log('this: ', this.downloadURL)
+        this.updateProfile({ photoURL: this.downloadURL })
+        this.$emit('url', this.downloadURL)
+      }
+
+      const error = (err) => console.error(err)
+
+      this.uploadTask.then(snapshot => success(snapshot), err => error(err))
+    },
+
+
+    ...mapActions({
+      updateProfile: 'auth/updateProfile'
+    })
+  },
+  watch: {
+    uploadTask: function() {
+      const success = (snapshot) => this.uploadProgress = Math.floor(snapshot.bytesTransferred / snapshot.totalBytes * 100 - 100)
+
+      const error = (err) => console.error(err)
+
+      this.uploadTask.on('state_changed', snapshot => success(snapshot), err => error(err))
     }
   }
 }
@@ -72,9 +91,16 @@ export default {
 
 <style lang='sass' scoped>
 
+.container
+  overflow: hidden
+
 .progress-bar
   margin: 10px 0
-  &.width
+  transition: transform 150ms
+  background: $black
+  width: 100%
+  height: $unit / 4
+  transform: translateX(-100%)
 
 .image
   width: 500px

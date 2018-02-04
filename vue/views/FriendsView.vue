@@ -36,10 +36,22 @@ main.container
         :key='index'
         class='users__item'
       )
-        p {{ user.text }}
+        div.users__avatar
+          img(
+            v-lazy='user.profilePicture'
+            class='users__img'
+          )
+        p(
+          class='users__text'
+        ) {{ user.displayName }}
         a(
           @click='addFriend(user.uid)'
-        ) add friend {{ user.name }}
+          class='users__button'
+        ) + add friend
+        a(
+          @click='deleteFriend(user.uid)'
+          class='users__button'
+        ) - remove friend
 </template>
 
 
@@ -55,6 +67,8 @@ export default {
   },
   computed: {
     users () {
+      console.log('friends: ', this.getFriends)
+      console.log('users: ', this.getUsers)
       return this.showFriends ? this.getFriends : this.getUsers
     },
 
@@ -135,8 +149,28 @@ export default {
   margin: $unit*2
 
   &__item
-    background: blue
     height: 200px
+    box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
+    border-radius: 0.75%
+    overflow: hidden
+    background: $pri-cl
+    @extend %flex--column
+    align-items: center
+
+  &__avatar
+    @extend %avatar--l
+    margin-top: $unit * 2
+
+  &__text
+    font-size: $fs-1
+    text-transform: uppercase
+    margin: $unit 0 $unit * 2 0
+
+  &__button
+    font-size: $fs-1
+    text-transform: uppercase
+    margin: auto 0 $unit * 3 0
+
 
 
 .add-friend
@@ -146,7 +180,7 @@ export default {
   box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
   border-radius: 0.75%
   overflow: hidden
-  background: $pri-cl
+  background: $white
 
   &__icon
     position: relative

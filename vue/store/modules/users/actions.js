@@ -15,7 +15,7 @@ export default {
     const success = (snapshot) => snapshot.forEach(child => commit('addUser', { key: child.key, value: child.val() }))
     const error = (err) => console.error(err)
 
-    database.ref('users').limitToFirst(5).once('value').then(snapshot => success(snapshot), err => error(err))
+    database.ref('users').limitToFirst(100).once('value').then(snapshot => success(snapshot), err => error(err))
   },
 
 
@@ -48,18 +48,17 @@ export default {
     const updateData = {}
 
     updateData[`users/${uid}`] = {
-      firstName: 'Zana',
-      lastName: 'Dil',
-      username: 'Zanadil',
-      email: 'thug@life.com',
-      profilePicture: 'My pretty face',
-      bio: 'I do better dreaming of sunshine'
+      firstName: '',
+      lastName: '',
+      displayName: currentUser(rootGetters).displayName,
+      email: currentUser(rootGetters).email,
+      profilePicture: currentUser(rootGetters).photoURL,
+      bio: ''
     }
 
     try {
       await firebaseRef.update(updateData)
-    }
-    catch (e) { console.error(e) }
+    } catch (e) { console.error(e) }
   }
 
 }

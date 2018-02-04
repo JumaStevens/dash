@@ -14,9 +14,11 @@ export default {
     const uid = currentUser(rootGetters).uid
 
     const success = (snapshot) => snapshot.forEach(child => {
+
       const data = { key: child.key, value: child.val() }
 
       commit('addConversation', data)
+
       dispatch('fetchConversationMeta', data.key)
     })
 
@@ -63,17 +65,18 @@ export default {
     const key = database.ref(`messenger/conversations/${uid}`).push().key
     const messageKey = database.ref(`messenger/messages/${key}`).push().key
     const updateData = {}
-    const members = {}
+    const members = { [uid]: true }
+    console.log('data: ', data)
 
     data.members.forEach(member => members[member] = true)
     console.log('members: ', members)
 
     updateData[`messenger/conversations/${uid}/${key}`] = true
 
-    updateData[`messenger/members/${key}`] = data.members
+    updateData[`messenger/members/${key}`] = members
 
     updateData[`messenger/meta/${key}`] = {
-      lastMessage: 'message from bob',
+      lastMessage: data.message,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       uid: `${uid}`
     }
@@ -82,7 +85,6 @@ export default {
       message: data.message,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       uid: `${uid}`
-
     }
 
     try {

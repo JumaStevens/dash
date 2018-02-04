@@ -1,10 +1,18 @@
 <template lang='pug'>
 div.conversation__header
   header.header
-    div.header__avatar
-      img().header__image
-    p.header__text name dawg
-    pre {{ members }}
+    ul
+      li(
+        v-for='(user, index) in members'
+        :key='index'
+      )
+        div.header__avatar
+          img(
+            v-lazy='user.profilePicture'
+            class='header__image'
+          )
+        p.header__text {{ user.displayName }}
+
 
 </template>
 

@@ -1,25 +1,29 @@
 <template lang='pug'>
 div
-
+  p displayName: {{ displayName }}
   file-uploader
+  profile-form
 
 </template>
 
 
 <script>
 import FileUploader from './FileUploader.vue'
-import { mapActions } from 'vuex'
+import ProfileForm from './ProfileForm.vue'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
-    FileUploader
+    FileUploader,
+    ProfileForm
   },
   data () {
     return {}
   },
-  methods: {
-
-
+  computed: {
+    ...mapGetters({
+      displayName: 'auth/getCurrentUserDisplayName'
+    })
   }
 }
 </script>

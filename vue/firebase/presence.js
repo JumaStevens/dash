@@ -6,13 +6,13 @@ export const presence = () => {
   const timestamp = firebase.database.ServerValue.TIMESTAMP
 
   const isOfflineData = {
-    state: 'offline',
-    last_changed: timestamp
+    online: false,
+    lastChanged: timestamp
   }
 
   const isOnlineData = {
-    state: 'online',
-    last_changed: timestamp
+    online: true,
+    lastChanged: timestamp
   }
 
   firebaseRef.child('.info/connected').on('value', snapshot => {

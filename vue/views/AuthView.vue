@@ -3,7 +3,8 @@ main.auth
   form(
     @submit.prevent=''
   ).auth__form
-    // email
+
+    //- email
     input(
       v-model='form.email'
       type='email'
@@ -13,26 +14,30 @@ main.auth
       placeholder='Email'
       required
     ).auth__input
-    // password
+
+    //- password
     input(
       v-model='form.password'
       type='password'
       placeholder='Password'
       required
     ).auth__input
-    // login
+
+    //- login
     input(
       type='submit'
       value='Login'
       @click='signInWithEmailAndPassword'
     ).auth__submit
-    // logout
+
+    //- logout
     input(
       type='button'
       value='Logout'
       @click='signOut()'
     ).auth__submit
-    // create user
+    
+    //- create user
     input(
       type='submit'
       value='Create Account'

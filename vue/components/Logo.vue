@@ -9,7 +9,7 @@ div.logo
 
 
 <script>
-import generalData from '../data/general.json'
+import generalData from '~/data/general.json'
 
 export default {
   components: {

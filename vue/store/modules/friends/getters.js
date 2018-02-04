@@ -10,6 +10,7 @@ export default {
       if (friends.hasOwnProperty(key) && users[key]) friendsArray.push({ uid: key, ...users[key] })
     }
 
+    console.log('oooo ', friendsArray)
     return friendsArray
   }
 }
