@@ -16,5 +16,5 @@ export default {
 
 
 <style lang='sass' scoped>
-  
+
 </style>

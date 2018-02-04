@@ -1,6 +1,8 @@
 import firebase from '~/firebase'
 import { presence } from '~/firebase/presence'
 
+const currentUser = () => firebase.auth().currentUser
+
 export default {
   watchAuthState ({ commit, dispatch }) {
     firebase.auth().onAuthStateChanged(user => {
@@ -41,6 +43,51 @@ export default {
 
   async signOut () {
     try { await firebase.auth().signOut() }
+    catch (e) { console.error(e) }
+  },
+
+
+  async updateProfile ({}, payload) {
+    try { await currentUser().updateProfile(payload) }
+    catch (e) { console.error(e) }
+  },
+
+
+  async updateEmail ({}, payload) {
+    try { await currentUser().updateEmail(payload.newEmail) }
+    catch (e) { console.error(e) }
+  },
+
+
+  async sendEmailVerification ({}, payload) {
+    try { await currentUser().useDeviceLanguage().sendEmailVerification() }
+    catch (e) { console.error(e) }
+  },
+
+
+  async updatePassword ({}, payload) {
+    try { await currentUser().updatePassword(payload.newPassword) }
+    catch (e) { console.error(e) }
+  },
+
+
+  async sendPasswordResetEmail ({}, payload) {
+    try { await currentUser().sendPasswordResetEmail(currentUser().email) }
+    catch (e) { console.error(e) }
+  },
+
+
+  async deleteUserAccount ({ commit }, payload) {
+    try {
+      await currentUser().delete()
+      commit('clearCurrentUser')
+    }
+    catch (e) { console.error(e) }
+  },
+
+
+  async reauthenticateWithCredential ({}, payload) {
+    try { await currentUser().reauthenticateWithCredential(payload.credential) }
     catch (e) { console.error(e) }
   }
 }

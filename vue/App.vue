@@ -1,15 +1,18 @@
 <template lang='pug'>
 .vue-app
-  navigation.vue-app__nav
   p(style='position: fixed') Auth: {{ isCurrentUser }}
-  error-404-view(
-    v-if='error.isError && error.type == "404"'
-    class='vue-app__error'
-  )
-  router-view(
-    v-else-if='isCurrentUser'
-    class='vue-app__view'
-  )
+
+  navigation.vue-app__nav
+
+  transition(name='fade')
+    error-404-view(
+      v-if='error.isError && error.type == "404"'
+      class='vue-app__error'
+    )
+    router-view(
+      v-if='isCurrentUser'
+      class='vue-app__view'
+    )
 </template>
 
 
@@ -59,4 +62,11 @@ export default {
   &__view
     grid-row: 2 / 3
     grid-column: 3 / 11
+
+.fade-enter-active, .fade-leave-active
+  transition: opacity 150ms, transform 150ms
+
+.fade-enter, .fade-leave-to
+  transform: translateY(5vmin)
+  opacity: 0
 </style>

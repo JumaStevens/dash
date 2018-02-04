@@ -24,6 +24,7 @@ main.container
         class='users__item add-friend'
       )
         div(
+          :class='[{ toggle: !showFriends }]'
           class='add-friend__icon'
         )
         a(
@@ -151,17 +152,24 @@ export default {
     position: relative
     width: 50px
     height: 50px
+    transition: transform 150ms
+
+    &.toggle
+      transform: rotate(45deg)
 
     &::before,
     &::after
       content: ''
       position: absolute
-      background: $black
+      top: 50%
+      left: 50%
       width: 100%
       height: 25%
+      transform: translate(-50%, -50%)
+      background: $black
 
     &::after
-      transform: rotate(90deg)
+      transform: translate(-50%, -50%) rotate(90deg)
 
   &__text
     font-size: $fs-1

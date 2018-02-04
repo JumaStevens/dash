@@ -1,17 +1,23 @@
 <template lang='pug'>
 main.container
-  h1 home
+  h1 account
+  account
 </template>
 
 
 <script>
+import Account from '~comp/account/Index.vue'
 
 export default {
+  components: {
+    Account
+  },
   data () {
     return {}
   }
 }
 </script>
+
 
 <style lang='sass' scoped>
 .container
@@ -22,5 +28,6 @@ export default {
 
   & h1
     color: black
+
 
 </style>

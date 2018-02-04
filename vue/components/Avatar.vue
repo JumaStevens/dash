@@ -1,13 +1,16 @@
 <template lang='pug'>
-div.avatar
+router-link(
+  to='/account'
+  class='avatar'
+)
   img(
     v-lazy='imgSrc'
-  ).avatar__img
+    class='avatar__img'
+  )
 </template>
 
 
 <script>
-import axios from 'axios'
 
 export default {
   data () {
@@ -23,5 +26,5 @@ export default {
 
 .avatar
   @extend %avatar--l
-  width: 400px
+
 </style>

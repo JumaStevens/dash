@@ -7,7 +7,6 @@
     "menuList": [
       { "text": "Chat", "url": "/chat" },
       { "text": "Friends", "url": "/friends" },
-      { "text": "Shop", "url": "" },
       { "text": "Auth", "url": "/auth" }
     ]
   }
