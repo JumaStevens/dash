@@ -18,7 +18,14 @@ export const routes = [
   {
     path: '/chat',
     name: 'chat',
-    component: ChatView
+    component: ChatView,
+    children: [
+      {
+        path: ':id',
+        name: 'chat',
+        component: ChatView
+      }
+    ]
   },
   {
     path: '/friends',

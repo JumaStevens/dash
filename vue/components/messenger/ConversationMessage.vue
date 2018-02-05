@@ -8,8 +8,10 @@ div.message
       :class='[{ fromSelf: message.fromSelf }]'
       class='message__item'
     )
-      p.message__text {{ message.text }}
-      p {{ message.timestamp }}
+      div.message__media
+        img.message__image
+      p.message__text {{ message.message }}
+      p.message__timestamp {{ message.timestamp | formatDate }}
 
 </template>
 
@@ -52,5 +54,5 @@ export default {
         border-bottom-right-radius: unset
         background: $black
         color: $white
-        
+
 </style>

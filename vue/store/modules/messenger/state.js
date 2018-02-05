@@ -1,36 +1,9 @@
 export default {
-  activeConversation: '-L4Q8PSWoYqmAv0kvgWx',
-  conversations: {
-    'id': true
-  },
-  messages: {
-    '-L4Q8PSWoYqmAv0kvgWx': {
-      'id0': {
-        text: 'hello',
-        timestamp: 'yesterday',
-        data: '',
-        uid: '002'
-      },
-      'id1': {
-        text: 'hey',
-        timestamp: 'today',
-        data: '',
-        uid: '001'
-      }
-    }
-  },
-  members: {
-    '-L4Q8PSWoYqmAv0kvgWx': {
-      '001': true
-    }
-  },
-  meta: {
-    'id': {
-      lastMessage: '',
-      timestamp: '',
-      uid: ''
-    }
-  }
+  conversationId: '',
+  conversations: {},
+  messages: {},
+  members: {},
+  meta: {}
 }
 
 

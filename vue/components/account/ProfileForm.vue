@@ -5,7 +5,7 @@ section.container
   )
     label Update displayName
     input(
-      v-model='displayName'
+      v-model.trim='displayName'
       v-validate='"required|alpha_spaces"'
     )
     input(
@@ -32,7 +32,7 @@ export default {
 
         if (!this.displayName || !valid) throw this.errors
 
-        this.updateProfile({ displayName: this.displayName.trim() })
+        this.updateProfile({ displayName: this.displayName })
       }
       catch (e) { console.error(e) }
     },

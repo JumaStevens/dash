@@ -69,7 +69,9 @@ export default {
     users () {
       console.log('friends: ', this.getFriends)
       console.log('users: ', this.getUsers)
-      return this.showFriends ? this.getFriends : this.getUsers
+
+      const activeList = this.showFriends ? this.getFriends : this.getUsers
+      return !this.search ? activeList : activeList.filter(user => user.displayName.match(new RegExp(this.search, 'i')))
     },
 
 

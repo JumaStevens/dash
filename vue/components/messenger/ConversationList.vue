@@ -1,18 +1,24 @@
 <template lang='pug'>
 div.conversation-list
+  router-link(
+    :to='{ name: "chat", params: { id: "new" } }'
+    @click.native='addNewConversation'
+  ) Add new message
+
   ul.list
-    li(
-      v-for='(item, index) in conversationList'
+    router-link(
+      v-for='(item, index) in conversationMeta'
       :key='index'
+      tag='li'
+      :to='{ name: "chat", params: { id: item.id } }'
       class='list__item'
     )
       div.list__avatar
         img(
-          v-lazy='item.profileUrl'
+          v-lazy=''
           class='list__img'
         )
-      p.list__text {{ item.timestamp }}
-  a() add chat room
+      p.list__text {{ item.lastMessage }}
 </template>
 
 
@@ -21,44 +27,33 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   data () {
-    return {
-      chatRoom: []
-    }
+    return {}
   },
   computed: {
-    currentUser () {
-      console.log('---> ', this.conversations)
-      console.log('mess ', this.getConversationMessages)
-      return this.$store.getters['auth/getCurrentUser']
+    conversationMeta () {
+      return this.getConversationMeta
     },
-
-
-    conversationList () {
-      return [] //this.conversations
-    },
-
-
-    ...mapState({
-      conversations: state => state.messenger.conversations
-    }),
-
 
     ...mapGetters({
-      getConversationMessages: 'messenger/getConversationMessages'
+      getConversationMeta: 'messenger/getConversationMeta'
     })
   },
   methods: {
-    newConversation () {
-      console.log('state: ', this.conversations)
+    openConversation (id) {
+      this.setConversationId(id)
+      this.fetchMessages(id)
     },
 
 
     ...mapMutations({
       setConversationId: 'messenger/setConversationId'
+    }),
+
+
+    ...mapActions({
+      fetchMessages: 'messenger/fetchMessages',
+      addNewConversation: 'messenger/addNewConversation'
     })
-  },
-  mounted () {
-    this.currentUser
   }
 }
 </script>
@@ -79,6 +74,7 @@ export default {
     @extend %flex
     align-items: center
     margin-bottom: 0.5rem
+    background: $pri-cl
     &:last-child
       margin-bottom: unset
 

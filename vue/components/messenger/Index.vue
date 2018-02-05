@@ -6,7 +6,9 @@ div.messenger
   )
 
   //- conversation
-  conversation.messenger__conversation
+  conversation(
+    class='messenger__conversation'
+  )
 </template>
 
 
@@ -23,13 +25,18 @@ export default {
   data () {
     return {}
   },
+  created () {
+    this.fetchData()
+  },
   methods: {
+    fetchData () {
+      this.initConversations()
+    },
+
+
     ...mapActions({
       initConversations: 'messenger/initConversations'
     })
-  },
-  created () {
-    this.initConversations()
   }
 }
 </script>

@@ -36,7 +36,7 @@ main.auth
       value='Logout'
       @click='signOut()'
     ).auth__submit
-    
+
     //- create user
     input(
       type='submit'
@@ -58,18 +58,18 @@ export default {
     }
   },
   methods: {
-    async signInWithEmailAndPassword () {
+    signInWithEmailAndPassword () {
       try {
-        const valid = await this.$validator.validateAll()
-        if (!valid) throw this.errors // $validator provided object
+        this.$validator.validateAll()
+        if (this.errors.any()) throw this.errors // $validator provided object
         this.$store.dispatch('auth/signInWithEmailAndPassword', this.form)
       }
       catch (e) { console.error(e) }
     },
-    async createUserWithEmailAndPassword () {
+    createUserWithEmailAndPassword () {
       try {
-        const valid = await this.$validator.validateAll()
-        if (!valid) throw this.errors // $validator provided object
+        this.$validator.validateAll()
+        if (this.errors.any()) throw this.errors // $validator provided object
         this.$store.dispatch('auth/createUserWithEmailAndPassword', this.form)
       }
       catch (e) { console.error(e) }

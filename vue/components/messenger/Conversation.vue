@@ -12,7 +12,7 @@ div.conversation
       class='message-form'
     )
       input(
-        v-model='newMessage'
+        v-model.trim='newMessage'
         placeholder='Type a message...'
         class='message-form__input'
       )
@@ -42,13 +42,16 @@ export default {
         message: this.newMessage,
         members: ['0001', '0002']
       }
-      this.addNewConversation(data)
+      this.addNewMessage(data)
     },
 
 
     ...mapActions({
-      addNewConversation: 'messenger/addNewConversation'
+      addNewMessage: 'messenger/addNewMessage'
     })
+  },
+  created() {
+    console.log('state:: ', this.$store.state)
   }
 }
 </script>

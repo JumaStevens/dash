@@ -6,6 +6,8 @@ export default {
   initConversations ({ dispatch }) {
     dispatch('watchConversationsAdded')
     dispatch('watchConversationsRemoved')
+    dispatch('watchConversationMetaAdded')
+    dispatch('watchConversationMetaRemoved')
     dispatch('fetchConversations')
   },
 
@@ -17,7 +19,7 @@ export default {
 
       const data = { key: child.key, value: child.val() }
 
-      commit('addConversation', data)
+      commit('setConversation', data)
 
       dispatch('fetchConversationMeta', data.key)
     })
@@ -31,18 +33,38 @@ export default {
   fetchConversationMeta ({ commit, rootGetters }, id) {
     const uid = currentUser(rootGetters).uid
 
-    const success = (snapshot) => console.log('meta: ', snapshot)
+    const success = (snapshot) => commit('setConversationMeta', { key: snapshot.key, value: snapshot.val() })
+
     const error = (err) => console.error(err)
 
-    database.ref(`messenger/meta/${uid}/${id}`).once('value').then(snapshot => success(snapshot), err => error(err))
+    database.ref(`messenger/meta/${id}`).once('value').then(snapshot => success(snapshot), err => error(err))
+  },
+
+
+  watchConversationMetaAdded ({ commit, rootGetters }) {
+    const uid = currentUser(rootGetters).uid
+
+    const success = (data) => commit('setConversationMeta', { key: data.key, value: data.val() })
+    const error = (err) => console.error(err)
+
+    database.ref(`messenger/meta`).orderByChild('timestamp').on('child_added', data => success(data), err => error(err))
+  },
+
+
+  watchConversationMetaRemoved ({ commit, rootGetters }) {
+    const uid = currentUser(rootGetters).uid
+
+    const success = (data) => commit('deleteConversationMeta', { key: data.key, value: data.val() })
+    const error = (err) => console.error(err)
+
+    database.ref(`messenger/meta`).orderByChild('timestamp').limitToLast(2).on('child_removed', data => success(data), err => error(err))
   },
 
 
   watchConversationsAdded ({ commit, rootGetters }) {
-    console.log('#1')
     const uid = currentUser(rootGetters).uid
 
-    const success = (data) => commit('addConversation', { key: data.key, value: data.val() })
+    const success = (data) => commit('setConversation', { key: data.key, value: data.val() })
     const error = (err) => console.error(err)
 
     database.ref(`messenger/conversations/${uid}`).on('child_added', data => success(data), err => error(err))
@@ -50,7 +72,6 @@ export default {
 
 
   watchConversationsRemoved ({ commit, rootGetters }) {
-    console.log('#2')
     const uid = currentUser(rootGetters).uid
 
     const success = (data) => commit('deleteConversation', { key: data.key, value: data.val() })
@@ -91,5 +112,24 @@ export default {
       await firebaseRef.update(updateData)
     }
     catch (e) { console.error(e) }
+  },
+
+
+  fetchMessages ({ commit }, id) {
+    const success = (snapshot) => commit('setMessages', { key: snapshot.key, value: snapshot.val() })
+
+    const error = (err) => console.error(err)
+
+    database.ref(`messenger/messages/${id}`).on('value', snapshot => success(snapshot), err => error(err))
+  },
+
+
+  async addNewMessage ({ commit, state }, data) {
+    try {
+      const id = state.conversationId
+      await database.ref(`messenger/messages/${id}`).push().set(data)
+    }
+    catch (e) { console.error(e) }
+
   }
 }
