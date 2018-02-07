@@ -2,7 +2,6 @@
 div.conversation-list
   router-link(
     :to='{ name: "chat", params: { id: "new" } }'
-    @click.native='addNewConversation'
   ) Add new message
 
   ul.list
@@ -51,8 +50,7 @@ export default {
 
 
     ...mapActions({
-      fetchMessages: 'messenger/fetchMessages',
-      addNewConversation: 'messenger/addNewConversation'
+      fetchMessages: 'messenger/fetchMessages'
     })
   }
 }

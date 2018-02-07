@@ -1,10 +1,17 @@
 <template lang='pug'>
 .vue-app
-  p(style='position: fixed') Auth: {{ isCurrentUser }}
+  p(style='position: fixed').auth-hud Auth: {{ isCurrentUser }}
 
   navigation(
     v-if='isCurrentUser'
   ).vue-app__nav
+
+  .sidebar
+    .container-dot
+      .dot
+      .dot
+      .dot
+      .dot
 
   transition(name='fade')
     error-404-view(
@@ -71,4 +78,29 @@ export default {
 .fade-enter, .fade-leave-to
   transform: translateY(5vmin)
   opacity: 0
+
+
+.sidebar
+  @extend %flex--column-center
+  grid-row: 1 / 4
+  grid-column: 1 / 2
+  background: $pri-cl
+  box-shadow: 0px 0px 0.5rem rgba(34,34,34,0.2) //rgba(15, 114, 219, 0.2)
+  width: 40px
+
+
+
+  & .container-dot
+    display: grid
+    grid-template-rows: repeat(2, 1fr)
+    grid-template-columns: repeat(2, 1fr)
+
+  & .dot
+    width: 8px
+    height: 8px
+    background: $black
+    margin: 2px
+
+.auth-hud
+  display: none
 </style>

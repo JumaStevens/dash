@@ -17,13 +17,32 @@ div.message
 
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
     ...mapGetters({
       messages: 'messenger/getConversationMessages'
     })
+  },
+  watch: {
+    '$route': 'getMessages'
+  },
+  methods: {
+    getMessages () {
+      const id = this.$route.params.id
+      if (id) this.fetchMessages(id)
+      console.log(this.$store)
+    },
+
+
+    ...mapActions({
+      fetchMessages: 'messenger/fetchMessages'
+    })
+  },
+  created () {
+    console.log('route: ', this.$route)
+    this.getMessages()
   }
 }
 </script>

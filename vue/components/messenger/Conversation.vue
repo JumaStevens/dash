@@ -1,7 +1,10 @@
 <template lang='pug'>
 div.conversation
 
-  ConversationHeader.conversation__header
+  ConversationHeader(
+    @addMember='addMember'
+    class='conversation__header'
+  )
 
   ConversationMessage.conversation__message
 
@@ -33,21 +36,38 @@ export default {
   data () {
     return {
       messages: [],
-      newMessage: ''
+      newMessage: '',
+      newMembers: [],
     }
   },
   methods: {
     addMessage () {
       const data = {
-        message: this.newMessage,
-        members: ['0001', '0002']
+        message: this.newMessage
       }
-      this.addNewMessage(data)
+
+      console.log('dd: ', this.$route.params.id)
+
+      if (this.$route.params.id === 'new') {
+        data['members'] = this.newMembers
+        this.addNewConversation(data)
+      }
+      else {
+        console.log('ddd')
+        this.addNewMessage(data)
+      }
+    },
+
+
+    addMember (uid) {
+      if (!this.newMembers.includes(uid)) this.newMembers.push(uid)
+      console.log('newMembers: ', this.newMembers)
     },
 
 
     ...mapActions({
-      addNewMessage: 'messenger/addNewMessage'
+      addNewMessage: 'messenger/addNewMessage',
+      addNewConversation: 'messenger/addNewConversation'
     })
   },
   created() {

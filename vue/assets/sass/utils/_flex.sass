@@ -5,6 +5,16 @@
     @extend %flex
     flex-direction: row
 
+    &-center
+      @extend %flex--row
+      justify-content: center
+      align-items: center
+
   &--column
     @extend %flex
     flex-direction: column
+
+    &-center
+      @extend %flex--column
+      justify-content: center
+      align-items: center

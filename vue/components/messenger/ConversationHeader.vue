@@ -3,7 +3,7 @@ div.conversation__header
   header.header
     ul
       li(
-        v-for='(user, index) in members'
+        v-for='(user, index) in activeMembers'
         :key='index'
       )
         div.header__avatar
@@ -41,13 +41,12 @@ div.conversation__header
 
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   data () {
     return {
-      search: '',
-      members: []
+      search: ''
     }
   },
   computed: {
@@ -57,22 +56,15 @@ export default {
       return !this.search ? [] : users.filter(user => user.displayName.match(new RegExp(this.search, 'i')))
     },
 
-
     ...mapGetters({
-      getFriends: 'friends/getFriends'
-    }),
-
-
-    ...mapGetters({
-      members: 'messenger/getActiveConversationMembers'
+      getFriends: 'friends/getFriends',
+      activeMembers: 'messenger/getActiveConversationMembers'
     })
   },
   methods: {
     addMember (uid) {
-      this.members.push(uid)
-      console.log('members ---> ', this.members)
+      this.$emit('addMember', uid)
     }
-
   },
   created () {
     console.log('this: ', this.$route)

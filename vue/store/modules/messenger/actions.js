@@ -124,10 +124,16 @@ export default {
   },
 
 
-  async addNewMessage ({ commit, state }, data) {
+  async addNewMessage ({ commit, state, rootState }, data) {
     try {
-      const id = state.conversationId
-      await database.ref(`messenger/messages/${id}`).push().set(data)
+      console.log('data ---> ', data)
+      const id = rootState.route.params.id
+      console.log('state convo id: ', id)
+      const key = database.ref(`messenger/messages/${id}`).push().key
+      const messageData = {}
+      messageData[key] = { ...data }
+      console.log('messageData: ', messageData)
+      await database.ref(`messenger/messages/${id}`).push(data)
     }
     catch (e) { console.error(e) }
 

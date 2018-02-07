@@ -18,7 +18,7 @@ export default {
       }
     }
 
-    console.log('---> ', rootState.route.params.id)
+    console.log('--->< ', rootState.route.params.id)
     return messagesArray
   },
 
