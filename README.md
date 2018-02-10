@@ -1,5 +1,9 @@
 Hello world! :)
 
+---
+Intelligence is beautiful.
+You can talk to the website and it will perform the action. Like Alexa.
+
 
 
 / firebase structure idea /

@@ -76,7 +76,7 @@ export default {
 
 
     addFriendText () {
-      return this.showFriends ? 'add a friend' : 'show my friends'
+      return this.showFriends ? 'find a friend' : 'show my friends'
     },
 
 
