@@ -12,6 +12,11 @@ section.container
       type='submit'
     )
 
+  //- logout
+  a(
+    @click='signOut()'
+  ) sign out
+
 
 </template>
 
@@ -39,7 +44,8 @@ export default {
 
 
     ...mapActions({
-      updateProfile: 'auth/updateProfile'
+      updateProfile: 'auth/updateProfile',
+      signOut: 'auth/signOut'
     })
   }
 }

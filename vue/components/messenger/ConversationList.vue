@@ -1,8 +1,19 @@
 <template lang='pug'>
 div.conversation-list
-  router-link(
-    :to='{ name: "chat", params: { id: "new" } }'
-  ) Add new message
+  //- router-link(
+  //-   :to='{ name: "chat", params: { id: "new" } }'
+  //- ) Add new message
+
+  //- search form
+  div.sidebar-container
+    header.sidebar-container__inner
+      h3 Messages
+      form.search-form
+        input(
+          v-model='search'
+          placeholder='Search...'
+          class='search-form__input'
+        )
 
   ul.list
     router-link(
@@ -18,6 +29,7 @@ div.conversation-list
           class='list__img'
         )
       p.list__text {{ item.lastMessage }}
+
 </template>
 
 
@@ -26,7 +38,9 @@ import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   data () {
-    return {}
+    return {
+      search: ''
+    }
   },
   computed: {
     conversationMeta () {
@@ -60,19 +74,55 @@ export default {
 <style lang='sass' scoped>
 
 .conversation-list
-  @extend %flex--column
-  align-items: center
-  background: $white
+  @extend %flex
+  justify-content: center
+
+
+.sidebar-container
+  position: fixed
+  left: $border-offset
+  top: 20vmin
+  width: $golden-ratio-b
+  @extend %flex
+  justify-content: center
+
+  & h3
+    color: $black
+    text-align: center
+    border-bottom: 1px solid $grey
+    font-size: $fs2
+
+
+.search-form
+  display: flex
+
+
+
+  &__input
+    width: 100%
+    background: transparent
+
+  &__submit
+    background: transparent
+
 
 .list
-  width: 66.66%
+  width: 100%
   margin-top: 4rem
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
+  grid-gap: 8px
+  max-width: 600px
+  justify-items: center
+  align-items: center
 
   &__item
     @extend %flex
     align-items: center
     margin-bottom: 0.5rem
-    background: $pri-cl
+    background: $white
+    width: 100%
+    height: 100%
     &:last-child
       margin-bottom: unset
 

@@ -53,6 +53,7 @@ export default {
 
   &__list
     @extend %flex--column
+    margin-bottom: 25vh
 
   &__item
     align-self: flex-start

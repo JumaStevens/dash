@@ -28,6 +28,7 @@ export default {
 .nav
   @extend %flex
   align-items: center
+  display: none
 
   &__avatar
     margin-right: auto

@@ -30,17 +30,10 @@ main.auth
       @click='signInWithEmailAndPassword'
     ).auth__submit
 
-    //- logout
-    input(
-      type='button'
-      value='Logout'
-      @click='signOut()'
-    ).auth__submit
-
     //- create user
     input(
       type='submit'
-      value='Create Account'
+      value='+ create account'
       @click='createUserWithEmailAndPassword'
     ).auth__submit
 </template>
@@ -73,9 +66,6 @@ export default {
         this.$store.dispatch('auth/createUserWithEmailAndPassword', this.form)
       }
       catch (e) { console.error(e) }
-    },
-    signOut () {
-      this.$store.dispatch('auth/signOut')
     }
   }
 }
@@ -90,32 +80,26 @@ export default {
   align-items: center
 
   &__form
-    display: grid
-    grid-template-rows: repeat(3, auto)
+    @extend %flex--column
+    justify-content: center
     max-width: 14rem
     min-width: 8rem
     width: 25vmax
 
   &__input
-    grid-row: 1 / 2
-    grid-column: 1 / 3
-    width: 100%
     padding: .1rem 0
     margin-bottom: 2rem
     border-bottom: 1px solid $dark
     background: $pri-cl
-    &:nth-child(2)
-      grid-row: 2 / 3
 
   &__submit
-    grid-row: 3 / 4
-    justify-self: center
     padding: .15rem 1rem
     border-radius: 2rem
     border: 1px solid $black
     background: transparent
 
-    &:nth-child(2)
-      grid-row: 3 / 4
+    &:last-child
+      margin-top: 0.5rem
+      border: none
 
 </style>

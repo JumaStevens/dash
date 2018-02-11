@@ -58,19 +58,13 @@ export default {
 .vue-app
   width: 100vw
   height: 100vh
-  display: grid
-  grid-template-rows: 15vmin 1fr 15vmin
-  grid-template-columns: repeat(12, 1fr)
   background: $pri-cl
-
-  &__nav
-    grid-row: 1 / 2
-    grid-column: 3 / 11
 
   &__error,
   &__view
-    grid-row: 2 / 3
-    grid-column: 3 / 11
+    width: calc(100% - 40px)
+    min-height: 100%
+    margin-left: auto
 
 .fade-enter-active, .fade-leave-active
   transition: opacity 150ms, transform 150ms
@@ -82,11 +76,13 @@ export default {
 
 .sidebar
   @extend %flex--column-center
-  grid-row: 1 / 4
-  grid-column: 1 / 2
+  position: fixed
+  top: 0
+  left: 0
   background: $pri-cl
   box-shadow: 0px 0px 0.5rem rgba(34,34,34,0.2) //rgba(15, 114, 219, 0.2)
-  width: 40px
+  width: $border-offset
+  height: 100%
 
 
 
@@ -100,6 +96,7 @@ export default {
     height: 8px
     background: $black
     margin: 2px
+
 
 .auth-hud
   display: none

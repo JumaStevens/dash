@@ -30,5 +30,6 @@ export default {
 
 .avatar
   @extend %avatar
+  display: none
 
 </style>

@@ -2,11 +2,13 @@
 div.messenger
   //- conversation list
   conversation-list(
+    v-if='isRoot'
     class='messenger__conversation-list'
   )
 
   //- conversation
   conversation(
+    v-if='!isRoot'
     class='messenger__conversation'
   )
 </template>
@@ -24,6 +26,12 @@ export default {
   },
   data () {
     return {}
+  },
+  computed: {
+    isRoot () {
+      console.log('isRoot: ', this.$route)
+      return this.$route.path === `/${this.$route.name}`
+    }
   },
   created () {
     this.fetchData()
@@ -45,17 +53,22 @@ export default {
 <style lang='sass' scoped>
 
 .messenger
-  @extend %flex
-  height: 100%
+  display: grid
+  grid-template-rows: 20vmin 1fr 20vmin
+  grid-template-columns: 1fr #{$phi}fr
+  min-height: 100vh
   background: $pri-cl
-  box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
+  //box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
   border-radius: 0.75%
   overflow: hidden
 
   &__conversation-list
-    flex: 2
+    grid-row: 1 / 4
+    grid-column: 2 / 3
 
   &__conversation
-    flex: 3
+    grid-row: 1 / 4
+    grid-column: 1 / 3
+    justify-items: center
 
 </style>

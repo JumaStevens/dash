@@ -1,7 +1,15 @@
 <template lang='pug'>
-div.conversation__header
+div.container
   header.header
-    ul
+
+    //- close
+    div.header__close
+      p(
+        @click='close'
+      ) Close
+
+    //- active conversation members
+    ul.header__members
       li(
         v-for='(user, index) in activeMembers'
         :key='index'
@@ -13,30 +21,7 @@ div.conversation__header
           )
         p.header__text {{ user.displayName }}
 
-    form.header__search-form
-      input(
-        v-model='search'
-        class='search-form__input'
-      )
-      input(
-        type='submit'
-        class='search-form__input'
-      )
-    div.header__search-results
-      ul.search-results
-        li(
-          v-for='(user, index) in users'
-          :key='index'
-          class='search-results__item'
-          @click='addMember(user.uid)'
-        )
-          div(
-            class='search-results__avatar'
-          )
-            img(
-              v-lazy='user.profilePicture'
-            )
-          p {{ user.displayName }}
+
 </template>
 
 
@@ -46,13 +31,14 @@ import { mapGetters, mapMutations, mapState } from 'vuex'
 export default {
   data () {
     return {
-      search: ''
+
     }
   },
   computed: {
     users () {
       const users = this.getFriends
       console.log('users: ', users)
+      if (users) return users
       return !this.search ? [] : users.filter(user => user.displayName.match(new RegExp(this.search, 'i')))
     },
 
@@ -62,8 +48,8 @@ export default {
     })
   },
   methods: {
-    addMember (uid) {
-      this.$emit('addMember', uid)
+    close () {
+      this.$router.go(-1)
     }
   },
   created () {
@@ -76,15 +62,26 @@ export default {
 <style lang='sass' scoped>
 
 .header
-  @extend %flex
+  display: grid
+  grid-template-rows: repeat(3, auto)
+  grid-template-columns: 1fr auto 1fr
+
+
+  &__close
+    grid-row: 1 / 2
+    grid-column: 1 / 2
+
+
+  &__members
+    grid-row: 2 / 3
+    grid-column: 2 / 3
+    background: pink
+    height: 100%
+
 
   &__avatar
     @extend %avatar--sm
     margin-right: 0.5rem
 
-.search-results
-
-  &__avatar
-    @extend %avatar--sm
 
 </style>

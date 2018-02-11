@@ -2,7 +2,6 @@
 div.conversation
 
   ConversationHeader(
-    @addMember='addMember'
     class='conversation__header'
   )
 
@@ -86,7 +85,7 @@ export default {
   &__header,
   &__message,
   &__message-form
-    width: 75%
+    width: 50%
 
   &__header
     @extend %flex
@@ -95,10 +94,14 @@ export default {
 
   &__message
     flex: 3
-    overflow-y: auto
+
 
   &__message-form
     flex: 1
+    position: fixed
+    left: calc(50% + #{$border-offset})
+    top: 75vh
+    transform: translateX(-50%)
 
 .header
   @extend %flex
@@ -111,6 +114,7 @@ export default {
 
   &__list
     @extend %flex--column
+
 
   &__item
     margin-bottom: 2rem
