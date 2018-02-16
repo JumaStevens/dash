@@ -1,4 +1,4 @@
-<template lang='pug'>
+ <template lang='pug'>
 div.conversation
 
   ConversationHeader(
@@ -99,9 +99,7 @@ export default {
   &__message-form
     flex: 1
     position: fixed
-    left: calc(50% + #{$border-offset})
     top: 75vh
-    transform: translateX(-50%)
 
 .header
   @extend %flex

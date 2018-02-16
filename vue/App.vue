@@ -59,12 +59,15 @@ export default {
   width: 100vw
   height: 100vh
   background: $pri-cl
+  display: grid
+  grid-template-columns: $border-offset 1fr
 
   &__error,
   &__view
     width: calc(100% - 40px)
     min-height: 100%
     margin-left: auto
+    grid-column: 2 / 3
 
 .fade-enter-active, .fade-leave-active
   transition: opacity 150ms, transform 150ms
@@ -83,6 +86,7 @@ export default {
   box-shadow: 0px 0px 0.5rem rgba(34,34,34,0.2) //rgba(15, 114, 219, 0.2)
   width: $border-offset
   height: 100%
+  grid-column: 1 / 2
 
 
 

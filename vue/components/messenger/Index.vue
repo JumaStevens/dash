@@ -53,22 +53,19 @@ export default {
 <style lang='sass' scoped>
 
 .messenger
-  display: grid
-  grid-template-rows: 20vmin 1fr 20vmin
-  grid-template-columns: 1fr #{$phi}fr
   min-height: 100vh
   background: $pri-cl
   //box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
   border-radius: 0.75%
   overflow: hidden
+  @extend %grid--golden-ratio
 
   &__conversation-list
-    grid-row: 1 / 4
-    grid-column: 2 / 3
+    grid-column: 1 / 2
 
   &__conversation
-    grid-row: 1 / 4
-    grid-column: 1 / 3
-    justify-items: center
+
+    grid-column: 2 / 3
+
 
 </style>
