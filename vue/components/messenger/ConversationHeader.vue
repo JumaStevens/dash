@@ -1,34 +1,36 @@
 <template lang='pug'>
-div.container
-  header.header
+header(class='header')
 
-    //- close
-    div.header__close
-      p(
-        @click='close'
-      ) Close
+  //- logo
+  div.header__logo
+    icon-messenger.header__logo-svg
+    h2.header__logo-text Messenger
 
-    //- active conversation members
-    ul.header__members
-      li(
-        v-for='(user, index) in activeMembers'
-        :key='index'
-      )
-        div.header__avatar
-          img(
-            v-lazy='user.profilePicture'
-            class='header__image'
-          )
-        p.header__text {{ user.displayName }}
+  //- //- active conversation members
+  //- ul.header__members
+  //-   li(
+  //-     v-for='(user, index) in activeMembers'
+  //-     :key='index'
+  //-   )
+  //-     div.header__avatar
+  //-       img(
+  //-         v-lazy='user.profilePicture'
+  //-         class='header__image'
+  //-       )
+  //-     p.header__text {{ user.displayName }}
 
 
 </template>
 
 
 <script>
+import IconMessenger from '~/assets/svg/logo-messenger.svg'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
+  components: {
+    IconMessenger
+  },
   data () {
     return {
 
@@ -63,14 +65,12 @@ export default {
 
 .header
   display: grid
-  grid-template-rows: repeat(3, auto)
-  grid-template-columns: 1fr auto 1fr
-
-
-  &__close
-    grid-row: 1 / 2
-    grid-column: 1 / 2
-
+  grid-template-columns: repeat(3, 1fr)
+  height: $fs*4
+  align-items: center
+  padding: 0 $unit*2
+  margin-bottom: 2px
+  background: $white
 
   &__members
     grid-row: 2 / 3
@@ -78,10 +78,21 @@ export default {
     background: pink
     height: 100%
 
-
   &__avatar
     @extend %avatar--sm
     margin-right: 0.5rem
 
+  &__logo
+    display: flex
+    grid-column: 1 / 2
+
+  &__logo-svg
+    height: $fs*1.5
+    margin-right: $unit
+
+  &__logo-text
+    color: $black
+    font-size: $fs
+    font-weight: 900
 
 </style>

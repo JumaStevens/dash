@@ -50,10 +50,11 @@ export default {
 
 <style lang='sass' scoped>
 .message
+  overflow-y: auto
+  background: $white
 
   &__list
     @extend %flex--column
-    margin-bottom: 25vh
 
   &__item
     align-self: flex-start

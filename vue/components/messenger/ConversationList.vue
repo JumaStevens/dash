@@ -4,17 +4,19 @@ div.conversation-list
   //-   :to='{ name: "chat", params: { id: "new" } }'
   //- ) Add new message
 
-  //- search form
-  div.sidebar-container
-    header.sidebar-container__inner
-      h3 Messages
-      form.search-form
-        input(
-          v-model='search'
-          placeholder='Search...'
-          class='search-form__input'
-        )
 
+
+  //- search form
+  form.search-form
+    icon-search.search-form__icon
+    input(
+      v-model='search'
+      placeholder='Search messenger'
+      class='search-form__input'
+    )
+
+
+  //- conversation list
   ul.list
     router-link(
       v-for='(item, index) in conversationMeta'
@@ -25,18 +27,24 @@ div.conversation-list
     )
       div.list__avatar
         img(
-          v-lazy=''
+          v-lazy='"https://tinyurl.com/ybzmyf2z"'
           class='list__img'
         )
+      p.list__name Sarah Smith
       p.list__text {{ item.lastMessage }}
+      p.list__date Fri
 
 </template>
 
 
 <script>
+import IconSearch from '~/assets/svg/icon-search.svg'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
+  components: {
+    IconSearch
+  },
   data () {
     return {
       search: ''
@@ -74,61 +82,62 @@ export default {
 <style lang='sass' scoped>
 
 .conversation-list
-  @extend %flex
-  justify-content: center
-
-
-.sidebar-container
-  position: fixed
-  left: $border-offset
-  top: 20vmin
-  width: $golden-ratio-b
-  @extend %flex
-  justify-content: center
-
-  & h3
-    color: $black
-    text-align: center
-    border-bottom: 1px solid $grey
-    font-size: $fs2
-
+  @extend %flex--column
 
 .search-form
-  display: flex
+  @extend %flex
+  align-items: center
+  height: $fs*4
+  margin-bottom: 1px
+  background: $white
+  padding: 0 $unit*2
 
-
+  &__icon
+    margin-right: $unit*2
 
   &__input
     width: 100%
     background: transparent
 
-  &__submit
-    background: transparent
-
 
 .list
-  width: 100%
-  margin-top: 4rem
-  display: grid
-  grid-template-columns: repeat(3, 1fr)
-  grid-gap: 8px
-  max-width: 600px
-  justify-items: center
-  align-items: center
+  height: 100%
+  overflow-y: auto
+
 
   &__item
-    @extend %flex
-    align-items: center
-    margin-bottom: 0.5rem
+    height: $fs*4
+    display: grid
+    grid-template-rows: repeat(2, auto)
+    grid-template-columns: auto 1fr auto
+    grid-gap: $unit/2 $unit
     background: $white
-    width: 100%
-    height: 100%
-    &:last-child
-      margin-bottom: unset
+    padding: $unit $unit*2
 
   &__avatar
-    @extend %avatar--sm
-    margin-right: 0.5rem
+    @extend %avatar
+    grid-row: 1 / 3
+    grid-column: 1 / 2
+    width: 48px
+    height: 48px
+
+  &__name
+    grid-row: 1 / 2
+    grid-column: 2 / 3
+    font-weight: 900
+
+  &__text
+    grid-row: 2 / 3
+    grid-column: 2 / 3
+    color: $dark
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+
+  &__date
+    grid-row: 1 / 2
+    grid-column: 3 / 4
+
 
 
 </style>

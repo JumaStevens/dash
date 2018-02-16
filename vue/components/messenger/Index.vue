@@ -1,26 +1,30 @@
 <template lang='pug'>
-div.messenger
+div(class='container messenger')
+
+  //- conversation header
+  conversation-header(class='messenger__conversation-header')
+
   //- conversation list
   conversation-list(
-    v-if='isRoot'
     class='messenger__conversation-list'
   )
 
   //- conversation
   conversation(
-    v-if='!isRoot'
     class='messenger__conversation'
   )
 </template>
 
 
 <script>
+import ConversationHeader from './ConversationHeader.vue'
 import Conversation from './Conversation.vue'
 import ConversationList from './ConversationList.vue'
 import { mapActions } from 'vuex'
 
 export default {
   components: {
+    ConversationHeader,
     Conversation,
     ConversationList
   },
@@ -28,10 +32,7 @@ export default {
     return {}
   },
   computed: {
-    isRoot () {
-      console.log('isRoot: ', this.$route)
-      return this.$route.path === `/${this.$route.name}`
-    }
+
   },
   created () {
     this.fetchData()
@@ -52,20 +53,28 @@ export default {
 
 <style lang='sass' scoped>
 
+.container
+  height: 100%
+  display: grid
+  grid-template-rows: auto auto 1fr
+  grid-template-columns: 1fr 2fr 1fr
+
 .messenger
-  min-height: 100vh
   background: $pri-cl
-  //box-shadow: 0px 0px 0.5rem rgba(33, 33, 33, 0.2)
-  border-radius: 0.75%
-  overflow: hidden
-  @extend %grid--golden-ratio
+
+  &__conversation-header
+    grid-row: 1 / 2
+    grid-column: 1 / 4
 
   &__conversation-list
+    grid-row: 2 / 4
     grid-column: 1 / 2
 
   &__conversation
-
+    grid-row: 2 / 4
     grid-column: 2 / 3
+
+
 
 
 </style>
