@@ -13,20 +13,32 @@ export default {
           fromSelf: uid == messages[key].uid,
           ...messages[key]
         }
-        console.log('get ---> ', messages[key])
         messagesArray.push(message)
       }
     }
 
-    console.log('--->< ', rootState.route.params.id)
     return messagesArray
   },
 
 
   getActiveConversationMembers (state, getters, rootState, rootGetters) {
-    const conversationId = state.conversationId
-    console.log('getActive: ', state.members[conversationId])
-    return state.members[conversationId]
+    const getUser = rootGetters['users/getUser']
+    const uid = currentUser(rootGetters).uid
+    const id = rootState.route.params.id
+    const members = id === 'new' ? state.app.newMembers : state.members[id]
+    const membersArray = []
+
+    for (var key in members) {
+      if (members.hasOwnProperty(key) && key !== uid) {
+        const member = {
+          uid: key,
+          ...getUser(key)
+        }
+        membersArray.push(member)
+      }
+    }
+
+    return membersArray
   },
 
 

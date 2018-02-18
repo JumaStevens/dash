@@ -32,7 +32,6 @@ export default {
     getMessages () {
       const id = this.$route.params.id
       if (id) this.fetchMessages(id)
-      console.log(this.$store)
     },
 
 
@@ -41,7 +40,6 @@ export default {
     })
   },
   created () {
-    console.log('route: ', this.$route)
     this.getMessages()
   }
 }

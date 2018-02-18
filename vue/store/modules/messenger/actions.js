@@ -22,6 +22,8 @@ export default {
       commit('setConversation', data)
 
       dispatch('fetchConversationMeta', data.key)
+
+      dispatch('fetchConversationMembers', data.key)
     })
 
     const error = (err) => console.error(err)
@@ -81,6 +83,14 @@ export default {
   },
 
 
+  fetchConversationMembers ({ commit }, id) {
+    const success = (snapshot) => commit('setMembers', { key: snapshot.key, value: snapshot.val() })
+    const error = (err) => console.error(err)
+
+    database.ref(`messenger/members/${id}`).on('value', snapshot => success(snapshot), err => error(err))
+  },
+
+
   async addNewConversation ({ dispatch, rootGetters, state }, data) {
     const uid = currentUser(rootGetters).uid
     const key = database.ref(`messenger/conversations/${uid}`).push().key
@@ -113,7 +123,6 @@ export default {
 
   fetchMessages ({ commit }, id) {
     const success = (snapshot) => commit('setMessages', { key: snapshot.key, value: snapshot.val() })
-
     const error = (err) => console.error(err)
 
     database.ref(`messenger/messages/${id}`).on('value', snapshot => success(snapshot), err => error(err))

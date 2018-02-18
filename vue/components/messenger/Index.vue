@@ -13,6 +13,10 @@ div(class='container messenger')
   conversation(
     class='messenger__conversation'
   )
+
+  //-
+  div.messenger__conversation-side
+    ConversationMembers.messenger__conversation-members
 </template>
 
 
@@ -20,13 +24,15 @@ div(class='container messenger')
 import ConversationHeader from './ConversationHeader.vue'
 import Conversation from './Conversation.vue'
 import ConversationList from './ConversationList.vue'
+import ConversationMembers from './ConversationMembers.vue'
 import { mapActions } from 'vuex'
 
 export default {
   components: {
     ConversationHeader,
     Conversation,
-    ConversationList
+    ConversationList,
+    ConversationMembers
   },
   data () {
     return {}
@@ -76,7 +82,9 @@ export default {
     grid-row: 2 / 4
     grid-column: 2 / 3
 
-
+  &__conversation-side
+    grid-row: 2 / 4
+    grid-column: 3 / 4
 
 
 </style>
