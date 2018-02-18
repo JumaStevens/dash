@@ -45,17 +45,36 @@ export default {
 
   setMessages (state, payload) {
     Vue.set(state.messages, payload.key, payload.value)
-    console.log('setMessages -- state >> ', state)
-    console.log('setMessages -- payload >> ', payload)
+    // console.log('setMessages -- state >> ', state)
+    // console.log('setMessages -- payload >> ', payload)
   },
 
 
   setMembers (state, payload) {
     Vue.set(state.members, payload.key, payload.value)
-    console.log('setMembers -- state >> ', state)
-    console.log('setMembers -- payload >> ', payload)
+    // console.log('setMembers -- state >> ', state)
+    // console.log('setMembers -- payload >> ', payload)
   },
 
+
+  setNewMember (state, payload) {
+    Vue.set(state.app.newMembers, payload.key, payload.value)
+  },
+
+
+  deleteNewMember (state, payload) {
+    Vue.delete(state.app.newMembers, payload.key, payload.value)
+  },
+
+
+  clearNewMembers (state) {
+    state.app.newMembers = {}
+  },
+
+
+  setActiveList (state, payload) {
+    state.app.activeList = payload.value
+  }
 
 
 }

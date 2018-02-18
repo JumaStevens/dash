@@ -1,78 +1,196 @@
 <template lang='pug'>
-div.conversation-list
-  //- router-link(
-  //-   :to='{ name: "chat", params: { id: "new" } }'
-  //- ) Add new message
+section.conversation-list
 
+  //- controller
+  aside.controller
 
-
-  //- search form
-  form.search-form
-    icon-search.search-form__icon
-    input(
-      v-model='search'
-      placeholder='Search messenger'
-      class='search-form__input'
+    //- search icon
+    a(
+      v-show='!isUserListActive'
+      class='controller__icon'
     )
+      icon-search.controller__svg
+
+    //- check mark icon
+    a(
+      v-show='isUserListActive'
+      @click='setList("conversations")'
+      class='controller__icon'
+    )
+      icon-check.controller__svg
+
+    //- search form
+    form(
+      class='controller__search-form search-form'
+    )
+      input(
+        v-model='search'
+        placeholder='Search messenger...'
+        class='search-form__input'
+      )
+
+    //- new message icon
+    router-link(
+      :to='{ name: "chat", params: { id: "new" } }'
+      v-show='!isUserListActive'
+      @click.native='setList("users")'
+      class='controller__icon controller__icon--right'
+    )
+      icon-new-message.controller__svg
+
+    //- cancel icon
+    a(
+      v-show='isUserListActive'
+      class='controller__icon controller__icon--right'
+      @click='cancelNewMembers'
+    )
+      icon-cancel.controller__svg
 
 
   //- conversation list
-  ul.list
-    router-link(
-      v-for='(item, index) in conversationMeta'
-      :key='index'
-      tag='li'
-      :to='{ name: "chat", params: { id: item.id } }'
+  ul(
+    v-show='!isUserListActive'
+    class='list'
+  )
+
+    //- conversations
+    li(
+      v-for='(item, index) in conversations'
+      :key='"conversations"+index'
       class='list__item'
     )
-      div.list__avatar
-        img(
-          v-lazy='"https://tinyurl.com/ybzmyf2z"'
-          class='list__img'
-        )
-      p.list__name Sarah Smith
-      p.list__text {{ item.lastMessage }}
-      p.list__date Fri
+      message-meta-card(
+        :item='item'
+        class='list__card'
+      )
+
+
+  //- friends list
+  ul(
+    v-show='isUserListActive'
+    class='list'
+  )
+
+    //- users
+    li(
+      v-for='(item, index) in users'
+      :key='"users"+index'
+      class='list__item'
+    )
+      add-user-card(
+        :user='item'
+        class='list__card'
+        @addNewMember='addNewMember'
+        @removeNewMember='removeNewMember'
+      )
 
 </template>
 
 
 <script>
 import IconSearch from '~/assets/svg/icon-search.svg'
+import IconNewMessage from '~/assets/svg/icon-new-message.svg'
+import IconCheck from '~/assets/svg/icon-check-mark.svg'
+import IconCancel from '~/assets/svg/icon-cancel.svg'
+import MessageMetaCard from '~comp/messenger/MessageMetaCard.vue'
+import AddUserCard from '~comp/messenger/AddUserCard.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   components: {
-    IconSearch
+    IconSearch,
+    IconNewMessage,
+    IconCheck,
+    IconCancel,
+    MessageMetaCard,
+    AddUserCard
   },
   data () {
     return {
-      search: ''
+      search: '',
     }
   },
   computed: {
-    conversationMeta () {
-      return this.getConversationMeta
+    conversations () {
+      const meta = this.getConversationMeta
+      const users = this.getUsers
+      if (!this.search) return meta
+
+      const newMeta = meta.map(m => users.find(user => user.uid === m.uid))
+      const combinedMeta = meta.map((m, i) => {
+        return { ...m, ...newMeta[i] }
+      })
+
+      return combinedMeta.filter(meta => meta.displayName && meta.displayName.match(new RegExp(this.search, 'i')))
     },
 
+
+    users () {
+      const users = this.getFriends
+      const friends = this.friends
+
+      for (var key in friends) {
+        if (friends.hasOwnProperty(key)) this.fetchUser(key)
+      }
+
+      return users.filter(user => user.displayName.match(new RegExp(this.search, 'i')))
+    },
+
+
+    isUserListActive () {
+      return this.activeList === 'users'
+    },
+
+
     ...mapGetters({
-      getConversationMeta: 'messenger/getConversationMeta'
+      getConversationMeta: 'messenger/getConversationMeta',
+      getUsers: 'users/getUsers',
+      getFriends: 'friends/getFriends'
+    }),
+
+
+    ...mapState({
+      friends: state => state.friends.friends,
+      activeList: state => state.messenger.app.activeList
     })
   },
   methods: {
-    openConversation (id) {
-      this.setConversationId(id)
-      this.fetchMessages(id)
+    cancelNewMembers () {
+      const data = { value: 'conversations' }
+      this.$router.go(-1)
+      this.clearNewMembers()
+      this.setActiveList(data)
+    },
+
+
+    addNewMember (uid) {
+      const data = { key: uid, value: true }
+      this.setNewMember(data)
+    },
+
+
+    removeNewMember (uid) {
+      const data = { key: uid, value: true }
+      this.deleteNewMember(data)
+    },
+
+
+    setList (value) {
+      const data = { value }
+      this.setActiveList(data)
     },
 
 
     ...mapMutations({
-      setConversationId: 'messenger/setConversationId'
+      setNewMember: 'messenger/setNewMember',
+      deleteNewMember: 'messenger/deleteNewMember',
+      clearNewMembers: 'messenger/clearNewMembers',
+      setActiveList: 'messenger/setActiveList'
     }),
 
 
     ...mapActions({
-      fetchMessages: 'messenger/fetchMessages'
+      fetchUser: 'users/fetchUser'
     })
   }
 }
@@ -84,60 +202,52 @@ export default {
 .conversation-list
   @extend %flex--column
 
-.search-form
-  @extend %flex
-  align-items: center
+
+.controller
+  display: grid
+  grid-template-columns: 48px 1fr 48px
+  grid-gap: 0px $unit
+  align-items: stretch
   height: $fs*4
   margin-bottom: 1px
   background: $white
-  padding: 0 $unit*2
 
   &__icon
-    margin-right: $unit*2
+    grid-column: 1 / 2
+    @extend %flex
+    align-items: center
+    padding-left: $unit*2
+
+    &--right
+      grid-column: 3 / 4
+      justify-content: flex-end
+      padding: 0 $unit*2 0 0
+
+  &__svg
+    width: auto
+    height: $fs
+    fill: $dark
+
+
+.search-form
+  grid-column: 2 / 3
+  @extend %flex
+  margin: 0 $unit*2
 
   &__input
     width: 100%
     background: transparent
+    color: $dark
+
+    &::placeholder
+      color: $dark
 
 
 .list
   height: 100%
   overflow-y: auto
 
-
   &__item
     height: $fs*4
-    display: grid
-    grid-template-rows: repeat(2, auto)
-    grid-template-columns: auto 1fr auto
-    grid-gap: $unit/2 $unit
-    background: $white
-    padding: $unit $unit*2
-
-  &__avatar
-    @extend %avatar
-    grid-row: 1 / 3
-    grid-column: 1 / 2
-    width: 48px
-    height: 48px
-
-  &__name
-    grid-row: 1 / 2
-    grid-column: 2 / 3
-    font-weight: 900
-
-  &__text
-    grid-row: 2 / 3
-    grid-column: 2 / 3
-    color: $dark
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-
-  &__date
-    grid-row: 1 / 2
-    grid-column: 3 / 4
-
-
 
 </style>

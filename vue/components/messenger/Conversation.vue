@@ -31,31 +31,12 @@ export default {
     return {
       messages: [],
       newMessage: '',
-      newMembers: [],
     }
   },
   methods: {
     addMessage () {
-      const data = {
-        message: this.newMessage
-      }
-
-      console.log('dd: ', this.$route.params.id)
-
-      if (this.$route.params.id === 'new') {
-        data['members'] = this.newMembers
-        this.addNewConversation(data)
-      }
-      else {
-        console.log('ddd')
-        this.addNewMessage(data)
-      }
-    },
-
-
-    addMember (uid) {
-      if (!this.newMembers.includes(uid)) this.newMembers.push(uid)
-      console.log('newMembers: ', this.newMembers)
+      const data = { message: this.newMessage }
+      this.$route.params.id === 'new' ? this.addNewConversation(data) : this.addNewMessage(data)
     },
 
 
@@ -63,9 +44,6 @@ export default {
       addNewMessage: 'messenger/addNewMessage',
       addNewConversation: 'messenger/addNewConversation'
     })
-  },
-  created() {
-    console.log('state:: ', this.$store.state)
   }
 }
 </script>

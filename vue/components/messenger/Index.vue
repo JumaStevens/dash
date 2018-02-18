@@ -40,11 +40,13 @@ export default {
   methods: {
     fetchData () {
       this.initConversations()
+      this.initFriends()
     },
 
 
     ...mapActions({
-      initConversations: 'messenger/initConversations'
+      initConversations: 'messenger/initConversations',
+      initFriends: 'friends/initFriends',
     })
   }
 }

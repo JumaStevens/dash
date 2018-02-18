@@ -3,7 +3,11 @@ export default {
   conversations: {},
   messages: {},
   members: {},
-  meta: {}
+  meta: {},
+  app: {
+    newMembers: {},
+    activeList: 'conversations'
+  }
 }
 
 

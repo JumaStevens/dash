@@ -9,7 +9,8 @@ export default {
     for (var key in friends) {
       if (friends.hasOwnProperty(key) && users[key]) friendsArray.push({ uid: key, ...users[key] })
     }
-    
+
+    console.log('---> ~~~ ', friends)
     return friendsArray
   }
 }

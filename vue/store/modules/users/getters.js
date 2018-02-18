@@ -6,8 +6,10 @@ export default {
     const users = state.users
     const usersArray = []
 
+    console.log('uid ', users)
+
     for (var key in users) {
-      if (users.hasOwnProperty(key) && uid !== key) {
+      if (users.hasOwnProperty(key) /*&& uid !== key*/) {
         const user = {
           uid: key,
           ...users[key]
@@ -16,6 +18,13 @@ export default {
       }
     }
     return usersArray
+  },
+
+  getUser: (state) => (uid) => {
+    const users = state.users
+    const user = users[uid]
+    if (user) return user
+    else console.log('user is false!')
   }
 
 

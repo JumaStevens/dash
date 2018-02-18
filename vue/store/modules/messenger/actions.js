@@ -81,16 +81,12 @@ export default {
   },
 
 
-  async addNewConversation ({ dispatch, rootGetters }, data) {
+  async addNewConversation ({ dispatch, rootGetters, state }, data) {
     const uid = currentUser(rootGetters).uid
     const key = database.ref(`messenger/conversations/${uid}`).push().key
     const messageKey = database.ref(`messenger/messages/${key}`).push().key
     const updateData = {}
-    const members = { [uid]: true }
-    console.log('data: ', data)
-
-    data.members.forEach(member => members[member] = true)
-    console.log('members: ', members)
+    const members = { [uid]: true, ...state.app.newMembers }
 
     updateData[`messenger/conversations/${uid}/${key}`] = true
 

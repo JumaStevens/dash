@@ -19,9 +19,11 @@ export default {
   },
 
 
-  fetchUser ({ commit }, uid) {
-    const success = (snapshot) => snapshot.forEach(child => commit('addUser', { key: child.key, value: child.val() }))
+  fetchUser ({ commit, state }, uid) {
+    const success = (snapshot) => commit('addUser', { key: snapshot.key, value: snapshot.val() })
     const error = (err) => console.error(err)
+
+    if (state.users[uid]) return
 
     database.ref(`users/${uid}`).once('value').then(snapshot => success(snapshot), err => error(err))
   },
