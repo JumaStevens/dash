@@ -1,31 +1,55 @@
 <template lang='pug'>
 section(class='members')
 
+  //- add member button
+  a(
+    class='members__icon'
+  )
+    IconPlus.members__svg
+
+
   //- active conversation members
-  ul.members__list
+  ul(class='members__list')
     li(
       v-for='(user, index) in members'
       :key='index'
       class='members__item'
     )
-      div.members__avatar
-        img(
-          v-lazy='user.profilePicture'
-          class='members__img'
-        )
-      p.members__name {{ user.displayName }}
+      MemberCard(
+        :item='user'
+        :index='index'
+        :activeMemberIndex='activeMemberIndex'
+        @selectMember='setActiveMember(index)'
+        class='members__card'
+      )
 
 </template>
 
 
 <script>
+import IconPlus from '~/assets/svg/icon-plus.svg'
+import MemberCard from './MemberCard.vue'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
+  components: {
+    MemberCard,
+    IconPlus
+  },
+  data () {
+    return {
+      activeMemberIndex: 0
+    }
+  },
   computed: {
     ...mapGetters({
       members: 'messenger/getActiveConversationMembers',
     })
+  },
+  methods: {
+    setActiveMember (index) {
+      this.activeMemberIndex = index
+    }
   }
 }
 </script>
@@ -34,21 +58,38 @@ export default {
 <style lang='sass' scoped>
 
 .members
+  position: relative
+  height: 25vmin
+  margin-bottom: 1px
+  padding: $unit*2
   @extend %flex--column
   justify-content: center
   align-items: center
-  background: white
-  margin-bottom: 1px
+  background: $white
+
 
   &__list
+    position: relative
 
   &__item
-    @extend %flex--column
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+
+  &__icon
+    position: absolute
+    top: 0
+    right: 0
+    width: 48px
+    height: 48px
+    @extend %flex
+    justify-content: center
     align-items: center
 
-  &__avatar
-    @extend %avatar
-
-  &__name
+  &__svg
+    height: $fs
+    fill: $dark
 
 </style>

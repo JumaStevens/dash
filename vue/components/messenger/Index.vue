@@ -2,21 +2,30 @@
 div(class='container messenger')
 
   //- conversation header
-  conversation-header(class='messenger__conversation-header')
+  ConversationHeader(class='messenger__conversation-header')
 
   //- conversation list
-  conversation-list(
+  ConversationList(
     class='messenger__conversation-list'
   )
 
   //- conversation
-  conversation(
+  Conversation(
     class='messenger__conversation'
   )
 
-  //-
-  div.messenger__conversation-side
-    ConversationMembers.messenger__conversation-members
+  //- members
+  ConversationMembers(
+    class='messenger__conversation-members'
+  )
+
+
+  //- media
+  ConversationMedia(
+    class='messenger__conversation-media'
+  )
+
+
 </template>
 
 
@@ -25,6 +34,7 @@ import ConversationHeader from './ConversationHeader.vue'
 import Conversation from './Conversation.vue'
 import ConversationList from './ConversationList.vue'
 import ConversationMembers from './ConversationMembers.vue'
+import ConversationMedia from './ConversationMedia.vue'
 import { mapActions } from 'vuex'
 
 export default {
@@ -32,7 +42,8 @@ export default {
     ConversationHeader,
     Conversation,
     ConversationList,
-    ConversationMembers
+    ConversationMembers,
+    ConversationMedia
   },
   data () {
     return {}
@@ -82,9 +93,14 @@ export default {
     grid-row: 2 / 4
     grid-column: 2 / 3
 
-  &__conversation-side
-    grid-row: 2 / 4
+  &__conversation-members
+    grid-row: 2 / 3
     grid-column: 3 / 4
+
+  &__conversation-media
+    grid-row: 3 / 4
+    grid-column: 3 / 4
+    background: pink
 
 
 </style>

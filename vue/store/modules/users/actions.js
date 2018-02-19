@@ -19,8 +19,12 @@ export default {
   },
 
 
-  fetchUser ({ commit, state }, uid) {
-    const success = (snapshot) => commit('addUser', { key: snapshot.key, value: snapshot.val() })
+  fetchUser ({ commit, state, dispatch }, uid) {
+    const success = (snapshot) => {
+      commit('addUser', { key: snapshot.key, value: snapshot.val() })
+      dispatch('presence/fetchPresence', snapshot.key, { root: true })
+    }
+
     const error = (err) => console.error(err)
 
     if (state.users[uid]) return

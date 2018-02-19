@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     user () {
-      return this.getUser(this.item.uid)
+      return this.getUser(this.item.uid) || ''
     },
 
 

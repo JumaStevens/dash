@@ -52,8 +52,8 @@ export default {
 
   setMembers (state, payload) {
     Vue.set(state.members, payload.key, payload.value)
-    console.log('setMembers -- state >> ', state)
-    console.log('setMembers -- payload >> ', payload)
+    // console.log('setMembers -- state >> ', state)
+    // console.log('setMembers -- payload >> ', payload)
   },
 
 

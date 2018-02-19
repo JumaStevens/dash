@@ -6,6 +6,7 @@ import messenger from './modules/messenger'
 import users from './modules/users'
 import friends from './modules/friends'
 import media from './modules/media'
+import presence from './modules/presence'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     messenger,
     users,
     friends,
-    media
+    media,
+    presence
   },
   strict: process.env.NODE_ENV !== 'production'
 })
