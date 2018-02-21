@@ -9,6 +9,7 @@ export default {
     dispatch('watchConversationMetaAdded')
     dispatch('watchConversationMetaRemoved')
     dispatch('fetchConversations')
+    console.log('called?')
   },
 
 
@@ -24,8 +25,10 @@ export default {
       dispatch('fetchConversationMeta', data.key)
 
       dispatch('fetchConversationMembers', data.key)
+
     })
 
+    console.log("wha'sss happening?")
     const error = (err) => console.error(err)
 
     database.ref(`messenger/conversations/${uid}`).once('value').then(snapshot => success(snapshot), err => error(err))
@@ -87,6 +90,8 @@ export default {
     const success = (snapshot) => commit('setMembers', { key: snapshot.key, value: snapshot.val() })
     const error = (err) => console.error(err)
 
+    console.log('fetch members?')
+
     database.ref(`messenger/members/${id}`).on('value', snapshot => success(snapshot), err => error(err))
   },
 
@@ -129,16 +134,19 @@ export default {
   },
 
 
-  async addNewMessage ({ commit, state, rootState }, data) {
+  async addNewMessage ({ commit, state, rootState, rootGetters }, data) {
     try {
-      console.log('data ---> ', data)
+      const uid = currentUser(rootGetters).uid
       const id = rootState.route.params.id
-      console.log('state convo id: ', id)
       const key = database.ref(`messenger/messages/${id}`).push().key
-      const messageData = {}
-      messageData[key] = { ...data }
-      console.log('messageData: ', messageData)
-      await database.ref(`messenger/messages/${id}`).push(data)
+      const timestamp = firebase.database.ServerValue.TIMESTAMP
+      const messageData = {
+        uid,
+        timestamp,
+        ...data
+      }
+
+      await database.ref(`messenger/messages/${id}`).push(messageData)
     }
     catch (e) { console.error(e) }
 

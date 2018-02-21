@@ -1,28 +1,36 @@
 <template lang='pug'>
 //- message
 div.message
+
   ul.message__list
+
     li(
       v-for='(message, index) in messages'
       :key='index'
-      :class='[{ fromSelf: message.fromSelf }]'
+      :class='{ fromSelf: message.fromSelf }'
       class='message__item'
     )
-      div.message__media
-        img.message__image
-      p.message__text {{ message.message }}
-      p.message__timestamp {{ message.timestamp | formatDate }}
+
+      MessageCard(
+        :message='message'
+        class='message__card'
+      )
 
 </template>
 
 
 <script>
+import MessageCard from './MessageCard.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  components: {
+    MessageCard
+  },
   computed: {
     ...mapGetters({
-      messages: 'messenger/getConversationMessages'
+      messages: 'messenger/getConversationMessages',
+      members: 'messenger/getActiveConversationMembers'
     })
   },
   watch: {
@@ -55,23 +63,8 @@ export default {
     @extend %flex--column
 
   &__item
-    align-self: flex-start
-    margin-bottom: 2rem
-    &:last-child
-      margin-bottom: unset
+    width: 100%
+    padding: $unit*2 $unit*4
 
-    & .message__text
-      border-radius: 1rem
-      padding: 0.25rem 1rem
-      border-bottom-left-radius: unset
-      background: $white
-      color: $black
-
-    &.fromSelf
-      align-self: flex-end
-      & .message__text
-        border-bottom-right-radius: unset
-        background: $black
-        color: $white
 
 </style>

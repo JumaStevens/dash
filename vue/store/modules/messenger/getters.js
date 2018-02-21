@@ -10,7 +10,7 @@ export default {
       if (messages.hasOwnProperty(key)) {
         const message = {
           id: key,
-          fromSelf: uid == messages[key].uid,
+          fromSelf: uid === messages[key].uid,
           ...messages[key]
         }
         messagesArray.push(message)
