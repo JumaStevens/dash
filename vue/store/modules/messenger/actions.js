@@ -9,7 +9,6 @@ export default {
     dispatch('watchConversationMetaAdded')
     dispatch('watchConversationMetaRemoved')
     dispatch('fetchConversations')
-    console.log('called?')
   },
 
 
@@ -28,7 +27,6 @@ export default {
 
     })
 
-    console.log("wha'sss happening?")
     const error = (err) => console.error(err)
 
     database.ref(`messenger/conversations/${uid}`).once('value').then(snapshot => success(snapshot), err => error(err))
@@ -90,9 +88,28 @@ export default {
     const success = (snapshot) => commit('setMembers', { key: snapshot.key, value: snapshot.val() })
     const error = (err) => console.error(err)
 
-    console.log('fetch members?')
-
     database.ref(`messenger/members/${id}`).on('value', snapshot => success(snapshot), err => error(err))
+  },
+
+
+  fetchPending ({ commit, dispatch, rootGetters }) {
+    const uid = currentUser(rootGetters).uid
+
+    const success = (snapshot) => snapshot.forEach(child => {
+
+      const data = { key: child.key, value: child.val() }
+
+      commit('setConversation', data)
+
+      dispatch('fetchConversationMeta', data.key)
+
+      dispatch('fetchConversationMembers', data.key)
+
+    })
+
+    const error = (err) => console.error(err)
+
+    database.ref(`messenger/conversations/${uid}`).once('value').then(snapshot => success(snapshot), err => error(err))
   },
 
 
@@ -101,7 +118,8 @@ export default {
     const key = database.ref(`messenger/conversations/${uid}`).push().key
     const messageKey = database.ref(`messenger/messages/${key}`).push().key
     const updateData = {}
-    const members = { [uid]: true, ...state.app.newMembers }
+    const newMembers = state.app.newMembers
+    const members = { [uid]: true, ...newMembers }
 
     updateData[`messenger/conversations/${uid}/${key}`] = true
 
@@ -117,6 +135,10 @@ export default {
       message: data.message,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       uid: `${uid}`
+    }
+
+    for (let uidKey in newMembers) {
+      if (newMembers.hasOwnProperty(uidKey)) updateData[`messenger/pending/${uidKey}/${key}`] = true
     }
 
     try {

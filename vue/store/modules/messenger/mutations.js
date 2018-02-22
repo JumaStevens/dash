@@ -57,8 +57,23 @@ export default {
   },
 
 
+  setPending (state, payload) {
+    Vue.set(state.pending, payload.key, payload.value)
+    // console.log('setPending -- state >> ', state)
+    // console.log('setPending -- payload >> ', payload)
+  },
+
+
+  deletePending (state, payload) {
+    Vue.delete(state.pending, payload.key)
+    // console.log('deletePending -- state >> ', state)
+    // console.log('deletePending -- payload >> ', payload)
+  },
+
+
   setNewMember (state, payload) {
     Vue.set(state.app.newMembers, payload.key, payload.value)
+    console.log('---> payload: ', state)
   },
 
 
