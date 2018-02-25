@@ -167,6 +167,7 @@ export default {
         timestamp,
         ...data
       }
+      // TO DO: update meta as well
 
       await database.ref(`messenger/messages/${id}`).push(messageData)
     }
