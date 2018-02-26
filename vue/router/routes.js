@@ -22,7 +22,7 @@ export const routes = [
     children: [
       {
         path: ':id',
-        name: 'chat',
+        name: 'chatId',
         component: ChatView
       }
     ]

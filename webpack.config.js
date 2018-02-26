@@ -8,8 +8,8 @@ const config = {
   entry: ['babel-polyfill', './vue/main.js'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'server/public'),
-    publicPath: '/server/public/'
+    path: path.resolve(__dirname, 'firebase/public'),
+    publicPath: '/firebase/public/'
   },
   module: {
     rules: [
@@ -66,7 +66,7 @@ const config = {
     historyApiFallback: true,
     noInfo: true,
     overlay: true,
-    contentBase: path.join(__dirname, 'server/views'),
+    contentBase: path.join(__dirname, 'firebase/public'),
     proxy: {
       '/api': {
         target: 'http://localhost:4000',
