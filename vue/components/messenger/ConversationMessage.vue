@@ -39,7 +39,7 @@ export default {
   methods: {
     getMessages () {
       const id = this.$route.params.id
-      if (id) this.fetchMessages(id)
+      if (id && id !== 'new') this.fetchMessages(id)
     },
 
 

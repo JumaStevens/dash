@@ -31,7 +31,7 @@ section.conversation-list
 
     //- new message icon
     router-link(
-      :to='{ name: "chat", params: { id: "new" } }'
+      :to='{ name: "chatId", params: { id: "new" } }'
       v-show='!isUserListActive'
       @click.native='setList("users")'
       class='controller__icon controller__icon--right'

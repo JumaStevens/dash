@@ -125,11 +125,11 @@ export default {
 
     updateData[`messenger/members/${key}`] = members
 
-    updateData[`messenger/meta/${key}`] = {
-      lastMessage: data.message,
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
-      uid: `${uid}`
-    }
+    // updateData[`messenger/meta/${key}`] = {
+    //   lastMessage: data.message,
+    //   timestamp: firebase.database.ServerValue.TIMESTAMP,
+    //   uid: `${uid}`
+    // }
 
     updateData[`messenger/messages/${key}/${messageKey}`] = {
       message: data.message,
@@ -137,9 +137,9 @@ export default {
       uid: `${uid}`
     }
 
-    for (let uidKey in newMembers) {
-      if (newMembers.hasOwnProperty(uidKey)) updateData[`messenger/pending/${uidKey}/${key}`] = true
-    }
+    // for (let uidKey in newMembers) {
+    //   if (newMembers.hasOwnProperty(uidKey)) updateData[`messenger/pending/${uidKey}/${key}`] = true
+    // }
 
     try {
       await firebaseRef.update(updateData)

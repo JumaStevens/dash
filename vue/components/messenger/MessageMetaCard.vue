@@ -1,6 +1,6 @@
 <template lang='pug'>
 router-link(
-  :to='{ name: "chat", params: { id: item.id } }'
+  :to='{ name: "chatId", params: { id: item.id } }'
   class='card'
 )
   div.card__avatar
