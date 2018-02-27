@@ -1,1 +1,0 @@
-exports.messenger = require('./messenger')
