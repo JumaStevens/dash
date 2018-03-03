@@ -23,6 +23,10 @@ export default {
 
       dispatch('fetchConversationMeta', data.key)
 
+      dispatch('watchConversationMetaAdded', data.key)
+
+      dispatch('watchConversationsRemoved', data.key)
+
       dispatch('fetchConversationMembers', data.key)
 
     })
@@ -33,34 +37,35 @@ export default {
   },
 
 
-  fetchConversationMeta ({ commit, rootGetters }, id) {
+  fetchConversationMeta ({ commit, rootGetters, state }, id) {
+    if (!state.meta[id]) return
+
     const uid = currentUser(rootGetters).uid
 
     const success = (snapshot) => commit('setConversationMeta', { key: snapshot.key, value: snapshot.val() })
-
     const error = (err) => console.error(err)
 
     database.ref(`messenger/meta/${id}`).once('value').then(snapshot => success(snapshot), err => error(err))
   },
 
 
-  watchConversationMetaAdded ({ commit, rootGetters }) {
+  watchConversationMetaAdded ({ commit, rootGetters }, id) {
     const uid = currentUser(rootGetters).uid
 
     const success = (data) => commit('setConversationMeta', { key: data.key, value: data.val() })
     const error = (err) => console.error(err)
 
-    database.ref(`messenger/meta`).orderByChild('timestamp').on('child_added', data => success(data), err => error(err))
+    database.ref(`messenger/meta/${id}`).orderByChild('timestamp').on('child_added', data => success(data), err => error(err))
   },
 
 
-  watchConversationMetaRemoved ({ commit, rootGetters }) {
+  watchConversationMetaRemoved ({ commit, rootGetters }, id) {
     const uid = currentUser(rootGetters).uid
 
     const success = (data) => commit('deleteConversationMeta', { key: data.key, value: data.val() })
     const error = (err) => console.error(err)
 
-    database.ref(`messenger/meta`).orderByChild('timestamp').limitToLast(2).on('child_removed', data => success(data), err => error(err))
+    // database.ref(`messenger/meta/${uid}`).orderByChild('timestamp').limitToLast(2).on('child_removed', data => success(data), err => error(err))
   },
 
 

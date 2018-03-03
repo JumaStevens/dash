@@ -1,6 +1,5 @@
 <template lang='pug'>
 .vue-app
-  p(style='position: fixed').auth-hud Auth: {{ isCurrentUser }}
 
   navigation(
     v-if='isCurrentUser'
@@ -60,7 +59,8 @@ export default {
   height: 100vh
   background: $pri-cl
   display: grid
-  grid-template-columns: $border-offset 1fr
+  // grid-template-columns: $border-offset 1fr
+  grid-template-columns: 64px 1fr
 
   &__error,
   &__view
@@ -81,13 +81,13 @@ export default {
   position: fixed
   top: 0
   left: 0
-  background: $pri-cl
-  box-shadow: 0px 0px 0.5rem rgba(34,34,34,0.2) //rgba(15, 114, 219, 0.2)
-  width: $border-offset
+  background: $white
+  // box-shadow: 0px 0px 0.5rem rgba(34,34,34,0.2) //rgba(15, 114, 219, 0.2)
+  box-shadow: 0px 0px 1rem rgba(34,34,34,0.2)
+  // width: $border-offset
+  width: 64px
   height: 100%
   grid-column: 1 / 2
-
-
 
   & .container-dot
     display: grid
@@ -100,7 +100,4 @@ export default {
     background: $black
     margin: 2px
 
-
-.auth-hud
-  display: none
 </style>

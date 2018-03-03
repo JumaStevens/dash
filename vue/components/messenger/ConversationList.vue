@@ -246,6 +246,7 @@ export default {
 .list
   height: 100%
   overflow-y: auto
+  background: $white
 
   &__item
     height: $fs*4

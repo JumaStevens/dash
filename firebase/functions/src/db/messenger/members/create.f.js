@@ -1,8 +1,8 @@
-const functions = require('firebase-functions');
-const admin = require('./../../../admin');
+import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin'
 
 
-exports = module.exports = functions.database.ref('/messenger/members/{convoId}/{uid}').onCreate((event) => {
+export const handler = functions.database.ref('/messenger/members/{convoId}/{uid}').onCreate((event) => {
 
   if (!event.data.exists()) return null;
 
@@ -15,7 +15,7 @@ exports = module.exports = functions.database.ref('/messenger/members/{convoId}/
 
   return admin.database().ref(`/messenger/conversations/${uid}`).once('value').then((snap) => {
 
-    if (snap.hasChild(uid)) return null;
+    if (snap.hasChild(convoId)) return null;
 
     const rootRef = event.data.ref.root;
     const pendingData = { [convoId]: true };

@@ -1,16 +1,1 @@
-// const glob = require('glob');
-// const camelCase = require('camelcase');
-//
-//
-// const files = glob.sync('./**/*.f.js', { cwd: __dirname, ignore: './node_modules/**' })
-//
-// files.forEach(file => {
-//
-//   const only = process.env.FUNCTION_NAME;
-//   const name = camelCase(file.slice(0, -5).split('/').join('_'));
-//
-//   if (only === undefined || only === name) {
-//     exports[name] = require(file);
-//   }
-//
-// });
+!function(e,r){for(var n in r)e[n]=r[n]}(this,function(e){var r={};function n(t){if(r[t])return r[t].exports;var o=r[t]={i:t,l:!1,exports:{}};return e[t].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=r,n.d=function(e,r,t){n.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:t})},n.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},n.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(r,"a",r),r},n.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},n.p="",n.w={},n(n.s=3)}([function(e,r){e.exports=require("firebase-admin")},function(e,r){e.exports=require("firebase-functions")},function(e,r,n){"use strict";Object.defineProperty(r,"__esModule",{value:!0}),r.handler=void 0;var t=i(n(1)),o=i(n(0));function i(e){if(e&&e.__esModule)return e;var r={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(r[n]=e[n]);return r.default=e,r}r.handler=t.database.ref("/messenger/members/{convoId}/{uid}").onCreate(function(e){if(!e.data.exists())return null;var r=e.params.convoId,n=e.params.uid;return console.log("convoId: ",r),console.log("uid: ",n),console.log("params: ",e.params),o.database().ref("/messenger/conversations/"+n).once("value").then(function(t){if(t.hasChild(r))return null;var o,i,a,u=e.data.ref.root,l=(a=!0,(i=r)in(o={})?Object.defineProperty(o,i,{value:a,enumerable:!0,configurable:!0,writable:!0}):o[i]=a,o);return console.log("got ref back!"),u.child("messenger").child("pending").child(n).set(l)}).catch(function(e){return console.log("writePending error!"),console.log("err: ",e),null})})},function(e,r,n){"use strict";Object.defineProperty(r,"__esModule",{value:!0}),r.memberCreate=void 0;var t=a(n(1)),o=a(n(0)),i=a(n(2));function a(e){if(e&&e.__esModule)return e;var r={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(r[n]=e[n]);return r.default=e,r}o.initializeApp(t.config().firebase);r.memberCreate=i.handler}]));

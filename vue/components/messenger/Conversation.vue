@@ -66,6 +66,7 @@ export default {
 .message-form
 
   &__input
+    margin: $unit*2 0 0 $unit*2
     width: 100%
     background: transparent
 
