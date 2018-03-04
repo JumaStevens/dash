@@ -2,44 +2,31 @@ import Vue from 'vue'
 
 
 export default {
-  setConversation (state, payload) {
+  SET_CONVERSATION (state, payload) {
     Vue.set(state.conversations, payload.key, payload.value)
     // console.log('addConversation -- state >> ', state)
     // console.log('addConversation -- payload >> ', payload)
   },
 
 
-  deleteConversation (state, payload) {
+  DELETE_CONVERSATION (state, payload) {
     Vue.delete(state.conversations, payload.key)
     // console.log('deleteConversation -- state >> ', state)
     // console.log('deleteConversation -- payload >> ', payload)
   },
 
 
-  setConversationMeta (state, payload) {
+  SET_META (state, payload) {
     Vue.set(state.meta, payload.key, payload.value)
     // console.log('addConversationMeta -- state >> ', state)
     // console.log('addConversationMeta -- payload >> ', payload)
   },
 
 
-  deleteConversationMeta (state, payload) {
+  DELETE_META (state, payload) {
     Vue.delete(state.meta, payload.key)
     // console.log('deleteConversationMeta -- state >> ', state)
     // console.log('deleteConversationMeta -- payload >> ', payload)
-  },
-
-
-  setConversationId (state, payload) {
-    state.conversationId = payload
-    // console.log('setConversationId -- state >> ', state)
-    // console.log('setConversationId -- payload >> ', payload)
-  },
-
-
-  clearConversationId (state) {
-    state.conversationId = ''
-    // console.log('clearConversationId -- state >> ', state)
   },
 
 
@@ -50,21 +37,28 @@ export default {
   },
 
 
-  setMembers (state, payload) {
+  SET_MEMBERS (state, payload) {
     Vue.set(state.members, payload.key, payload.value)
     // console.log('setMembers -- state >> ', state)
     // console.log('setMembers -- payload >> ', payload)
   },
 
 
-  setPending (state, payload) {
+  DELETE_MEMBERS (state, payload) {
+    Vue.delete(state.members, payload.key)
+    // console.log('setMembers -- state >> ', state)
+    // console.log('setMembers -- payload >> ', payload)
+  },
+
+
+  SET_PENDING (state, payload) {
     Vue.set(state.pending, payload.key, payload.value)
     // console.log('setPending -- state >> ', state)
     // console.log('setPending -- payload >> ', payload)
   },
 
 
-  deletePending (state, payload) {
+  DELETE_PENDING (state, payload) {
     Vue.delete(state.pending, payload.key)
     // console.log('deletePending -- state >> ', state)
     // console.log('deletePending -- payload >> ', payload)

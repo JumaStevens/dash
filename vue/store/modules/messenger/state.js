@@ -1,5 +1,4 @@
 export default {
-  conversationId: '',
   conversations: {},
   messages: {},
   members: {},

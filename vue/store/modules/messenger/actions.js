@@ -1,120 +1,198 @@
 import firebase, { database, firebaseRef } from '~/firebase'
+import _ from 'lodash'
 
 const currentUser = (rootGetters) => rootGetters['auth/getCurrentUser']
 
+const db = {
+  conversations: database.ref(`messenger/conversations`),
+  members: database.ref(`messenger/members`),
+  meta: database.ref(`messenger/meta`),
+  messages: database.ref(`messenger/messages`),
+  pending: database.ref(`messenger/pending`)
+}
+
+
 export default {
-  initConversations ({ dispatch }) {
-    dispatch('watchConversationsAdded')
-    dispatch('watchConversationsRemoved')
-    dispatch('watchConversationMetaAdded')
-    dispatch('watchConversationMetaRemoved')
+  init ({ dispatch }) {
     dispatch('fetchConversations')
+    dispatch('fetchPending')
   },
 
 
-  fetchConversations ({ commit, dispatch, rootGetters }) {
-    const uid = currentUser(rootGetters).uid
+  // CONVERSATIONS
+  async fetchConversations ({ commit, state, dispatch, rootGetters }) {
+    try {
+      if (!_.isEmpty(state.conversations)) return
 
-    const success = (snapshot) => snapshot.forEach(child => {
-
-      const data = { key: child.key, value: child.val() }
-
-      commit('setConversation', data)
-
-      dispatch('fetchConversationMeta', data.key)
-
-      dispatch('watchConversationMetaAdded', data.key)
-
-      dispatch('watchConversationsRemoved', data.key)
-
-      dispatch('fetchConversationMembers', data.key)
-
-    })
-
-    const error = (err) => console.error(err)
-
-    database.ref(`messenger/conversations/${uid}`).once('value').then(snapshot => success(snapshot), err => error(err))
-  },
-
-
-  fetchConversationMeta ({ commit, rootGetters, state }, id) {
-    if (!state.meta[id]) return
-
-    const uid = currentUser(rootGetters).uid
-
-    const success = (snapshot) => commit('setConversationMeta', { key: snapshot.key, value: snapshot.val() })
-    const error = (err) => console.error(err)
-
-    database.ref(`messenger/meta/${id}`).once('value').then(snapshot => success(snapshot), err => error(err))
-  },
-
-
-  watchConversationMetaAdded ({ commit, rootGetters }, id) {
-    const uid = currentUser(rootGetters).uid
-
-    const success = (data) => commit('setConversationMeta', { key: data.key, value: data.val() })
-    const error = (err) => console.error(err)
-
-    database.ref(`messenger/meta/${id}`).orderByChild('timestamp').on('child_added', data => success(data), err => error(err))
-  },
-
-
-  watchConversationMetaRemoved ({ commit, rootGetters }, id) {
-    const uid = currentUser(rootGetters).uid
-
-    const success = (data) => commit('deleteConversationMeta', { key: data.key, value: data.val() })
-    const error = (err) => console.error(err)
-
-    // database.ref(`messenger/meta/${uid}`).orderByChild('timestamp').limitToLast(2).on('child_removed', data => success(data), err => error(err))
+      const uid = currentUser(rootGetters).uid
+      const snapshot = await db.conversations.child(uid).once('value')
+      snapshot.forEach(child => commit('SET_CONVERSATION', { key: child.key, value: child.val() }))
+      dispatch('watchConversationsAdded')
+      dispatch('watchConversationsRemoved')
+    }
+    catch (e) {
+      console.error(e)
+    }
   },
 
 
   watchConversationsAdded ({ commit, rootGetters }) {
     const uid = currentUser(rootGetters).uid
 
-    const success = (data) => commit('setConversation', { key: data.key, value: data.val() })
-    const error = (err) => console.error(err)
+    const success = (snapshot) => commit('SET_CONVERSATION', { key: snapshot.key, value: snapshot.val() })
+    const error = (e) => console.error(e)
 
-    database.ref(`messenger/conversations/${uid}`).on('child_added', data => success(data), err => error(err))
+    db.conversations.child(uid).on('child_added', snapshot => success(snapshot), e => error(e))
   },
 
 
   watchConversationsRemoved ({ commit, rootGetters }) {
     const uid = currentUser(rootGetters).uid
 
-    const success = (data) => commit('deleteConversation', { key: data.key, value: data.val() })
+    const success = (snapshot) => commit('DELETE_CONVERSATION', { key: snapshot.key })
     const error = (err) => console.error(err)
 
-    database.ref(`messenger/conversations/${uid}`).on('child_removed', data => success(data), err => error(err))
+    db.conversations.child(uid).on('child_removed', snapshot => success(snapshot), e => error(e))
   },
 
 
-  fetchConversationMembers ({ commit }, id) {
-    const success = (snapshot) => commit('setMembers', { key: snapshot.key, value: snapshot.val() })
-    const error = (err) => console.error(err)
+  // META
+  async fetchMeta ({ commit, state, dispatch }, convoId) {
+    try {
+      if (state.meta[convoId]) return
 
-    database.ref(`messenger/members/${id}`).on('value', snapshot => success(snapshot), err => error(err))
+      const snapshot = await db.meta.child(convoId).once('value')
+      const data = { key: snapshot.key, value: snapshot.val() }
+
+      commit('SET_META', data)
+      dispatch('watchMetaAdded', data.key)
+      dispatch('watchMetaRemoved', data.key)
+    }
+    catch (e) {
+      console.error(e)
+    }
   },
 
 
-  fetchPending ({ commit, dispatch, rootGetters }) {
+  watchMetaAdded ({ commit }, convoId) {
+    const success = (snapshot) => commit('SET_META', { key: snapshot.key, value: snapshot.val() })
+    const error = (e) => console.error(e)
+
+    db.meta.child(convoId).on('child_added', snapshot => success(snapshot), e => error(e))
+  },
+
+
+  watchMetaRemoved ({ commit }, convoId) {
+    const success = (snapshot) => commit('DELETE_META', { key: snapshot.key })
+    const error = (e) => console.error(e)
+
+    db.meta.child(convoId).on('child_removed', snapshot => success(snapshot), err => error(err))
+  },
+
+
+  // MEMBERS
+  async fetchMembers ({ commit, state, dispatch }, convoId) {
+    try {
+      if (state.members[convoId]) return
+
+      const snapshot = await db.members.child(convoId).on('value')
+      const data = { key: snapshot.key, value: snapshot.val() }
+
+      commit('SET_MEMBERS', data)
+      dispatch('watchMembersAdded', data.key)
+      dispatch('watchMembersRemoved', data.key)
+    }
+    catch (e) {
+      console.error(e)
+    }
+  },
+
+
+  watchMembersAdded ({ commit }, convoId) {
+    const success = (snapshot) => commit('SET_MEMBERS', { key: snapshot.key, value: snapshot.val() })
+    const error = (e) => console.error(e)
+
+    db.members.child(convoId).on('child_added', snapshot => success(snapshot), e => error(e))
+  },
+
+
+  watchMembersRemoved ({ commit }, convoId) {
+    const success = (snapshot) => commit('DELETE_MEMBERS', { key: snapshot.key })
+    const error = (e) => console.error(e)
+
+    db.meta.child(convoId).on('child_removed', snapshot => success(snapshot), err => error(err))
+  },
+
+
+  // PENDING
+  async fetchPending ({ commit, state, dispatch, rootGetters }) {
+    try {
+      if (state.pending[uid]) return
+
+      const uid = currentUser(rootGetters).uid
+      const snapshot = await db.pending.child(uid).once('value')
+
+      snapshot.forEach(child => commit('SET_PENDING', { key: child.key, value: child.val() }))
+
+      dispatch('watchPendingAdded')
+      dispatch('watchPendingRemoved')
+    }
+    catch (e) {
+      console.error(e)
+    }
+  },
+
+
+  watchPendingAdded ({ commit, rootGetters }) {
     const uid = currentUser(rootGetters).uid
 
-    const success = (snapshot) => snapshot.forEach(child => {
+    const success = (snapshot) => commit('SET_PENDING', { key: snapshot.key, value: snapshot.val() })
+    const error = (e) => console.error(e)
 
-      const data = { key: child.key, value: child.val() }
+    db.pending.child(uid).on('child_added', snapshot => success(snapshot), e => error(e))
+  },
 
-      commit('setConversation', data)
 
-      dispatch('fetchConversationMeta', data.key)
+  watchPendingRemoved ({ commit, rootGetters }) {
+    const uid = currentUser(rootGetters).uid
 
-      dispatch('fetchConversationMembers', data.key)
-
-    })
-
+    const success = (snapshot) => commit('DELETE_PENDING', { key: snapshot.key })
     const error = (err) => console.error(err)
 
-    database.ref(`messenger/conversations/${uid}`).once('value').then(snapshot => success(snapshot), err => error(err))
+    db.pending.child(uid).on('child_removed', snapshot => success(snapshot), e => error(e))
+  },
+
+
+  // MESSAGES
+  async fetchMessages ({ commit, state, dispatch }, convoId) {
+    try {
+      if (state.messages[convoId]) return
+
+      const snapshot = await db.messages.child(convoId).on('value')
+
+      commit('SET_MESSAGES', { key: snapshot.key, value: snapshot.val() })
+      dispatch('watchMessagesAdded', convoId)
+      dispatch('watchMessagesRemoved', convoId)
+    }
+    catch (e) {
+      console.error(e)
+    }
+  },
+
+
+  watchMessagesAdded ({ commit, rootGetters }, convoId) {
+    const success = (snapshot) => commit('SET_MESSAGES', { key: snapshot.key, value: snapshot.val() })
+    const error = (e) => console.error(e)
+
+    db.messages.child(convoId).on('child_added', snapshot => success(snapshot), e => error(e))
+  },
+
+
+  watchMessagesRemoved ({ commit }, convoId) {
+    const success = (snapshot) => commit('DELETE_MESSAGES', { key: snapshot.key })
+    const error = (err) => console.error(err)
+
+    db.messages.child(convoId).on('child_removed', snapshot => success(snapshot), e => error(e))
   },
 
 
@@ -130,34 +208,16 @@ export default {
 
     updateData[`messenger/members/${key}`] = members
 
-    // updateData[`messenger/meta/${key}`] = {
-    //   lastMessage: data.message,
-    //   timestamp: firebase.database.ServerValue.TIMESTAMP,
-    //   uid: `${uid}`
-    // }
-
     updateData[`messenger/messages/${key}/${messageKey}`] = {
       message: data.message,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
-      uid: `${uid}`
+      uid
     }
-
-    // for (let uidKey in newMembers) {
-    //   if (newMembers.hasOwnProperty(uidKey)) updateData[`messenger/pending/${uidKey}/${key}`] = true
-    // }
 
     try {
       await firebaseRef.update(updateData)
     }
     catch (e) { console.error(e) }
-  },
-
-
-  fetchMessages ({ commit }, id) {
-    const success = (snapshot) => commit('setMessages', { key: snapshot.key, value: snapshot.val() })
-    const error = (err) => console.error(err)
-
-    database.ref(`messenger/messages/${id}`).on('value', snapshot => success(snapshot), err => error(err))
   },
 
 
@@ -172,7 +232,7 @@ export default {
         timestamp,
         ...data
       }
-      // TO DO: update meta as well
+
 
       await database.ref(`messenger/messages/${id}`).push(messageData)
     }

@@ -62,8 +62,8 @@ export default {
 
 
     ...mapActions({
-      initConversations: 'messenger/initConversations',
-      initFriends: 'friends/initFriends',
+      initConversations: 'messenger/init',
+      initFriends: 'friends/initFriends'
     })
   }
 }
