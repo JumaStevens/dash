@@ -8,7 +8,7 @@ div(
     class='card__avatar'
   )
     img(
-      v-lazy='item.profilePicture'
+      v-lazy='item.profilePicture ? item.profilePicture : ""'
       class='card__img'
     )
   p(

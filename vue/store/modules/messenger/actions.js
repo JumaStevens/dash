@@ -13,9 +13,32 @@ const db = {
 
 
 export default {
-  init ({ dispatch }) {
-    dispatch('fetchConversations')
-    dispatch('fetchPending')
+  async init ({ dispatch, state }) {
+    try {
+      const conversations = state.conversations
+      const meta = state.meta
+
+      // fetch all conversations/pending of user
+      await Promise.all([ dispatch('fetchConversations'), dispatch('fetchPending') ])
+
+      // fetch meta for each conversation
+      for (let key in conversations) {
+        if (conversations.hasOwnProperty(key)) await dispatch('fetchMeta', key)
+      }
+
+      // fetch user for each meta
+      for (let key in meta) {
+        if (meta.hasOwnProperty(key)) {
+          const uid = meta[key].uid
+          await dispatch('users/fetchUser', uid, { root: true })
+        }
+      }
+
+    }
+    catch (e) {
+      console.error(e)
+    }
+
   },
 
 
@@ -60,6 +83,7 @@ export default {
   async fetchMeta ({ commit, state, dispatch }, convoId) {
     try {
       if (state.meta[convoId]) return
+      console.log('fetchMeta: ', convoId)
 
       const snapshot = await db.meta.child(convoId).once('value')
       const data = { key: snapshot.key, value: snapshot.val() }
@@ -168,9 +192,8 @@ export default {
     try {
       if (state.messages[convoId]) return
 
-      const snapshot = await db.messages.child(convoId).on('value')
-
-      commit('SET_MESSAGES', { key: snapshot.key, value: snapshot.val() })
+      const snapshot = await db.messages.child(convoId).once('value')
+      snapshot.forEach(child => commit('SET_MESSAGE', { convoId, key: child.key, value: child.val() }))
       dispatch('watchMessagesAdded', convoId)
       dispatch('watchMessagesRemoved', convoId)
     }
@@ -181,10 +204,10 @@ export default {
 
 
   watchMessagesAdded ({ commit, rootGetters }, convoId) {
-    const success = (snapshot) => commit('SET_MESSAGES', { key: snapshot.key, value: snapshot.val() })
+    const success = (snapshot) => commit('SET_MESSAGE', { convoId, key: snapshot.key, value: snapshot.val() })
     const error = (e) => console.error(e)
 
-    db.messages.child(convoId).on('child_added', snapshot => success(snapshot), e => error(e))
+    db.messages.child(convoId).orderByChild('timestamp').startAt(Date.now()).on('child_added', snapshot => success(snapshot), e => error(e))
   },
 
 

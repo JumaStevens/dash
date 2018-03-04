@@ -30,10 +30,14 @@ export default {
   },
 
 
-  setMessages (state, payload) {
-    Vue.set(state.messages, payload.key, payload.value)
-    // console.log('setMessages -- state >> ', state)
-    // console.log('setMessages -- payload >> ', payload)
+  SET_MESSAGE (state, payload) {
+    const messages = state.messages[payload.convoId] ? state.messages[payload.convoId] : {}
+    const value = { ...messages, [payload.key]: payload.value }
+    console.log('value: ', value)
+
+    Vue.set(state.messages, payload.convoId, value)
+    console.log('setMessages -- state >> ', state)
+    console.log('setMessages -- payload >> ', payload)
   },
 
 
@@ -53,8 +57,8 @@ export default {
 
   SET_PENDING (state, payload) {
     Vue.set(state.pending, payload.key, payload.value)
-    // console.log('setPending -- state >> ', state)
-    // console.log('setPending -- payload >> ', payload)
+    console.log('setPending -- state >> ', state)
+    console.log('setPending -- payload >> ', payload)
   },
 
 

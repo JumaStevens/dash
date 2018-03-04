@@ -8,7 +8,7 @@ div.card
   )
 
     img(
-      v-lazy='user.profilePicture'
+      v-lazy='user.profilePicture ? user.profilePicture : ""'
       class='card__img'
     )
 
