@@ -8,7 +8,7 @@ router-link(
       v-lazy='user.profilePicture ? user.profilePicture : ""'
       class='card__img'
     )
-  p.card__name {{ user.displayName }}
+  p.card__name {{ displayName }}
   p.card__text {{ item.message }}
   p.card__date {{ item.timestamp | formatDate }}
 
@@ -32,8 +32,23 @@ export default {
     },
 
 
+    members () {
+      return this.getMembers(this.item.id)
+    },
+
+
+    displayName () {
+      const members = this.members
+      const authUser = this.getCurrentUser
+      const names = members.filter(member => member.uid !== authUser.uid).map(member => member.displayName).join(', ')
+      return names
+    },
+
+
     ...mapGetters({
-      getUser: 'users/getUser'
+      getUser: 'users/getUser',
+      getMembers: 'messenger/getMembers',
+      getCurrentUser: 'auth/getCurrentUser'
     })
   },
   methods: {
@@ -42,7 +57,7 @@ export default {
     })
   },
   created () {
-    this.fetchUser(this.item.uid)
+    // this.fetchUser(this.item.uid)
   }
 }
 </script>

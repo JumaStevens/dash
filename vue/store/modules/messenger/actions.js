@@ -24,8 +24,7 @@ export default {
       // fetch meta for each conversation
       for (let key in conversations) {
         if (conversations.hasOwnProperty(key)) {
-          await dispatch('fetchMeta', key)
-          await dispatch('fetchMembers', key)
+          await Promise.all([ dispatch('fetchMeta', key), dispatch('fetchMembers', key) ])
         }
       }
 

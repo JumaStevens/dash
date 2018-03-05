@@ -64,9 +64,11 @@ export default {
       profilePicture: currentUser(rootGetters).photoURL,
       bio: ''
     }
+    console.log('>>>--->>> ', updateData)
 
     try {
       await firebaseRef.update(updateData)
+      console.log('success')
     } catch (e) { console.error(e) }
   }
 

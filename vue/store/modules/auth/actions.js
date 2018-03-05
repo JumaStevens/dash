@@ -40,8 +40,13 @@ export default {
   },
 
 
-  async updateProfile ({}, payload) {
-    try { await currentUser().updateProfile(payload) }
+  async updateProfile ({ dispatch }, payload) {
+    try {
+      await currentUser().updateProfile(payload)
+
+      await dispatch('users/updateCurrentUser', {}, { root: true })
+      console.log('auth ---> ', payload)
+    }
     catch (e) { console.error(e) }
   },
 

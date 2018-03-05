@@ -42,6 +42,19 @@ export default {
   },
 
 
+  getMembers: (state, getters, rootState, rootGetters) => (convoId) => {
+    const getUser = rootGetters['users/getUser']
+    const members = state.members[convoId] || {}
+    const membersArray = []
+
+    for (let key in members) {
+      if (members.hasOwnProperty(key) && getUser(key)) membersArray.push({ uid: key, ...getUser(key) })
+    }
+
+    return membersArray
+  },
+
+
   getConversationMeta (state, getters, rootState, rootGetters) {
     const users = rootState.users.users
     const meta = state.meta

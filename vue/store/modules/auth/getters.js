@@ -12,6 +12,7 @@ export default {
       displayName: '',
       photoURL: ''
     }
+    console.log('getter --> ', state.currentUser)
     return getters.isCurrentUser ? state.currentUser : this.currentUser
   },
 
