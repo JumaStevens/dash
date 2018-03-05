@@ -19,10 +19,10 @@ export default {
   },
 
   getUser: (state) => (uid) => {
-    // const users = state.users
-    // const user = users[uid]
-    // if (user) return user
-    // else console.log('user is false!')
+    const users = state.users
+    const user = users[uid]
+    if (user) return user
+    else console.log('user is false!')
   }
 
 

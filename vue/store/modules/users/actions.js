@@ -27,7 +27,7 @@ export default {
       const data = { key: snapshot.key, value: snapshot.val() }
       console.log('data: ', data)
 
-      commit('addUser', data)
+      commit('SET_USER', data)
       // dispatch('presence/fetchPresence', data.key, { root: true })
     }
     catch (e) {

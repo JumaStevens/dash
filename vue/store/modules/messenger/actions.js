@@ -23,7 +23,10 @@ export default {
 
       // fetch meta for each conversation
       for (let key in conversations) {
-        if (conversations.hasOwnProperty(key)) await dispatch('fetchMeta', key)
+        if (conversations.hasOwnProperty(key)) {
+          await dispatch('fetchMeta', key)
+          await dispatch('fetchMembers', key)
+        }
       }
 
       // fetch user for each meta
@@ -88,9 +91,8 @@ export default {
       const snapshot = await db.meta.child(convoId).once('value')
       const data = { key: snapshot.key, value: snapshot.val() }
 
-      commit('SET_META', data)
-      dispatch('watchMetaAdded', data.key)
-      dispatch('watchMetaRemoved', data.key)
+      if (data.value) commit('SET_META', data)
+      dispatch('watchMeta', snapshot.key)
     }
     catch (e) {
       console.error(e)
@@ -98,19 +100,14 @@ export default {
   },
 
 
-  watchMetaAdded ({ commit }, convoId) {
-    const success = (snapshot) => commit('SET_META', { key: snapshot.key, value: snapshot.val() })
+  watchMeta ({ commit }, convoId) {
+    const success = (snapshot) => {
+      const data = { key: snapshot.key, value: snapshot.val() }
+      data.value === null ? commit('DELETE_META', { key: data.key }) : commit('SET_META', data)
+    }
     const error = (e) => console.error(e)
 
-    db.meta.child(convoId).on('child_added', snapshot => success(snapshot), e => error(e))
-  },
-
-
-  watchMetaRemoved ({ commit }, convoId) {
-    const success = (snapshot) => commit('DELETE_META', { key: snapshot.key })
-    const error = (e) => console.error(e)
-
-    db.meta.child(convoId).on('child_removed', snapshot => success(snapshot), err => error(err))
+    db.meta.child(convoId).on('value', snapshot => success(snapshot), e => error(e))
   },
 
 
@@ -118,13 +115,10 @@ export default {
   async fetchMembers ({ commit, state, dispatch }, convoId) {
     try {
       if (state.members[convoId]) return
-
-      const snapshot = await db.members.child(convoId).on('value')
-      const data = { key: snapshot.key, value: snapshot.val() }
-
-      commit('SET_MEMBERS', data)
-      dispatch('watchMembersAdded', data.key)
-      dispatch('watchMembersRemoved', data.key)
+      const snapshot = await db.members.child(convoId).once('value')
+      snapshot.forEach(child => commit('SET_MEMBERS', { convoId, key: child.key, value: child.val() }))
+      dispatch('watchMembersAdded', convoId)
+      dispatch('watchMembersRemoved', convoId)
     }
     catch (e) {
       console.error(e)
@@ -133,18 +127,21 @@ export default {
 
 
   watchMembersAdded ({ commit }, convoId) {
-    const success = (snapshot) => commit('SET_MEMBERS', { key: snapshot.key, value: snapshot.val() })
+    const success = (snapshot) => commit('SET_MEMBERS', { convoId, key: snapshot.key, value: snapshot.val() })
     const error = (e) => console.error(e)
-
+    console.log(convoId, ' ....++')
     db.members.child(convoId).on('child_added', snapshot => success(snapshot), e => error(e))
   },
 
 
   watchMembersRemoved ({ commit }, convoId) {
-    const success = (snapshot) => commit('DELETE_MEMBERS', { key: snapshot.key })
+    const success = (snapshot) => {
+      console.log('fired!!')
+      commit('DELETE_MEMBERS', { convoId, key: snapshot.key })
+    }
     const error = (e) => console.error(e)
-
-    db.meta.child(convoId).on('child_removed', snapshot => success(snapshot), err => error(err))
+    console.log(convoId, ' ....><')
+    db.members.child(convoId).on('child_removed', snapshot => success(snapshot), err => error(err))
   },
 
 

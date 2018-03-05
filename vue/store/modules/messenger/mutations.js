@@ -33,25 +33,28 @@ export default {
   SET_MESSAGE (state, payload) {
     const messages = state.messages[payload.convoId] ? state.messages[payload.convoId] : {}
     const value = { ...messages, [payload.key]: payload.value }
-    console.log('value: ', value)
-
     Vue.set(state.messages, payload.convoId, value)
-    console.log('setMessages -- state >> ', state)
-    console.log('setMessages -- payload >> ', payload)
+    // console.log('setMessages -- state >> ', state)
+    // console.log('setMessages -- payload >> ', payload)
   },
 
 
+  // TO DO: DELETE_MESSAGE
+
+
   SET_MEMBERS (state, payload) {
-    Vue.set(state.members, payload.key, payload.value)
+    const members = Object.assign({}, state.members[payload.convoId])
+    const value = { ...members, [payload.key]: payload.value }
+    Vue.set(state.members, payload.convoId, value)
     // console.log('setMembers -- state >> ', state)
     // console.log('setMembers -- payload >> ', payload)
   },
 
 
   DELETE_MEMBERS (state, payload) {
-    Vue.delete(state.members, payload.key)
-    // console.log('setMembers -- state >> ', state)
-    // console.log('setMembers -- payload >> ', payload)
+    Vue.delete(state.members[payload.convoId], payload.key)
+    // console.log('deleteMembers -- state >> ', state)
+    // console.log('deleteMembers -- payload >> ', payload)
   },
 
 

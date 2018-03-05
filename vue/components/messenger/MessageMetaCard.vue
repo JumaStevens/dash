@@ -4,16 +4,12 @@ router-link(
   class='card'
 )
   div.card__avatar
-    //- img(
-    //-   v-lazy='user.profilePicture ? user.profilePicture : ""'
-    //-   class='card__img'
-    //- ) TODO: erroring for some reason
     img(
-
+      v-lazy='user.profilePicture ? user.profilePicture : ""'
       class='card__img'
     )
   p.card__name {{ user.displayName }}
-  p.card__text {{ item.lastMessage }}
+  p.card__text {{ item.message }}
   p.card__date {{ item.timestamp | formatDate }}
 
 </template>
@@ -31,6 +27,7 @@ export default {
   },
   computed: {
     user () {
+      console.log('users: ', this.getUser(this.item.uid))
       return this.getUser(this.item.uid) || {}
     },
 
@@ -45,7 +42,7 @@ export default {
     })
   },
   created () {
-    // this.fetchUser(this.item.uid)
+    this.fetchUser(this.item.uid)
   }
 }
 </script>
