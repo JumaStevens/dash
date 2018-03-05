@@ -85,6 +85,9 @@ export default {
     grid-row: 1 / 2
     grid-column: 2 / 3
     font-weight: 900
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
 
   &__text
     grid-row: 2 / 3

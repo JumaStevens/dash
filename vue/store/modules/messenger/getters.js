@@ -25,7 +25,7 @@ export default {
     const getUser = rootGetters['users/getUser']
     const uid = currentUser(rootGetters).uid
     const id = rootState.route.params.id
-    const members = id === 'new' ? state.app.newMembers : state.members[id]
+    const members = id === 'new' || (rootState.messenger.app.activeList === 'users' && id !== 'new') ? state.app.newMembers : state.members[id]
     const membersArray = []
 
     for (var key in members) {

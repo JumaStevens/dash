@@ -145,7 +145,8 @@ export default {
     ...mapGetters({
       getConversationMeta: 'messenger/getConversationMeta',
       getUsers: 'users/getUsers',
-      getFriends: 'friends/getFriends'
+      getFriends: 'friends/getFriends',
+      activeMembers: 'messenger/getActiveConversationMembers'
     }),
 
 
@@ -178,6 +179,10 @@ export default {
     setList (value) {
       const data = { value }
       this.setActiveList(data)
+
+      const params = this.$route.params
+      if (params.id && params.id !== 'new') this.activeMembers.forEach(member => this.writeMembers({ uid: member.uid }))
+      console.log('route: ', this.activeMembers)
     },
 
 
@@ -190,7 +195,8 @@ export default {
 
 
     ...mapActions({
-      fetchUser: 'users/fetchUser'
+      fetchUser: 'users/fetchUser',
+      writeMembers: 'messenger/writeMembers'
     })
   }
 }

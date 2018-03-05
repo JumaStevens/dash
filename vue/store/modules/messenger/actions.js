@@ -144,6 +144,21 @@ export default {
   },
 
 
+  async writeMembers ({ commit, state, rootState }, data) {
+    try {
+      const convoId = rootState.route.params.id
+      console.log('???: ', state.members[convoId][data.uid])
+      if (state.members[convoId][data.uid]) return
+
+      await db.members.child(convoId).set({ [data.uid]: true })
+    }
+    catch (e) {
+      console.error(e)
+    }
+    console.log('writeMembers -- data: ', data)
+  },
+
+
   // PENDING
   async fetchPending ({ commit, state, dispatch, rootGetters }) {
     try {
@@ -235,6 +250,7 @@ export default {
 
     try {
       await firebaseRef.update(updateData)
+      await Promise.all([ dispatch('fetchMeta', key), dispatch('fetchMembers', key), dispatch('fetchMessages', key) ])
     }
     catch (e) { console.error(e) }
   },

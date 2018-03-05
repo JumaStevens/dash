@@ -3,6 +3,7 @@ section(class='members')
 
   //- add member button
   a(
+    @click='setList("users")'
     class='members__icon'
   )
     IconPlus.members__svg
@@ -43,13 +44,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      members: 'messenger/getActiveConversationMembers',
+      members: 'messenger/getActiveConversationMembers'
     })
   },
   methods: {
     setActiveMember (index) {
       this.activeMemberIndex = index
-    }
+    },
+
+
+    setList (value) {
+      console.log('value: ', value)
+      this.setActiveList({ value })
+    },
+
+
+    ...mapMutations({
+      setActiveList: 'messenger/setActiveList'
+    })
   }
 }
 </script>
