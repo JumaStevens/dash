@@ -103,6 +103,7 @@ export default {
     const success = (snapshot) => {
       const data = { key: snapshot.key, value: snapshot.val() }
       data.value === null ? commit('DELETE_META', { key: data.key }) : commit('SET_META', data)
+      console.log('data --->>>> ', data)
     }
     const error = (e) => console.error(e)
 
@@ -204,7 +205,7 @@ export default {
       if (state.messages[convoId]) return
 
       const snapshot = await db.messages.child(convoId).once('value')
-      snapshot.forEach(child => commit('SET_MESSAGE', { convoId, key: child.key, value: child.val() }))
+      snapshot.forEach(child => commit('SET_MESSAGES', { convoId, key: child.key, value: child.val() }))
       dispatch('watchMessagesAdded', convoId)
       dispatch('watchMessagesRemoved', convoId)
     }
@@ -215,7 +216,7 @@ export default {
 
 
   watchMessagesAdded ({ commit, rootGetters }, convoId) {
-    const success = (snapshot) => commit('SET_MESSAGE', { convoId, key: snapshot.key, value: snapshot.val() })
+    const success = (snapshot) => commit('SET_MESSAGES', { convoId, key: snapshot.key, value: snapshot.val() })
     const error = (e) => console.error(e)
 
     db.messages.child(convoId).orderByChild('timestamp').startAt(Date.now()).on('child_added', snapshot => success(snapshot), e => error(e))
@@ -223,10 +224,30 @@ export default {
 
 
   watchMessagesRemoved ({ commit }, convoId) {
-    const success = (snapshot) => commit('DELETE_MESSAGES', { key: snapshot.key })
+    const success = (snapshot) => commit('DELETE_MESSAGES', { convoId, key: snapshot.key })
     const error = (err) => console.error(err)
 
     db.messages.child(convoId).on('child_removed', snapshot => success(snapshot), e => error(e))
+  },
+
+
+
+  // TO DO: write add new message
+  async writeMessages ({ commit }, data) {
+
+  },
+
+
+  async deleteMessages ({ commit }, data) {
+    try {
+      console.log('deleteMessages data ---> ', data)
+      if (!data.convoId || !data.messageId) return
+      const removed = await db.messages.child(`${data.convoId}/${data.messageId}`).set(null)
+      console.log('removed: ', removed)
+    }
+    catch (e) {
+      console.error(e)
+    }
   },
 
 

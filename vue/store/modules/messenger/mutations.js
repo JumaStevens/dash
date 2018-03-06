@@ -30,7 +30,7 @@ export default {
   },
 
 
-  SET_MESSAGE (state, payload) {
+  SET_MESSAGES (state, payload) {
     const messages = state.messages[payload.convoId] ? state.messages[payload.convoId] : {}
     const value = { ...messages, [payload.key]: payload.value }
     Vue.set(state.messages, payload.convoId, value)
@@ -39,7 +39,11 @@ export default {
   },
 
 
-  // TO DO: DELETE_MESSAGE
+  DELETE_MESSAGES (state, payload) {
+    Vue.delete(state.messages[payload.convoId], payload.key)
+    // console.log('deleteMessages -- state >> ', state)
+    // console.log('deleteMessages -- payload >> ', payload)
+  },
 
 
   SET_MEMBERS (state, payload) {

@@ -12,20 +12,23 @@ div.card
       class='card__img'
     )
 
-  div.card__content-container
+  div(
+    :class='{ "from-self": message.fromSelf }'
+    class='card__content-container'
+  )
 
-    p(
-      :class='{ "from-self": message.fromSelf }'
-      class='card__name'
-    ) {{ message.fromSelf ? 'You' : user.displayName }}
+    div.card__details
 
-      span.card__timestamp &nbsp;at {{ message.timestamp | formatDate }}
+      p.card__name {{ message.fromSelf ? 'You' : user.displayName }}
 
-    p(
-      :class='{ "from-self": message.fromSelf }'
-      class='card__text'
-    ) {{ message.message }}
+      p.card__timestamp {{ message.timestamp | formatDate }}
+      a(
+        @click='deleteMessage'
+        class='card__icon'
+      )
+        IconActions.card__svg
 
+    p.card__text {{ message.message }}
 
 
 </template>
@@ -33,8 +36,12 @@ div.card
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import IconActions from '~/assets/svg/icon-actions.svg'
 
 export default {
+  components: {
+    IconActions
+  },
   props: {
     message: {
       type: Object,
@@ -52,6 +59,20 @@ export default {
 
     ...mapGetters({
       members: 'messenger/getActiveConversationMembers'
+    })
+  },
+  methods: {
+    deleteMessage () {
+      const data = {
+        convoId: this.$route.params.id,
+        messageId: this.message.id
+      }
+      this.deleteMessages(data)
+    },
+
+
+    ...mapActions({
+      deleteMessages: 'messenger/deleteMessages'
     })
   }
 }
@@ -71,23 +92,55 @@ export default {
 
   &__content-container
     grid-column: 2 / 3
-
-  &__name
+    @extend %flex--column
 
     &.from-self
-      text-align: right
+      align-items: flex-end
+
+
+  &__details
+    position: relative
+
+    &:hover
+
+      & .card__timestamp
+        visibility: hidden
+        opacity: 0
+        transition: opacity 1000ms, visibility 0 1000ms
+
+      & .card__icon
+        visibility: unset
+        opacity: 1
+        transition: opacity 1000ms, visibility 0
+
+  &__name
+    display: inline-block
+
+  &__timestamp
+    display: inline-block
+    margin-left: $unit
+    text-align: right
+    color: $dark
+    font-size: $fs-1
+    transition: opacity 1000ms, visibility 0
+
+  &__icon
+    position: absolute
+    top: 50%
+    right: 0
+    @extend %flex--row-center
+    transform: translateY(-50%)
+    transition: opacity 1000ms, visibility 0 1000ms
+    visibility: hidden
+    opacity: 0
+
+  &__svg
+    width: auto
+    height: $fs
+    fill: $dark
 
   &__text
     color: $dark
-
-    &.from-self
-      text-align: right
-
-  &__timestamp
-    color: $dark
-    font-size: $fs-1
-
-
 
 
 
