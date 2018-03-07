@@ -29,6 +29,21 @@ section.conversation-list
         class='search-form__input'
       )
 
+    //- navigation list
+    ul(
+      class='controller__navigation-list navigation-list'
+    )
+      li(
+        v-for='(item, index) in navigation.list'
+        :key='item + index'
+        class='navigation-list__item'
+      )
+        a(
+          @click='setNavigation(item)'
+          :class='{ active: navigation.active === item }'
+          class='navigation-list__link'
+        ) {{ item }}
+
     //- new message icon
     router-link(
       :to='{ name: "chatId", params: { id: "new" } }'
@@ -41,8 +56,8 @@ section.conversation-list
     //- cancel icon
     a(
       v-show='isUserListActive'
-      class='controller__icon controller__icon--right'
       @click='cancelNewMembers'
+      class='controller__icon controller__icon--right'
     )
       icon-cancel.controller__svg
 
@@ -108,6 +123,10 @@ export default {
   data () {
     return {
       search: '',
+      navigation: {
+        active: 'Messages',
+        list: ['Messages', 'Pending', 'Active']
+      }
     }
   },
   computed: {
@@ -186,6 +205,12 @@ export default {
     },
 
 
+    setNavigation (value) {
+      this.navigation.active = value
+      console.log('-...> ', this.navigation.active)
+    },
+
+
     ...mapMutations({
       setNewMember: 'messenger/setNewMember',
       deleteNewMember: 'messenger/deleteNewMember',
@@ -207,27 +232,26 @@ export default {
 
 .conversation-list
   @extend %flex--column
+  background: $white
 
 
 .controller
   display: grid
+  grid-template-rows: repeat(2, auto)
   grid-template-columns: 48px 1fr 48px
-  grid-gap: 0px $unit
+  grid-gap: $unit*4 $unit
   align-items: stretch
-  height: $fs*4
-  margin-bottom: 1px
-  background: $white
+  padding: 0 $unit*2
+  margin: $unit*2 0 $unit*4 0
 
   &__icon
     grid-column: 1 / 2
-    @extend %flex
-    align-items: center
-    padding-left: $unit*2
+    @extend %flex--row-center
+    width: $unit*6
+    height: $unit*6
 
     &--right
       grid-column: 3 / 4
-      justify-content: flex-end
-      padding: 0 $unit*2 0 0
 
   &__svg
     width: auto
@@ -236,23 +260,62 @@ export default {
 
 
 .search-form
+  grid-row: 2 / 3
   grid-column: 2 / 3
   @extend %flex
-  margin: 0 $unit*2
+  align-items: flex-end
+  display: none
 
   &__input
     width: 100%
     background: transparent
     color: $dark
+    padding: $unit 0
 
     &::placeholder
       color: $dark
 
 
+.navigation-list
+  grid-row: 2 / 3
+  grid-column: 2 / 3
+  min-height: $unit*6
+  @extend %flex
+  align-items: flex-end
+  border-bottom: 1px solid $pri-cl
+
+  &__item
+    margin-right: $unit*5
+
+    &:last-child
+      margin-right: unset
+
+  &__link
+    position: relative
+    display: block
+    padding: $unit 0
+    color: $dark
+
+    &::before
+      content: ''
+      position: absolute
+      top: 100%
+      left: 0
+      width: 100%
+      height: 1px
+      background: $black
+      opacity: 0
+
+    &.active
+      color: $black
+
+      &::before
+        opacity: 1
+
+
 .list
   height: 100%
   overflow-y: auto
-  background: $white
 
   &__item
     height: $fs*4

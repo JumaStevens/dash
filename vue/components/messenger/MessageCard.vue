@@ -106,12 +106,12 @@ export default {
       & .card__timestamp
         visibility: hidden
         opacity: 0
-        transition: opacity 1000ms, visibility 0 1000ms
+        transition: opacity 200ms, visibility 0ms 200ms
 
       & .card__icon
         visibility: unset
         opacity: 1
-        transition: opacity 1000ms, visibility 0
+        transition: opacity 200ms, visibility 0ms
 
   &__name
     display: inline-block
@@ -122,7 +122,7 @@ export default {
     text-align: right
     color: $dark
     font-size: $fs-1
-    transition: opacity 1000ms, visibility 0
+    transition: opacity 200ms, visibility 0ms
 
   &__icon
     position: absolute
@@ -130,7 +130,7 @@ export default {
     right: 0
     @extend %flex--row-center
     transform: translateY(-50%)
-    transition: opacity 1000ms, visibility 0 1000ms
+    transition: opacity 200ms, visibility 0ms 200ms
     visibility: hidden
     opacity: 0
 

@@ -2,7 +2,7 @@
 div(class='container messenger')
 
   //- conversation header
-  ConversationHeader(class='messenger__conversation-header')
+  //- ConversationHeader(class='messenger__conversation-header')
 
   //- conversation list
   ConversationList(

@@ -94,8 +94,8 @@ export default {
     position: absolute
     top: 0
     right: 0
-    width: 48px
-    height: 48px
+    width: $unit*6
+    height: $unit*6
     @extend %flex
     justify-content: center
     align-items: center

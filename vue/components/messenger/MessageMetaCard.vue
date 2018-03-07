@@ -10,7 +10,7 @@ router-link(
     )
   p.card__name {{ displayName }}
   p.card__text {{ item.message }}
-  p.card__date {{ item.timestamp | formatDate }}
+  p.card__timestamp {{ item.timestamp | formatDate }}
 
 </template>
 
@@ -97,8 +97,11 @@ export default {
     white-space: nowrap
     text-overflow: ellipsis
 
-  &__date
+  &__timestamp
     grid-row: 1 / 2
     grid-column: 3 / 4
+    font-size: 12px
+    color: $dark
+    @extend %flex--row-center
 
 </style>

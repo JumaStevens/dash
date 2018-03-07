@@ -38,9 +38,9 @@ export default {
   justify-content: center
   align-items: center
   background: white
-  margin-bottom: 1px
 
   &__list
+    display: none
 
   &__item
     @extend %flex--column
