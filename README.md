@@ -1,53 +1,11 @@
-Hello world! :)
+Dash (codename, currently in ALPHA) is the beginning of an open-source social platform embracing a minimalist dogma. The goal is to move away from a traditional corporate model, to a community governed, software as a utility platform.
 
----
-Intelligence is beautiful.
-You can talk to the website and it will perform the action. Like Alexa.
+## Documentation
 
+Documentation will be released as the project matures.
 
+## Getting started
 
-/ firebase structure idea /
-
-users
-  user_id
-    name
-    profile_url
-    email
-
-presence (!)
-  user_id
-    status
-    last_changed
-
-friends (!)
-  user_id (jane)
-    user_id (fred)
-    user_id (jill)
-  user_id (mark)
-    user_id (smith)
-    user_id (jill)
-
-messenger
-  userConversations (!)
-    user_id
-      convo_id
-      convo_id
-      convo_id
-
-  conversationMeta
-    convo_id
-      from
-      lastMessage
-      timestamp
-
-  members
-    convo_id
-      user_id
-      user_id
-
-  messages
-    convo_id
-      message_index
-        user_id
-        message
-        timestamp
+```
+$ npm install ...placeholder
+```
