@@ -22,10 +22,10 @@ export default {
   async fetchUser ({ commit, state, dispatch }, uid) {
     try {
       if (state.users[uid]) return
-      console.log('uid: ---> ', uid)
+      // console.log('uid: ---> ', uid)
       const snapshot = await database.ref(`users/${uid}`).once('value')
       const data = { key: snapshot.key, value: snapshot.val() }
-      console.log('data: ', data)
+      // console.log('data: ', data)
 
       commit('SET_USER', data)
       // dispatch('presence/fetchPresence', data.key, { root: true })

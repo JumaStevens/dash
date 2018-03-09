@@ -71,8 +71,8 @@ export default {
 
   DELETE_PENDING (state, payload) {
     Vue.delete(state.pending, payload.key)
-    // console.log('deletePending -- state >> ', state)
-    // console.log('deletePending -- payload >> ', payload)
+    console.log('deletePending -- state >> ', state)
+    console.log('deletePending -- payload >> ', payload)
   },
 
 

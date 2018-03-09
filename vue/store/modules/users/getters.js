@@ -22,7 +22,7 @@ export default {
     const users = state.users
     const user = users[uid]
     if (user) return user
-    else console.log('user is false!')
+    // else console.log('user is false!')
   }
 
 
