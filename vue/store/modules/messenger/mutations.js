@@ -94,6 +94,12 @@ export default {
 
   setActiveList (state, payload) {
     state.app.activeList = payload.value
+  },
+
+
+  UPDATE_APP_SEARCH (state, payload) {
+    state.app.search = payload.value
+    console.log('search state: ', state.app.search)
   }
 
 

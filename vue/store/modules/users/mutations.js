@@ -3,14 +3,14 @@ import Vue from 'vue'
 export default {
   addUser (state, payload) {
     Vue.set(state.users, payload.key, payload.value)
-    console.log('add user --> ', state.users)
-    console.log('add user payload --> ', payload)
+    // console.log('add user --> ', state.users)
+    // console.log('add user payload --> ', payload)
   },
 
   SET_USER (state, payload) {
     Vue.set(state.users, payload.key, payload.value)
-    console.log('add user --> ', state.users)
-    console.log('add user payload --> ', payload)
+    // console.log('add user --> ', state.users)
+    // console.log('add user payload --> ', payload)
   },
 
 

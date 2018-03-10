@@ -5,7 +5,8 @@ export default {
   meta: {},
   pending: {},
   app: {
+    search: '',
     newMembers: {},
-    activeList: 'conversations'
+    activeList: 'messages'
   }
 }

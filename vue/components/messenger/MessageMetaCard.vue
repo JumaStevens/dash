@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     user () {
-      console.log('users: ', this.getUser(this.item.uid))
+      // console.log('users: ', this.getUser(this.item.uid))
       return this.getUser(this.item.uid) || {}
     },
 

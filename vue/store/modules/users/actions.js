@@ -4,18 +4,18 @@ const currentUser = (rootGetters) => rootGetters['auth/getCurrentUser']
 
 export default {
   initUsers ({ dispatch }) {
-    // dispatch('watchUsersAdded')
-    // dispatch('watchUsersRemoved')
-    // dispatch('fetchUsers')
-    // dispatch('updateCurrentUser')
+    dispatch('watchUsersAdded')
+    dispatch('watchUsersRemoved')
+    dispatch('fetchUsers')
+    dispatch('updateCurrentUser')
   },
 
 
   fetchUsers ({ commit }) {
-    // const success = (snapshot) => snapshot.forEach(child => commit('addUser', { key: child.key, value: child.val() }))
-    // const error = (err) => console.error(err)
-    // console.log('allUsers!')
-    // database.ref('users').limitToFirst(100).once('value').then(snapshot => success(snapshot), err => error(err))
+    const success = (snapshot) => snapshot.forEach(child => commit('addUser', { key: child.key, value: child.val() }))
+    const error = (err) => console.error(err)
+    console.log('allUsers!')
+    database.ref('users').limitToFirst(100).once('value').then(snapshot => success(snapshot), err => error(err))
   },
 
 

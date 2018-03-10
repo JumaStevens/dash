@@ -16,6 +16,7 @@ export default {
   async init ({ dispatch, state }) {
     try {
       const conversations = state.conversations
+      const pending = state.pending
       const meta = state.meta
 
       // fetch all conversations/pending of user
@@ -24,6 +25,14 @@ export default {
       // fetch meta for each conversation
       for (let key in conversations) {
         if (conversations.hasOwnProperty(key)) {
+          await Promise.all([ dispatch('fetchMeta', key), dispatch('fetchMembers', key) ])
+        }
+      }
+
+      // PERFORMANCE ISSUE? --> has to wait for conversation meta until firing pending, delaying process..
+      // fetch meta for each pending conversation
+      for (let key in pending) {
+        if (pending.hasOwnProperty(key)) {
           await Promise.all([ dispatch('fetchMeta', key), dispatch('fetchMembers', key) ])
         }
       }
@@ -85,7 +94,7 @@ export default {
   async fetchMeta ({ commit, state, dispatch }, convoId) {
     try {
       if (state.meta[convoId]) return
-      console.log('fetchMeta: ', convoId)
+      // console.log('fetchMeta: ', convoId)
 
       const snapshot = await db.meta.child(convoId).once('value')
       const data = { key: snapshot.key, value: snapshot.val() }
@@ -103,7 +112,7 @@ export default {
     const success = (snapshot) => {
       const data = { key: snapshot.key, value: snapshot.val() }
       data.value === null ? commit('DELETE_META', { key: data.key }) : commit('SET_META', data)
-      console.log('data --->>>> ', data)
+      // console.log('data --->>>> ', data)
     }
     const error = (e) => console.error(e)
 

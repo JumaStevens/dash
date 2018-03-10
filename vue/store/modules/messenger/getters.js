@@ -55,15 +55,18 @@ export default {
   },
 
 
-  getConversationMeta (state, getters, rootState, rootGetters) {
-    const users = rootState.users.users
+  getMeta: (state, getters, rootState, rootGetters) => (type) => {
     const meta = state.meta
-    const metaArray = []
+    const users = rootState.users.users
+    const obj = type === 'pending' || type === 'conversations' ? state[type] : meta
+    const data = []
 
-    for (var key in meta) {
-      if (meta.hasOwnProperty(key)) metaArray.push({ id: key, ...meta[key] })
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key) && meta[key]) {
+        data.push({ id: key, ...meta[key], ...users[meta[key].uid] })
+      }
     }
 
-    return metaArray
+    return data
   }
 }
