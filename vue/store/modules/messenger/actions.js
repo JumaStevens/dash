@@ -94,7 +94,7 @@ export default {
   async fetchMeta ({ commit, state, dispatch }, convoId) {
     try {
       if (state.meta[convoId]) return
-      // console.log('fetchMeta: ', convoId)
+      console.log('fetchMeta: ', convoId)
 
       const snapshot = await db.meta.child(convoId).once('value')
       const data = { key: snapshot.key, value: snapshot.val() }
@@ -112,7 +112,7 @@ export default {
     const success = (snapshot) => {
       const data = { key: snapshot.key, value: snapshot.val() }
       data.value === null ? commit('DELETE_META', { key: data.key }) : commit('SET_META', data)
-      // console.log('data --->>>> ', data)
+      console.log('data --->>>> ', data)
     }
     const error = (e) => console.error(e)
 
@@ -188,10 +188,20 @@ export default {
   },
 
 
-  watchPendingAdded ({ commit, rootGetters }) {
+  watchPendingAdded ({ commit, state, dispatch, rootGetters }) {
     const uid = currentUser(rootGetters).uid
 
-    const success = (snapshot) => commit('SET_PENDING', { key: snapshot.key, value: snapshot.val() })
+    const success = async (snapshot) => {
+      try {
+        if (state.pending[snapshot.key]) return
+        commit('SET_PENDING', { key: snapshot.key, value: snapshot.val() })
+        await Promise.all([ dispatch('fetchMeta', snapshot.key), dispatch('fetchMembers', snapshot.key) ])
+      }
+      catch (e) {
+        console.error(e)
+      }
+    }
+
     const error = (e) => console.error(e)
 
     db.pending.child(uid).on('child_added', snapshot => success(snapshot), e => error(e))
@@ -208,16 +218,16 @@ export default {
   },
 
 
-  async acceptPending ({ commit, state, rootGetters }, pendingId) {
+  async acceptPending ({ commit, state, rootGetters }, convoId) {
     try {
       const uid = currentUser(rootGetters).uid
       const pending = state.pending
       const updateData = {}
 
-      if (!pending[pendingId]) return
+      if (!pending[convoId]) return
 
-      updateData[`messenger/pending/${uid}/${pendingId}`] = null
-      updateData[`messenger/conversations/${uid}/${pendingId}`] = true
+      updateData[`messenger/pending/${uid}/${convoId}`] = null
+      updateData[`messenger/conversations/${uid}/${convoId}`] = true
 
       await database.ref().update(updateData)
     }
@@ -227,14 +237,14 @@ export default {
   },
 
 
-  async deletePending ({ commit, rootGetters }, pendingId) {
+  async deletePending ({ commit, rootGetters }, convoId) {
     try {
       const uid = currentUser(rootGetters).uid
       const pending = state.pending
 
-      if (!pending[pendingId]) return
+      if (!pending[convoId]) return
 
-      await db.pending.child(`${uid}/${pendingId}`).set(null)
+      await db.pending.child(`${uid}/${convoId}`).set(null)
     }
     catch (e) {
       console.error(e)

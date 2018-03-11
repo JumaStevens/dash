@@ -42,13 +42,13 @@ export default {
   },
 
 
-  getMembers: (state, getters, rootState, rootGetters) => (convoId) => {
-    const getUser = rootGetters['users/getUser']
+  getMembers: (state, getters, rootState) => (convoId) => {
+    const users = rootState.users.users
     const members = state.members[convoId] || {}
     const membersArray = []
 
     for (let key in members) {
-      if (members.hasOwnProperty(key) && getUser(key)) membersArray.push({ uid: key, ...getUser(key) })
+      if (members.hasOwnProperty(key) && users[key]) membersArray.push({ uid: key, ...users[key] })
     }
 
     return membersArray
