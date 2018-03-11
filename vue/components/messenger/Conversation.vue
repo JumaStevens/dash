@@ -15,6 +15,10 @@ div.conversation
         placeholder='Type a message...'
         class='message-form__input'
       )
+      input(
+        type='submit'
+        style='display: none'
+      )
 
 </template>
 

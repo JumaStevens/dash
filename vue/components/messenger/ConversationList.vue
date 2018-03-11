@@ -5,7 +5,7 @@ section.conversation-list
   list-controller
 
 
-  //- conversations
+  //- conversations list
   ul(
     v-show='activeList === "messages"'
     class='list'
@@ -21,7 +21,7 @@ section.conversation-list
       )
 
 
-  //- pending
+  //- pending list
   ul(
     v-show='activeList === "pending"'
     class='list'
@@ -37,7 +37,7 @@ section.conversation-list
       )
 
 
-  //- users / search
+  //- users / search list
   ul(
     v-show='activeList === "users" || activeList === "search"'
     class='list'
@@ -153,7 +153,7 @@ export default {
       setNewMember: 'messenger/setNewMember',
       deleteNewMember: 'messenger/deleteNewMember',
       clearNewMembers: 'messenger/clearNewMembers',
-      setActiveList: 'messenger/setActiveList'
+      setActiveList: 'messenger/SET_ACTIVE_LIST'
     }),
 
 

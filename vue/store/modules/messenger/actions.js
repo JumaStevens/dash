@@ -172,7 +172,7 @@ export default {
   // PENDING
   async fetchPending ({ commit, state, dispatch, rootGetters }) {
     try {
-      if (state.pending[uid]) return
+      if (!_.isEmpty(state.pending)) return
 
       const uid = currentUser(rootGetters).uid
       const snapshot = await db.pending.child(uid).once('value')
@@ -205,6 +205,40 @@ export default {
     const error = (err) => console.error(err)
 
     db.pending.child(uid).on('child_removed', snapshot => success(snapshot), e => error(e))
+  },
+
+
+  async acceptPending ({ commit, state, rootGetters }, pendingId) {
+    try {
+      const uid = currentUser(rootGetters).uid
+      const pending = state.pending
+      const updateData = {}
+
+      if (!pending[pendingId]) return
+
+      updateData[`messenger/pending/${uid}/${pendingId}`] = null
+      updateData[`messenger/conversations/${uid}/${pendingId}`] = true
+
+      await database.ref().update(updateData)
+    }
+    catch (e) {
+      console.error(e)
+    }
+  },
+
+
+  async deletePending ({ commit, rootGetters }, pendingId) {
+    try {
+      const uid = currentUser(rootGetters).uid
+      const pending = state.pending
+
+      if (!pending[pendingId]) return
+
+      await db.pending.child(`${uid}/${pendingId}`).set(null)
+    }
+    catch (e) {
+      console.error(e)
+    }
   },
 
 
@@ -267,6 +301,7 @@ export default {
     const updateData = {}
     const newMembers = state.app.newMembers
     const members = { [uid]: true, ...newMembers }
+    console.log('addNew --> ', messageKey)
 
     updateData[`messenger/conversations/${uid}/${key}`] = true
 
@@ -286,9 +321,10 @@ export default {
   },
 
 
-  async addNewMessage ({ commit, state, rootState, rootGetters }, data) {
+  async addNewMessage ({ commit, dispatch, state, rootState, rootGetters }, data) {
     try {
       const uid = currentUser(rootGetters).uid
+      const pending = state.pending
       const id = rootState.route.params.id
       const key = database.ref(`messenger/messages/${id}`).push().key
       const timestamp = firebase.database.ServerValue.TIMESTAMP
@@ -300,6 +336,10 @@ export default {
 
 
       await database.ref(`messenger/messages/${id}`).push(messageData)
+      if (state.pending[id]) {
+        await dispatch('acceptPending', id)
+        commit('SET_ACTIVE_LIST', { value: 'messages' })
+      }
     }
     catch (e) { console.error(e) }
 

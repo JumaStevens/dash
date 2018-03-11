@@ -139,7 +139,7 @@ export default {
 
 
     ...mapMutations({
-      setActiveList: 'messenger/setActiveList',
+      setActiveList: 'messenger/SET_ACTIVE_LIST',
       updateSearch: 'messenger/UPDATE_APP_SEARCH'
     })
   }

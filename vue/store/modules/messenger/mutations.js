@@ -92,7 +92,7 @@ export default {
   },
 
 
-  setActiveList (state, payload) {
+  SET_ACTIVE_LIST (state, payload) {
     state.app.activeList = payload.value
   },
 
