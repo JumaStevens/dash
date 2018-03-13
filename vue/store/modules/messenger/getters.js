@@ -17,6 +17,8 @@ export default {
       }
     }
 
+    console.log('activeConvo: --> ', messagesArray)
+
     return messagesArray
   },
 
@@ -29,7 +31,7 @@ export default {
     const membersArray = []
 
     for (var key in members) {
-      if (members.hasOwnProperty(key) && key !== uid) {
+      if (members.hasOwnProperty(key)) {
         const member = {
           uid: key,
           ...getUser(key)

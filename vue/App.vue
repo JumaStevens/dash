@@ -3,14 +3,8 @@
 
   navigation(
     v-if='isCurrentUser'
-  ).vue-app__nav
-
-  .sidebar
-    .container-dot
-      .dot
-      .dot
-      .dot
-      .dot
+    class='vue-app__nav'
+  )
 
   transition(name='fade')
     error-404-view(
@@ -68,6 +62,9 @@ export default {
     min-height: 100%
     grid-column: 2 / 3
 
+  &__nav
+    grid-column: 1 / 2
+
 .fade-enter-active, .fade-leave-active
   transition: opacity 150ms, transform 150ms
 
@@ -76,28 +73,5 @@ export default {
   opacity: 0
 
 
-.sidebar
-  @extend %flex--column-center
-  position: fixed
-  top: 0
-  left: 0
-  background: $white
-  // box-shadow: 0px 0px 0.5rem rgba(34,34,34,0.2) //rgba(15, 114, 219, 0.2)
-  box-shadow: 0px 0px 1rem rgba(34,34,34,0.2)
-  // width: $border-offset
-  width: 64px
-  height: 100%
-  grid-column: 1 / 2
-
-  & .container-dot
-    display: grid
-    grid-template-rows: repeat(2, 1fr)
-    grid-template-columns: repeat(2, 1fr)
-
-  & .dot
-    width: 8px
-    height: 8px
-    background: $black
-    margin: 2px
 
 </style>

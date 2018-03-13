@@ -23,7 +23,7 @@ aside.controller
   //- check mark icon
   a(
     v-show='isActive.users'
-    @click='setList("messages")'
+    @click='addNewMembers'
     class='controller__icon'
   )
     icon-check.controller__svg
@@ -132,6 +132,12 @@ export default {
     },
 
 
+    addNewMembers () {
+      this.setList("messages")
+      
+    },
+
+
     cancelNewMembers () {
       this.$router.go(-1)
       this.setActiveList({ value: this.navigation.previous })
@@ -178,7 +184,6 @@ export default {
   grid-column: 2 / 3
   @extend %flex
   align-items: flex-end
-  // display: none
 
   &__input
     width: 100%
@@ -209,6 +214,7 @@ export default {
     display: block
     padding: $unit 0
     color: $dark
+    text-transform: capitalize
 
     &::before
       content: ''

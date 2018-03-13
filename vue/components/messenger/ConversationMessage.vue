@@ -7,7 +7,6 @@ div.message
     li(
       v-for='(message, index) in messages'
       :key='index'
-      :class='{ fromSelf: message.fromSelf }'
       class='message__item'
     )
 

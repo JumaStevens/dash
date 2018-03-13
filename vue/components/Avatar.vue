@@ -30,6 +30,8 @@ export default {
 
 .avatar
   @extend %avatar
-  display: none
+  // display: none
+  width: 32px
+  height: 32px
 
 </style>

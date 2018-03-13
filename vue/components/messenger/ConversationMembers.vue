@@ -60,7 +60,7 @@ export default {
 
 
     ...mapMutations({
-      setActiveList: 'messenger/setActiveList'
+      setActiveList: 'messenger/SET_ACTIVE_LIST'
     })
   }
 }
