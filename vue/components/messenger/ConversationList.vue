@@ -2,7 +2,11 @@
 section.conversation-list
 
   //- list controller
-  list-controller
+  list-controller(
+    @confirmMemberQueue='confirmMemberQueue'
+    @cancelMemberQueue='cancelMemberQueue'
+    class='controller'
+  )
 
 
   //- conversations list
@@ -62,6 +66,7 @@ import ListController from '~comp/messenger/ListController.vue'
 import MessageMetaCard from '~comp/messenger/MessageMetaCard.vue'
 import AddUserCard from '~comp/messenger/AddUserCard.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import _ from 'lodash'
 
 
 export default {
@@ -90,9 +95,7 @@ export default {
       const users = this.getFriends
       const friends = this.friends
 
-      for (var key in friends) {
-        if (friends.hasOwnProperty(key)) this.fetchUser(key)
-      }
+      _.forEach(friends, (value, key) => this.fetchUser(key))
 
       return users.filter(user => user.displayName.match(new RegExp(this.search, 'i')))
     },
@@ -109,7 +112,8 @@ export default {
     ...mapState({
       friends: state => state.friends.friends,
       activeList: state => state.messenger.app.activeList,
-      search: state => state.messenger.app.search
+      search: state => state.messenger.app.search,
+      memberQueue: state => state.messenger.app.newMembers
     })
   },
   methods: {
@@ -133,19 +137,13 @@ export default {
     },
 
 
-    setList (value) {
-      const data = { value }
-      this.setActiveList(data)
-
-      const params = this.$route.params
-      if (params.id && params.id !== 'new') this.activeMembers.forEach(member => this.writeMembers({ uid: member.uid }))
-      console.log('route: ', this.activeMembers)
+    cancelMemberQueue () {
+      _.forEach(this.memberQueue, (value, key) => this.deleteNewMember({ key }))
     },
 
 
-    setNavigation (value) {
-      this.navigation.active = value
-      console.log('-...> ', this.navigation.active)
+    confirmMemberQueue () {
+      _.forEach(this.memberQueue, (value, key) => this.writeMembers({ uid: key }) )
     },
 
 

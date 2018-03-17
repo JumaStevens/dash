@@ -134,13 +134,13 @@ export default {
 
     addNewMembers () {
       this.setList("messages")
-      
+      this.$emit('confirmMemberQueue')
     },
 
 
     cancelNewMembers () {
-      this.$router.go(-1)
       this.setActiveList({ value: this.navigation.previous })
+      this.$emit('cancelMemberQueue')
     },
 
 

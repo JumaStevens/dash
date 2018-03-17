@@ -160,7 +160,7 @@ export default {
       console.log('???: ', state.members[convoId][data.uid])
       if (state.members[convoId][data.uid]) return
 
-      await db.members.child(convoId).set({ [data.uid]: true })
+      await db.members.child(`${convoId}/${data.uid}`).set(true)
     }
     catch (e) {
       console.error(e)

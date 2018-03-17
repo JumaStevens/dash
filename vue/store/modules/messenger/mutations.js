@@ -78,12 +78,15 @@ export default {
 
   setNewMember (state, payload) {
     Vue.set(state.app.newMembers, payload.key, payload.value)
-    console.log('---> payload: ', state)
+    console.log('setNewMember -- state >> ', state)
+    console.log('setNewMember -- payload >> ', payload)
   },
 
 
   deleteNewMember (state, payload) {
-    Vue.delete(state.app.newMembers, payload.key, payload.value)
+    Vue.delete(state.app.newMembers, payload.key)
+    console.log('deleteNewMember -- state >> ', state)
+    console.log('deleteNewMember -- payload >> ', payload)
   },
 
 
