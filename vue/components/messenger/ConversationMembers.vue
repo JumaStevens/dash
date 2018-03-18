@@ -1,12 +1,29 @@
 <template lang='pug'>
 section(class='members')
 
-  //- add member button
   a(
-    @click='setList("users")'
-    class='members__icon'
+    @click='toggleActions'
+    class='members__icon members__actions'
   )
-    IconPlus.members__svg
+    icon-actions.members__svg
+
+  div(
+    v-show='showActions'
+    class='members__actions-container'
+  )
+    //- add member button
+    a(
+      @click='setList("users")'
+      class='members__icon'
+    )
+      IconPlus.members__svg
+
+    //- remove member button
+    a(
+      @click='removeMember()'
+      class='members__icon'
+    )
+      IconBan.members__svg
 
 
   //- active conversation members
@@ -28,18 +45,23 @@ section(class='members')
 
 
 <script>
+import IconActions from '~/assets/svg/icon-actions.svg'
 import IconPlus from '~/assets/svg/icon-plus.svg'
+import IconBan from '~/assets/svg/icon-ban.svg'
 import MemberCard from './MemberCard.vue'
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapGetters, mapMutations, mapActions, mapState } from 'vuex'
 
 export default {
   components: {
     MemberCard,
-    IconPlus
+    IconPlus,
+    IconActions,
+    IconBan
   },
   data () {
     return {
-      activeMemberIndex: 0
+      activeMemberIndex: 0,
+      showActions: false,
     }
   },
   computed: {
@@ -59,8 +81,25 @@ export default {
     },
 
 
+    toggleActions () {
+      this.showActions = !this.showActions
+    },
+
+
+    removeMember () {
+      const member = this.members[this.activeMemberIndex]
+      console.log('memeber: ', member)
+      this.deleteMembers({ uid: member.uid })
+    },
+
+
     ...mapMutations({
-      setActiveList: 'messenger/SET_ACTIVE_LIST'
+      setActiveList: 'messenger/SET_ACTIVE_LIST',
+    }),
+
+
+    ...mapActions({
+      deleteMembers: 'messenger/deleteMembers'
     })
   }
 }
@@ -79,6 +118,14 @@ export default {
   align-items: center
   background: $white
 
+  &__actions-container
+    position: absolute
+    top: $unit*3
+    right: $unit*6
+    transform: translateY(-50%)
+    @extend %flex
+    justify-content: center
+
 
   &__list
     position: relative
@@ -89,19 +136,25 @@ export default {
     left: 50%
     transform: translate(-50%, -50%)
 
-
   &__icon
-    position: absolute
-    top: 0
-    right: 0
-    width: $unit*6
-    height: $unit*6
+    width: $unit*2
+    height: $unit*2
     @extend %flex
     justify-content: center
     align-items: center
 
   &__svg
+    width: auto
     height: $fs
     fill: $dark
+
+  &__actions
+    position: absolute
+    top: 0
+    right: 0
+    width: $unit*6
+    height: $unit*6
+
+
 
 </style>

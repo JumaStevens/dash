@@ -90,6 +90,31 @@ export default {
   },
 
 
+  async deleteConversations ({ dispatch, rootGetters, state }, data) {
+    try {
+      const uid = currentUser(rootGetters).uid
+      const convoId = data.id
+
+      if (!state.conversations[convoId]) return
+      console.log('data: ', data)
+
+      const updateData = {}
+
+      updateData[`messenger/conversations/${uid}/${convoId}`] = null
+
+      updateData[`messenger/members/${convoId}/${uid}`] = null
+
+      await firebaseRef.update(updateData)
+      // db.conversations.child(`${uid}/${convoId}`).off()
+      // db.meta.child(convoId).off()
+      // db.members.child(convoId).off()
+    }
+    catch (e) {
+      console.error(e)
+    }
+  },
+
+
   // META
   async fetchMeta ({ commit, state, dispatch }, convoId) {
     try {
@@ -166,6 +191,21 @@ export default {
       console.error(e)
     }
     console.log('writeMembers -- data: ', data)
+  },
+
+
+  async deleteMembers ({ commit, state, rootState }, data) {
+    try {
+      const convoId = rootState.route.params.id
+      console.log('???: ', !state.members[convoId][data.uid])
+      if (!state.members[convoId][data.uid]) return
+
+      await db.members.child(`${convoId}/${data.uid}`).set(null)
+    }
+    catch (e) {
+      console.error(e)
+    }
+    console.log('deleteMembers -- data: ', data)
   },
 
 

@@ -10,7 +10,9 @@ router-link(
     )
   p.card__name {{ displayName }}
   p.card__text {{ item.message }}
-  p.card__timestamp {{ item.timestamp | formatDate }}
+  p(
+    @click='deleteConversation'
+  ).card__timestamp {{ item.timestamp | formatDate }}
 
 </template>
 
@@ -52,8 +54,15 @@ export default {
     })
   },
   methods: {
+    deleteConversation () {
+      const id = this.item.id
+      this.deleteConversations({ id })
+    },
+
+
     ...mapActions({
-      fetchUser: 'users/fetchUser'
+      fetchUser: 'users/fetchUser',
+      deleteConversations: 'messenger/deleteConversations'
     })
   },
   created () {
