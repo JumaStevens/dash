@@ -9,3 +9,7 @@ Documentation will be released as the project matures.
 ```
 $ npm install ...placeholder
 ```
+
+## Dev notes
+
+Firebase functions - deleting member logic wip
