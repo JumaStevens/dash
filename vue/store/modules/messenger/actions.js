@@ -105,9 +105,6 @@ export default {
       updateData[`messenger/members/${convoId}/${uid}`] = null
 
       await firebaseRef.update(updateData)
-      // db.conversations.child(`${uid}/${convoId}`).off()
-      // db.meta.child(convoId).off()
-      // db.members.child(convoId).off()
     }
     catch (e) {
       console.error(e)
@@ -173,7 +170,11 @@ export default {
       console.log('fired!!')
       commit('DELETE_MEMBERS', { convoId, key: snapshot.key })
     }
-    const error = (e) => console.error(e)
+    const error = (e) => {
+      console.error(e)
+      console.log('code: ', e.code)
+      console.log('message: ', e.message)
+    }
     console.log(convoId, ' ....><')
     db.members.child(convoId).on('child_removed', snapshot => success(snapshot), err => error(err))
   },

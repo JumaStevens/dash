@@ -57,8 +57,8 @@ export default {
 
   DELETE_MEMBERS (state, payload) {
     Vue.delete(state.members[payload.convoId], payload.key)
-    // console.log('deleteMembers -- state >> ', state)
-    // console.log('deleteMembers -- payload >> ', payload)
+    console.log('deleteMembers -- state >> ', state)
+    console.log('deleteMembers -- payload >> ', payload)
   },
 
 
