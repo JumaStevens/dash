@@ -36,11 +36,20 @@ export const listener = functions.database.ref('/messenger/members/{convoId}/{ui
       const membersSnapshot = await adminMembersRef.child(convoId).once('value')
       const membersCount = membersSnapshot.numChildren()
 
-      // clean up conversation
-      if (!membersCount) {
+      // add bot message to conversation
+      if (membersCount) {
+        const botMessage = {
+          message: `${authUserRecord.displayName} lefted the conversation.`,
+          timestamp: admin.database.ServerValue.TIMESTAMP,
+          uid: 'bot'
+        }
+
+        await adminMessageRef.child(convoId).push().set(botMessage)
+      }
+      // clean up empty conversation traces
+      else {
         console.log('clean up')
       }
-
 
     }
     else {
@@ -51,14 +60,14 @@ export const listener = functions.database.ref('/messenger/members/{convoId}/{ui
       console.log('pendingSnapshot: ', pendingSnapshot)
 
       if (conversationsSnapshot.hasChild(convoId)) {
-
+        await adminConversationsRef.child(`${uid}/${convoId}`).set(null)
       }
       else if (pendingSnapshot.hasChild(convoId)) {
         await adminPendingRef.child(`${uid}/${convoId}`).set(null)
 
       }
 
-      //
+      // add bot message to conversation
       const botMessage = {
         message: `${authUserRecord.displayName} removed ${userRecord.displayName} from the conversation.`,
         timestamp: admin.database.ServerValue.TIMESTAMP,
@@ -67,45 +76,7 @@ export const listener = functions.database.ref('/messenger/members/{convoId}/{ui
 
       await adminMessageRef.child(convoId).push().set(botMessage)
 
-
-
-
     }
-
-
-
-
-    // const rootRef = event.data.ref.root
-    // const parentRef = event.data.ref.parent
-    // const metaRef = rootRef.child('messenger/meta')
-    // const adminMetaRef = admin.database().ref('/messenger/meta')
-    // const convoId = event.params.convoId
-    //
-    // // build data from deleted message
-    // const previousSnapshot = event.data.previous
-    // const previousData = {
-    //   timestamp: previousSnapshot.child('timestamp').val(),
-    //   uid: previousSnapshot.child('uid').val()
-    // }
-    //
-    // // fetch meta message
-    // const metaSnapshot = await metaRef.child(convoId).once('value')
-    // const metaData = {
-    //   timestamp: metaSnapshot.child('timestamp').val(),
-    //   uid: metaSnapshot.child('uid').val()
-    // }
-    //
-    // // continue if deleted and current meta message match
-    // if (!(previousData.timestamp === metaData.timestamp && previousData.uid === metaData.uid)) return
-    //
-    // // fetch most recent message
-    // let recentMessage = null
-    // const messageSnapshot = await parentRef.orderByKey().limitToLast(1).once('value')
-    // messageSnapshot.forEach(child => recentMessage = child.val())
-    //
-    // // write recent message to meta
-    // if (_.isEmpty(recentMessage)) return
-    // const newMessage = await adminMetaRef.child(convoId).set(recentMessage)
 
     return
   }

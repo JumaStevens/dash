@@ -45,4 +45,6 @@ export const listener = functions.database.ref('/messenger/messages/{convoId}/{m
 
 })
 
+// TO DO: when last message of a conversation is deleted, set meta convoId to null (delete)
+
 // TO DO: what happens when the message deleted was the last of the conversation? (delete convo, clean up meta, members, messages?)

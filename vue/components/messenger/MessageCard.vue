@@ -13,7 +13,7 @@ div.card
 
   //- details
   p.card__details
-    span.card__name {{ user.displayName }}
+    //- span.card__name {{ user.displayName }}
     span.card__timestamp &nbsp; {{ message.timestamp | formatDate }}
 
   //- text
