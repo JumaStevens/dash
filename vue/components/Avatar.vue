@@ -4,7 +4,7 @@ router-link(
   class='avatar'
 )
   img(
-    v-lazy='getCurrentUserProfilePicture'
+    v-lazy='userData.user.profilePicture'
     class='avatar__img'
   )
 </template>
@@ -14,6 +14,12 @@ router-link(
 import { mapGetters } from 'vuex'
 
 export default {
+  props: {
+    userData: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {}
   },

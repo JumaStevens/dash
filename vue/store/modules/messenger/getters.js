@@ -1,21 +1,28 @@
+import _ from 'lodash'
+
 const currentUser = (rootGetters) => rootGetters['auth/getCurrentUser']
 
 export default {
   getConversationMessages (state, getters, rootState, rootGetters) {
     const uid = currentUser(rootGetters).uid
-    const messages = state.messages[rootState.route.params.id]
+    const convoId = rootState.route.params.id
+    const messages = state.messages[convoId]
+    const getUser = rootGetters['users/getUser']
     const messagesArray = []
 
-    for (var key in messages) {
-      if (messages.hasOwnProperty(key)) {
-        const message = {
-          id: key,
-          fromSelf: uid === messages[key].uid,
-          ...messages[key]
+    // build message with user data
+    _.forEach(messages, (value, key) => {
+      const message = messages[key]
+
+      messagesArray.push({
+        id: key,
+        fromSelf: uid === message.uid,
+        ...message,
+        user: {
+          ...getUser(message.uid)
         }
-        messagesArray.push(message)
-      }
-    }
+      })
+    })
 
     console.log('activeConvo: --> ', messagesArray)
 

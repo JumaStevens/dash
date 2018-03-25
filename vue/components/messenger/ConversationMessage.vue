@@ -12,6 +12,7 @@ div.message
 
       MessageCard(
         :message='message'
+        @deleteMessage='deleteMessage'
         class='message__card'
       )
 
@@ -28,8 +29,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      messages: 'messenger/getConversationMessages',
-      members: 'messenger/getActiveConversationMembers'
+      messages: 'messenger/getConversationMessages'
     })
   },
   watch: {
@@ -42,8 +42,19 @@ export default {
     },
 
 
+    deleteMessage (message) {
+      console.log('logMessage: ', message)
+      const data = {
+        convoId: this.$route.params.id,
+        messageId: message.id
+      }
+      this.deleteMessages(data)
+    },
+
+
     ...mapActions({
-      fetchMessages: 'messenger/fetchMessages'
+      fetchMessages: 'messenger/fetchMessages',
+      deleteMessages: 'messenger/deleteMessages'
     })
   },
   created () {

@@ -337,7 +337,6 @@ export default {
       console.log('deleteMessages data ---> ', data)
       if (!data.convoId || !data.messageId) return
       const removed = await db.messages.child(`${data.convoId}/${data.messageId}`).set(null)
-      console.log('removed: ', removed)
     }
     catch (e) {
       console.error(e)
