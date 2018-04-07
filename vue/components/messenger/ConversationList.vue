@@ -25,22 +25,6 @@ section.conversation-list
       )
 
 
-  //- pending list
-  ul(
-    v-show='activeList === "pending"'
-    class='list'
-  )
-    li(
-      v-for='(item, index) in pending'
-      :key='"conversations" + index'
-      class='list__item'
-    )
-      message-meta-card(
-        :item='item'
-        class='list__card'
-      )
-
-
   //- users / search list
   ul(
     v-show='activeList === "users" || activeList === "search"'
@@ -80,14 +64,8 @@ export default {
   },
   computed: {
     conversations () {
-      const conversationsMeta = this.getMeta('conversations')
+      const conversationsMeta = Object.values(this.getMeta)
       return conversationsMeta.filter(meta => meta.displayName && meta.displayName.match(new RegExp(this.search, 'i')))
-    },
-
-
-    pending () {
-      const pendingMeta = this.getMeta('pending')
-      return pendingMeta.filter(meta => meta.displayName && meta.displayName.match(new RegExp(this.search, 'i')))
     },
 
 

@@ -51,89 +51,45 @@ export default {
   },
 
 
-  getMembers: (state, getters, rootState) => (convoId) => {
+  members ({ members }, getters, rootState) {
     const users = rootState.users.users
-    const members = state.members[convoId] || {}
-    const membersArray = []
+    const data = {}
 
-    for (let key in members) {
-      if (members.hasOwnProperty(key) && users[key]) membersArray.push({ uid: key, ...users[key] })
-    }
+    _.forEach(members, (value, id) => {
+      const membersUid = Object.keys(value)
 
-    return membersArray
+      membersUid.forEach(uid => {
+        if (!users[uid]) return
+        if (!data[id]) data[id] = []
+        data[id].push({ id, uid, ...users[uid] })
+      })
+    })
+
+    console.log('members data: ', data)
+    return data
   },
 
 
-  getMeta: (state, getters, rootState, rootGetters) => (type) => {
+  getMeta ({ meta }, { members }, rootState, rootGetters) { // TO DO: Check why this is running so many times. (big performance hit)
     const authUid = currentUser(rootGetters).uid
-    const meta = state.meta
-    const users = rootState.users.users
-    const obj = state.conversations
-    const data = []
+    const data = {}
 
-    console.log('sljflsf?: ', obj)
-    _.forEach(obj, (value, key) => {
-      const members = state.members[key]
+    _.forEach(meta, (value, id) => {
+      if (!members[id]) return
 
-      if (!members) return
-      const metaUid = meta[key].uid
-      const MetaUsers = []
+      const user = members[id].find(member => member.uid === value.uid)
+      if (!user) return
 
-      const membersUid = Object.keys(members)
-
-      console.log('??: ', members.length)
-
-      // if auth user is only member
-      if (membersUid.length === 1 && metaUid === authUid) {
-        console.log('solo life!')
+      if (members[id].length === 1 && value.uid === authUid) {
+        data[id] = { id, ...value, ...user }
       }
-
-      if (membersUid.length === 2) {
-        console.log('twos company.')
+      else {
+        data[id] = { id, ...value, message: `${user.displayName}: ${value.message}`, ...user }
       }
-
-      if (membersUid.length >= 3) {
-        console.log('party in the usa!')
-      }
-
-
-
-
-      // if group message, find meta user
-      // const otherUserUid = Object.keys(state.members[key]).find( uid => uid !== authUid )
-      // if (otherUserUid)
-      // console.log('other: ', otherUserUid)
-      // { ...users[metaUid],}
-      // if (state.members[key].length > 2) {
-      //   const users = Object.keys(state.members[key]).reduce( (accumulator, elem, index, array) => {
-      //     if ()
-      //   }, {})
-      // }
-      //
-      // console.log('members: ', members)
-      // const users = members.filter(member => console.log('->m ', member))
-
 
     })
 
-
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key) && meta[key]) {
-        data.push({ id: key, ...meta[key], ...users[meta[key].uid] })
-      }
-    }
-
-
-
-
-    // for (let key in obj) {
-    //   if (obj.hasOwnProperty(key) && meta[key]) {
-    //     data.push({ id: key, ...meta[key], ...users[meta[key].uid] })
-    //   }
-    // }
-
-    // getters.getPendingMeta
-
+    console.log('meta data: ', data)
     return data
   },
 

@@ -35,7 +35,8 @@ export default {
 
 
     members () {
-      return this.getMembers(this.item.id)
+      const members = this.getMembers
+      return members[this.item.id] || []
     },
 
 
@@ -49,7 +50,7 @@ export default {
 
     ...mapGetters({
       getUser: 'users/getUser',
-      getMembers: 'messenger/getMembers',
+      getMembers: 'messenger/members',
       getCurrentUser: 'auth/getCurrentUser'
     })
   },
