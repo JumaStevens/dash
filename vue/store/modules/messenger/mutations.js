@@ -64,8 +64,8 @@ export default {
 
   SET_PENDING (state, payload) {
     Vue.set(state.pending, payload.key, payload.value)
-    console.log('setPending -- state >> ', state)
-    console.log('setPending -- payload >> ', payload)
+    // console.log('setPending -- state >> ', state)
+    // console.log('setPending -- payload >> ', payload)
   },
 
 

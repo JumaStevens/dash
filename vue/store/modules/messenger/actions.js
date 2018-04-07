@@ -116,7 +116,7 @@ export default {
   async fetchMeta ({ commit, state, dispatch }, convoId) {
     try {
       if (state.meta[convoId]) return
-      console.log('fetchMeta: ', convoId)
+      // console.log('fetchMeta: ', convoId)
 
       const snapshot = await db.meta.child(convoId).once('value')
       const data = { key: snapshot.key, value: snapshot.val() }
@@ -134,7 +134,7 @@ export default {
     const success = (snapshot) => {
       const data = { key: snapshot.key, value: snapshot.val() }
       data.value === null ? commit('DELETE_META', { key: data.key }) : commit('SET_META', data)
-      console.log('data --->>>> ', data)
+      // console.log('data --->>>> ', data)
     }
     const error = (e) => console.error(e)
 
@@ -160,22 +160,22 @@ export default {
   watchMembersAdded ({ commit }, convoId) {
     const success = (snapshot) => commit('SET_MEMBERS', { convoId, key: snapshot.key, value: snapshot.val() })
     const error = (e) => console.error(e)
-    console.log(convoId, ' ....++')
+    // console.log(convoId, ' ....++')
     db.members.child(convoId).on('child_added', snapshot => success(snapshot), e => error(e))
   },
 
 
   watchMembersRemoved ({ commit }, convoId) {
     const success = (snapshot) => {
-      console.log('fired!!')
+      // console.log('fired!!')
       commit('DELETE_MEMBERS', { convoId, key: snapshot.key })
     }
     const error = (e) => {
       console.error(e)
-      console.log('code: ', e.code)
-      console.log('message: ', e.message)
+      // console.log('code: ', e.code)
+      // console.log('message: ', e.message)
     }
-    console.log(convoId, ' ....><')
+    // console.log(convoId, ' ....><')
     db.members.child(convoId).on('child_removed', snapshot => success(snapshot), err => error(err))
   },
 
@@ -191,7 +191,7 @@ export default {
     catch (e) {
       console.error(e)
     }
-    console.log('writeMembers -- data: ', data)
+    // console.log('writeMembers -- data: ', data)
   },
 
 
@@ -206,7 +206,7 @@ export default {
     catch (e) {
       console.error(e)
     }
-    console.log('deleteMembers -- data: ', data)
+    // console.log('deleteMembers -- data: ', data)
   },
 
 
@@ -351,7 +351,7 @@ export default {
     const updateData = {}
     const newMembers = state.app.newMembers
     const members = { [uid]: true, ...newMembers }
-    console.log('addNew --> ', messageKey)
+    // console.log('addNew --> ', messageKey)
 
     updateData[`messenger/conversations/${uid}/${key}`] = true
 
