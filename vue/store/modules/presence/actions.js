@@ -26,10 +26,16 @@ export default {
   },
 
 
-  fetchPresence ({ commit, rootGetters }, uid) {
-    const success = (snapshot) => commit('setPresence', { key: snapshot.key, value: snapshot.val() })
-    const error = (err) => console.error(err)
+  async fetchPresence ({ commit, state, rootGetters }, uid) {
+    try {
+      if (state.presence[uid]) return
 
-    database.ref(`presence/${uid}`).once('value').then(snapshot => success(snapshot), err => error(err))
+      const snapshot = await database.ref(`presence/${uid}`).once('value')
+      const data = { key: snapshot.key, value: snapshot.val() }
+      commit('setPresence', data)
+    }
+    catch (e) {
+      console.error(e)
+    }
   }
 }

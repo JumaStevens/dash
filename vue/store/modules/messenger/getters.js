@@ -70,7 +70,7 @@ export default {
   },
 
 
-  getMeta ({ meta }, { members }, rootState, rootGetters) { // TO DO: Check why this is running so many times. (big performance hit)
+  getMeta ({ meta }, { members }, rootState, rootGetters) { // TO DO: account for when "bot" writes x removed x message (bot is not apart of members)
     const authUid = currentUser(rootGetters).uid
     const data = {}
 
@@ -83,6 +83,11 @@ export default {
       if (members[id].length === 1 && value.uid === authUid) {
         data[id] = { id, ...value, ...user }
       }
+      // if (members[id].length === 2) {
+      //   const otherUser = members[id].find(member => member.uid !== authUid)
+      //   console.log('otherUser: ', otherUser)
+      //   data[id] = { id, ...value, message: `${user.displayName}: ${value.message}`, ...otherUser }
+      // }
       else {
         data[id] = { id, ...value, message: `${user.displayName}: ${value.message}`, ...user }
       }

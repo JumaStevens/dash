@@ -9,38 +9,58 @@ section.conversation-list
   )
 
 
-  //- conversations list
-  ul(
-    v-show='activeList === "messages"'
-    class='list'
-  )
-    li(
-      v-for='(item, index) in conversations'
-      :key='"conversations" + index'
-      class='list__item'
+  //- lists container
+  div(class='lists-container')
+
+    //- active users list
+    ul(
+      class='active-users'
     )
-      message-meta-card(
-        :item='item'
-        class='list__card'
+      h3(class='active-users__title') Online
+      li(
+        v-for='(item, index) in activeUsers'
+        :key='"activeUsers" + index'
+        class='active-users__item'
       )
+        Avatar(
+          :userData='item'
+          class='active-users__avatar'
+        )
 
 
-  //- users / search list
-  ul(
-    v-show='activeList === "users" || activeList === "search"'
-    class='list'
-  )
-    li(
-      v-for='(item, index) in users'
-      :key='"users"+index'
-      class='list__item'
+
+    //- conversations list
+    ul(
+      v-show='activeList === "messages"'
+      class='list'
     )
-      add-user-card(
-        :user='item'
-        @addNewMember='addNewMember'
-        @removeNewMember='removeNewMember'
-        class='list__card'
+      li(
+        v-for='(item, index) in conversations'
+        :key='"conversations" + index'
+        class='list__item'
       )
+        message-meta-card(
+          :item='item'
+          class='list__card'
+        )
+
+
+    //- users / search list
+    ul(
+      v-show='activeList === "users" || activeList === "search"'
+      class='list'
+    )
+      li(
+        v-for='(item, index) in users'
+        :key='"users"+index'
+        class='list__item'
+      )
+        add-user-card(
+          :user='item'
+          @addNewMember='addNewMember'
+          @removeNewMember='removeNewMember'
+          class='list__card'
+        )
 
 </template>
 
@@ -49,6 +69,7 @@ section.conversation-list
 import ListController from '~comp/messenger/ListController.vue'
 import MessageMetaCard from '~comp/messenger/MessageMetaCard.vue'
 import AddUserCard from '~comp/messenger/AddUserCard.vue'
+import Avatar from '~comp/Avatar.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import _ from 'lodash'
 
@@ -57,7 +78,8 @@ export default {
   components: {
     ListController,
     MessageMetaCard,
-    AddUserCard
+    AddUserCard,
+    Avatar
   },
   data () {
     return {}
@@ -79,11 +101,25 @@ export default {
     },
 
 
+    activeUsers () {
+      console.log('activeUsers: ', this.onlineUsers)
+      const users = Object.values(this.onlineUsers)
+      const wrapUsers = users.map(user => {
+        const obj = {}
+        obj.user = user
+        return obj
+      })
+      console.log('wrapUsers: ', wrapUsers)
+      return wrapUsers
+    },
+
+
     ...mapGetters({
       getMeta: 'messenger/getMeta',
       getUsers: 'users/getUsers',
       getFriends: 'friends/getFriends',
       activeMembers: 'messenger/getActiveConversationMembers',
+      onlineUsers: 'presence/onlineUsers'
     }),
 
 
@@ -148,11 +184,35 @@ export default {
   @extend %flex--column
   background: $white
 
-.list
+.lists-container
   height: 100%
   overflow-y: auto
 
+.list
+
   &__item
     height: $fs*4
+
+
+.active-users
+  display: grid
+  grid-template-rows: repeat(2, auto)
+  height: $fs*4
+  overflow: auto
+  background: rgba(34, 150, 40, 0.1)
+  padding: $unit $unit*2
+
+  &__title
+    color: $black
+    font-size: $fs
+
+  &__item
+    width: 48px
+    height: 48px
+
+  &__avatar
+    width: 48px
+    height: 48px
+
 
 </style>

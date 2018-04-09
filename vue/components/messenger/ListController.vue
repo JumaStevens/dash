@@ -50,21 +50,21 @@ aside.controller
     )
 
 
-  //- filters
-  ul(
-    v-show='navigation.list.find(val => isActive[val])'
-    class='controller__navigation-list navigation-list'
-  )
-    li(
-      v-for='(item, index) in navigation.list'
-      :key='item + index'
-      class='navigation-list__item'
-    )
-      a(
-        @click='setList(item)'
-        :class='{ active: isActive[item] }'
-        class='navigation-list__link'
-      ) {{ item }}
+  //- //- filters
+  //- ul(
+  //-   v-show='navigation.list.find(val => isActive[val])'
+  //-   class='controller__navigation-list navigation-list'
+  //- )
+  //-   li(
+  //-     v-for='(item, index) in navigation.list'
+  //-     :key='item + index'
+  //-     class='navigation-list__item'
+  //-   )
+  //-     a(
+  //-       @click='setList(item)'
+  //-       :class='{ active: isActive[item] }'
+  //-       class='navigation-list__link'
+  //-     ) {{ item }}
 
 </template>
 
@@ -157,12 +157,12 @@ export default {
 
 .controller
   display: grid
-  grid-template-rows: repeat(2, auto)
+  grid-template-rows: auto
   grid-template-columns: 48px 1fr 48px
   grid-gap: $unit*4 $unit
   align-items: stretch
   padding: 0 $unit*2
-  margin: $unit*2 0 $unit*4 0
+  margin: $unit*2 0
 
   &__icon
     grid-column: 1 / 2
@@ -180,7 +180,7 @@ export default {
 
 
 .search-form
-  grid-row: 2 / 3
+  grid-row: 1 / 2
   grid-column: 2 / 3
   @extend %flex
   align-items: flex-end

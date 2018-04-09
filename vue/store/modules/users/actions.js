@@ -28,7 +28,7 @@ export default {
       // console.log('data: ', data)
 
       commit('SET_USER', data)
-      // dispatch('presence/fetchPresence', data.key, { root: true })
+      dispatch('presence/fetchPresence', data.key, { root: true })
     }
     catch (e) {
       console.error(e)
