@@ -52,6 +52,8 @@ export default {
     margin-left: $unit
 
   &__name
+    white-space: nowrap
+    text-overflow: ellipsis
 
   &__timestamp
     color: $dark

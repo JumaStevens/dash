@@ -13,19 +13,20 @@ section.conversation-list
   div(class='lists-container')
 
     //- active users list
-    ul(
-      class='active-users'
-    )
-      h3(class='active-users__title') Online
-      li(
-        v-for='(item, index) in activeUsers'
-        :key='"activeUsers" + index'
-        class='active-users__item'
+    div(class='active-users')
+      h3(class='active-users__title') Active
+      ul(
+        class='active-users__list'
       )
-        Avatar(
-          :userData='item'
-          class='active-users__avatar'
+        li(
+          v-for='(item, index) in activeUsers'
+          :key='"activeUsers" + index'
+          class='active-users__item'
         )
+          Avatar(
+            :userData='item'
+            class='active-users__avatar'
+          )
 
 
 
@@ -191,20 +192,32 @@ export default {
 .list
 
   &__item
-    height: $fs*4
+    // box-shadow: 0px 4px 8px rgba(34,34,34,0.2)
+    margin: 16px 0
+    // border-bottom: 1px solid $grey
+    // height: $fs*4
 
 
 .active-users
   display: grid
   grid-template-rows: repeat(2, auto)
-  height: $fs*4
-  overflow: auto
+  grid-gap: $unit 0
+  // height: $fs*4
   background: rgba(34, 150, 40, 0.1)
   padding: $unit $unit*2
 
   &__title
+    grid-row: 1 / 2
     color: $black
     font-size: $fs
+
+  &__list
+    grid-row: 2 / 3
+    display: grid
+    grid-auto-flow: column
+    grid-gap: 0 $unit*2
+    overflow-x: auto
+    overflow-y: hidden
 
   &__item
     width: 48px

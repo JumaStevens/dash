@@ -4,9 +4,14 @@ router-link(
   class='avatar'
 )
   img(
+    v-if='userData.user.profilePicture'
     v-lazy='userData.user.profilePicture'
     class='avatar__img'
   )
+  span(
+    v-else
+    class='avatar__text'
+  ) {{ initial }}
 </template>
 
 
@@ -24,6 +29,12 @@ export default {
     return {}
   },
   computed: {
+    initial () {
+      const displayName = this.userData.user.displayName
+      return displayName ? displayName[0] : '?'
+    },
+
+
     ...mapGetters({
       getCurrentUserProfilePicture: 'auth/getCurrentUserProfilePicture'
     })
@@ -39,5 +50,11 @@ export default {
   // display: none
   width: 32px
   height: 32px
+
+  &__text
+    @extend %flex--row-center
+    height: 100%
+    border-radius: 50%
+    border: 1px solid $grey
 
 </style>

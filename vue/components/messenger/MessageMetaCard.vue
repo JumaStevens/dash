@@ -3,24 +3,28 @@ router-link(
   :to='{ name: "chatId", params: { id: item.id } }'
   class='card'
 )
-  div.card__avatar
-    img(
-      v-lazy='user.profilePicture ? user.profilePicture : ""'
-      class='card__img'
-    )
-  p.card__name {{ displayName }}
+  User(
+    :propData='user'
+    class='card__user'
+  )
   p.card__text {{ item.message }}
-  p(
-    @click='deleteConversation'
-  ).card__timestamp {{ item.timestamp | formatDate }}
+  //- p(
+  //-   @click='deleteConversation'
+  //- ).card__timestamp {{ item.timestamp | formatDate }}
+
+
 
 </template>
 
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import User from '~comp/User.vue'
 
 export default {
+  components: {
+    User
+  },
   props: {
     item: {
       type: Object,
@@ -28,15 +32,21 @@ export default {
     }
   },
   computed: {
-    user () {
-      // console.log('users: ', this.getUser(this.item.uid))
-      return this.getUser(this.item.uid) || {}
+    members () {
+
+      const members = this.getMembers
+      return members[this.item.id] || []
     },
 
 
-    members () {
-      const members = this.getMembers
-      return members[this.item.id] || []
+    user () {
+      return {
+        timestamp: this.item.timestamp,
+        user: {
+          profilePicture: this.item.profilePicture,
+          displayName: this.displayName
+        }
+      }
     },
 
 
@@ -76,36 +86,19 @@ export default {
 <style lang='sass' scoped>
 
 .card
-  height: $fs*4
-  display: grid
-  grid-template-rows: repeat(2, auto)
-  grid-template-columns: auto 1fr auto
+  @extend %flex--column
+  // height: $fs*4
   grid-gap: $unit/2 $unit
   background: $white
   padding: $unit $unit*2
 
-  &__avatar
-    @extend %avatar
-    grid-row: 1 / 3
-    grid-column: 1 / 2
-    width: 48px
-    height: 48px
-
-  &__name
-    grid-row: 1 / 2
-    grid-column: 2 / 3
-    font-weight: 900
-    white-space: nowrap
-    text-overflow: ellipsis
-    overflow: hidden
-
   &__text
-    grid-row: 2 / 3
-    grid-column: 2 / 3
+    padding: $unit/2 0
     color: $dark
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
+    margin-left: 56px
 
   &__timestamp
     grid-row: 1 / 2
