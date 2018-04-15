@@ -1,6 +1,8 @@
 const webpack = require('webpack')
 const path = require('path')
 const Dotenv = require('dotenv-webpack')
+const webpackDashboard = require('webpack-dashboard/plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 require('babel-polyfill')
 
 
@@ -53,7 +55,9 @@ const config = {
     ]
   },
   plugins: [
-    new Dotenv()
+    new Dotenv(),
+    new webpackDashboard(),
+    new BundleAnalyzerPlugin()
   ],
   resolve: {
     alias: {

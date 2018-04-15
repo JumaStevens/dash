@@ -66,7 +66,7 @@ export default {
   &__text
     padding: $unit/2
     border-radius: 4px
-    color: $dark
+    color: $black
 
   &__icon
     @extend %flex--row-center

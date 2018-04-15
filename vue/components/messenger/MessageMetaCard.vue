@@ -94,7 +94,7 @@ export default {
 
   &__text
     padding: $unit/2 0
-    color: $dark
+    color: $black
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
