@@ -1,15 +1,6 @@
 <template lang='pug'>
 aside.controller
 
-  //- search icon
-  a(
-    v-show='!isActive.users || isActive.search'
-    @click='toggleSearch'
-    class='controller__icon'
-  )
-    icon-search.controller__svg
-
-
   //- new message icon
   router-link(
     v-show='!isActive.users'
@@ -43,28 +34,19 @@ aside.controller
     v-show='isActive.users || isActive.search'
     class='controller__search-form search-form'
   )
+    //- search icon
+    a(
+      v-show='!isActive.users || isActive.search'
+      @click='toggleSearch'
+      class='controller__icon'
+    )
+      icon-search.controller__svg
+
     input(
       v-model='search'
       placeholder='Search messenger...'
       class='search-form__input'
     )
-
-
-  //- //- filters
-  //- ul(
-  //-   v-show='navigation.list.find(val => isActive[val])'
-  //-   class='controller__navigation-list navigation-list'
-  //- )
-  //-   li(
-  //-     v-for='(item, index) in navigation.list'
-  //-     :key='item + index'
-  //-     class='navigation-list__item'
-  //-   )
-  //-     a(
-  //-       @click='setList(item)'
-  //-       :class='{ active: isActive[item] }'
-  //-       class='navigation-list__link'
-  //-     ) {{ item }}
 
 </template>
 
@@ -181,9 +163,10 @@ export default {
 
 .search-form
   grid-row: 1 / 2
-  grid-column: 2 / 3
+  grid-column: 1 / 3
   @extend %flex
   align-items: flex-end
+  background: $grey
 
   &__input
     width: 100%

@@ -46,15 +46,19 @@ export default {
 <style lang='sass' scoped>
 
 .avatar
-  @extend %avatar
-  // display: none
-  width: 32px
-  height: 32px
+  width: 100%
+  height: 100%
 
   &__text
     @extend %flex--row-center
     height: 100%
     border-radius: 50%
     border: 1px solid $grey
+
+  &__img
+    width: inherit
+    height: inherit
+    border-radius: 50%
+    object-fit: cover
 
 </style>

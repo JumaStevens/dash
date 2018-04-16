@@ -8,7 +8,7 @@ div(class='user')
   )
 
   //- user meta
-  div(class='user__wrapper')
+  div(class='user__meta')
     p(class='user__name') {{ propData.user.displayName }}
     p(class='user__timestamp') {{ propData.timestamp | formatDate }}
 
@@ -42,12 +42,11 @@ export default {
   display: flex
 
   &__avatar
-    width: 48px
-    height: 48px
+    width: 40px
+    height: 40px
 
-  &__wrapper
+  &__meta
     @extend %flex--column
-    flex-wrap: wrap
     justify-content: center
     margin-left: $unit
 

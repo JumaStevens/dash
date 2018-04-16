@@ -14,7 +14,7 @@ section.conversation-list
 
     //- active users list
     div(class='active-users')
-      h3(class='active-users__title') Active
+      h3(class='active-users__title list__title') Online
       ul(
         class='active-users__list'
       )
@@ -31,19 +31,21 @@ section.conversation-list
 
 
     //- conversations list
-    ul(
-      v-show='activeList === "messages"'
-      class='list'
-    )
-      li(
-        v-for='(item, index) in conversations'
-        :key='"conversations" + index'
-        class='list__item'
+    div(class='conversations')
+      h3(class='list__title') Conversations
+      ul(
+        v-show='activeList === "messages"'
+        class='list'
       )
-        message-meta-card(
-          :item='item'
-          class='list__card'
+        li(
+          v-for='(item, index) in conversations'
+          :key='"conversations" + index'
+          class='list__item'
         )
+          message-meta-card(
+            :item='item'
+            class='list__card'
+          )
 
 
     //- users / search list
@@ -183,36 +185,39 @@ export default {
 
 .conversation-list
   @extend %flex--column
+  padding: $unit*5
+  overflow-y: auto
   background: $white
+  min-width: 400px
 
 .lists-container
   height: 100%
-  overflow-y: auto
+
+.conversations
+
 
 .list
 
   &__item
-    // box-shadow: 0px 4px 8px rgba(34,34,34,0.2)
     margin: 16px 0
-    // border-bottom: 1px solid $grey
-    // height: $fs*4
+    box-shadow: 0px 4px 24px rgba(34,34,34,0.05)
+
+  &__title
+    margin-bottom: 24px
+    font-size: 12px
+    color: $dark
+    text-transform: uppercase
 
 
 .active-users
-  display: grid
-  grid-template-rows: repeat(2, auto)
-  grid-gap: $unit 0
-  // height: $fs*4
-  background: rgba(34, 150, 40, 0.1)
-  padding: $unit $unit*2
+  margin: 0px 0 $unit*6 0
 
   &__title
-    grid-row: 1 / 2
-    color: $black
-    font-size: $fs
+
+
+
 
   &__list
-    grid-row: 2 / 3
     display: grid
     grid-auto-flow: column
     grid-gap: 0 $unit*2

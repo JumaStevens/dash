@@ -8,10 +8,6 @@ router-link(
     class='card__user'
   )
   p.card__text {{ item.message }}
-  //- p(
-  //-   @click='deleteConversation'
-  //- ).card__timestamp {{ item.timestamp | formatDate }}
-
 
 
 </template>
@@ -86,25 +82,26 @@ export default {
 <style lang='sass' scoped>
 
 .card
-  @extend %flex--column
-  // height: $fs*4
-  grid-gap: $unit/2 $unit
+  display: block
+  padding: $unit*2
+  border-radius: $unit/2
   background: $white
-  padding: $unit $unit*2
+  box-shadow: 0px 4px 24px rgba(34, 34, 34, 0.05)
+
+  &__user
+
 
   &__text
-    padding: $unit/2 0
-    color: $black
+    margin: $unit 0 0 48px
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
-    margin-left: 56px
+    color: $black
+
 
   &__timestamp
-    grid-row: 1 / 2
-    grid-column: 3 / 4
+    @extend %flex--row-center
     font-size: 12px
     color: $dark
-    @extend %flex--row-center
 
 </style>
