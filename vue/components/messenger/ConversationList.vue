@@ -197,32 +197,37 @@ export default {
 
 
 .list
+  padding: $unit*3 0 $unit*6 0
+
 
   &__item
-    margin: 16px 0
-    box-shadow: 0px 4px 24px rgba(34,34,34,0.05)
+    margin: $unit*2 0
+
+    &:first-child
+      margin-top: 0
+
+    &:last-child
+      margin-bottom: 0
 
   &__title
-    margin-bottom: 24px
+    // margin-bottom: 24px
     font-size: 12px
     color: $dark
     text-transform: uppercase
 
 
 .active-users
-  margin: 0px 0 $unit*6 0
+  // margin: 0px 0 $unit*6 0
+
 
   &__title
-
-
 
 
   &__list
     display: grid
     grid-auto-flow: column
     grid-gap: 0 $unit*2
-    overflow-x: auto
-    overflow-y: hidden
+    padding: $unit*3 0 $unit*7 0
 
   &__item
     width: 48px

@@ -8,16 +8,16 @@ aside.controller
     :to='{ name: "chatId", params: { id: "new" } }'
     class='controller__icon controller__icon--right'
   )
-    icon-new-message.controller__svg
+    IconPlus(class='controller__svg controller__svg--primary')
 
 
-  //- check mark icon
-  a(
-    v-show='isActive.users'
-    @click='addNewMembers'
-    class='controller__icon'
-  )
-    icon-check.controller__svg
+  //- //- check mark icon
+  //- a(
+  //-   v-show='isActive.users'
+  //-   @click='addNewMembers'
+  //-   class='controller__icon'
+  //- )
+  //-   icon-check.controller__svg
 
 
   //- cancel icon
@@ -31,22 +31,32 @@ aside.controller
 
   //- search form
   form(
-    v-show='isActive.users || isActive.search'
     class='controller__search-form search-form'
   )
     //- search icon
     a(
-      v-show='!isActive.users || isActive.search'
-      @click='toggleSearch'
-      class='controller__icon'
+      @click='toggleSearchFocus'
+      class='search-form__icon controller__icon'
     )
-      icon-search.controller__svg
+      IconSearch.controller__svg
 
+    //- input field
     input(
       v-model='search'
-      placeholder='Search messenger...'
+      ref='searchInput'
+      placeholder='Search'
       class='search-form__input'
     )
+
+    //- clear icon
+    a(
+      v-show='search.length'
+      @click='clearSearch'
+      class='search-form__icon search-form__clear controller__icon'
+    )
+      IconCancel(class='search-form__svg--clear controller__svg')
+
+
 
 </template>
 
@@ -54,6 +64,7 @@ aside.controller
 <script>
 import IconSearch from '~/assets/svg/icon-search.svg'
 import IconNewMessage from '~/assets/svg/icon-new-message.svg'
+import IconPlus from '~/assets/svg/icon-plus.svg'
 import IconCheck from '~/assets/svg/icon-check-mark.svg'
 import IconCancel from '~/assets/svg/icon-cancel.svg'
 import { mapState, mapMutations } from 'vuex'
@@ -64,14 +75,16 @@ export default {
     IconSearch,
     IconNewMessage,
     IconCheck,
-    IconCancel
+    IconCancel,
+    IconPlus
   },
   data () {
     return {
       navigation: {
         list: ['messages', 'pending', 'active'],
         previous: ''
-      }
+      },
+      isSearchFocus: false
     }
   },
   created () {
@@ -114,6 +127,18 @@ export default {
     },
 
 
+    toggleSearchFocus () {
+      const input = this.$refs.searchInput
+      this.isSearchFocus = !this.isSearchFocus
+      this.isSearchFocus ? input.focus() : input.blur()
+    },
+
+
+    clearSearch () {
+      this.updateSearch({ value: '' })
+    },
+
+
     addNewMembers () {
       this.setList("messages")
       this.$emit('confirmMemberQueue')
@@ -139,12 +164,9 @@ export default {
 
 .controller
   display: grid
-  grid-template-rows: auto
   grid-template-columns: 48px 1fr 48px
-  grid-gap: $unit*4 $unit
-  align-items: stretch
-  padding: 0 $unit*2
-  margin: $unit*2 0
+  align-items: center
+  margin-bottom: $unit*5
 
   &__icon
     grid-column: 1 / 2
@@ -154,28 +176,47 @@ export default {
 
     &--right
       grid-column: 3 / 4
+      grid-row: 1 / 2
+      position: relative
+      right: -$unit*2
 
   &__svg
     width: auto
     height: $fs
     fill: $dark
 
+    &--primary
+      fill: rgba(110, 188, 228, 1)
+
 
 .search-form
+  @extend %flex
   grid-row: 1 / 2
   grid-column: 1 / 3
-  @extend %flex
-  align-items: flex-end
-  background: $grey
+  height: $unit*4
+  align-items: stretch
+  border-radius: $unit
+  background: rgba(239, 239, 239, 1)
+
+  &__icon
+    height: unset
 
   &__input
     width: 100%
-    background: transparent
+    font-size: $fs
     color: $dark
-    padding: $unit 0
+    background: transparent
 
     &::placeholder
       color: $dark
+
+  &__svg--clear
+    width: 12px
+    height: 12px
+    padding: 2px
+    border-radius: 50%
+    background: $dark
+    fill: rgba(239, 239, 239, 1)
 
 
 .navigation-list

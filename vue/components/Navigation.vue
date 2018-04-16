@@ -55,6 +55,7 @@ export default {
 
   &__link
     margin-top: 24px
+    display: none // temp
 
   &__logo
     width: 24px

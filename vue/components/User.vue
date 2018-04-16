@@ -48,7 +48,7 @@ export default {
   &__meta
     @extend %flex--column
     justify-content: center
-    margin-left: $unit
+    margin-left: $unit*2
 
   &__name
     white-space: nowrap

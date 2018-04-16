@@ -8,6 +8,11 @@ router-link(
     v-lazy='userData.user.profilePicture'
     class='avatar__img'
   )
+  img(
+    v-if='userData.user.profilePicture'
+    v-lazy='userData.user.profilePicture'
+    class='avatar__img avatar__img--shadow'
+  )
   span(
     v-else
     class='avatar__text'
@@ -46,19 +51,30 @@ export default {
 <style lang='sass' scoped>
 
 .avatar
-  width: 100%
-  height: 100%
+  position: relative
+  display: block
+
+  &__img
+    position: relative
+    z-index: 50
+    width: inherit
+    height: inherit
+    border-radius: 50%
+    object-fit: cover
+
+    &--shadow
+      position: absolute
+      z-index: 49
+      top: $unit/2
+      left: 0
+      filter: blur($unit)
+      opacity: 0.95
+      transform: translateY(0.25) scale(0.75) 
 
   &__text
     @extend %flex--row-center
     height: 100%
     border-radius: 50%
     border: 1px solid $grey
-
-  &__img
-    width: inherit
-    height: inherit
-    border-radius: 50%
-    object-fit: cover
 
 </style>

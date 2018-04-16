@@ -83,7 +83,7 @@ export default {
 
 .card
   display: block
-  padding: $unit*2
+  padding: $unit*2 $unit*3
   border-radius: $unit/2
   background: $white
   box-shadow: 0px 4px 24px rgba(34, 34, 34, 0.05)
@@ -92,7 +92,7 @@ export default {
 
 
   &__text
-    margin: $unit 0 0 48px
+    margin: $unit 0 0 $unit*7
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
