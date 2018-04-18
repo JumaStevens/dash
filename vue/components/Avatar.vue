@@ -4,13 +4,13 @@ router-link(
   class='avatar'
 )
   img(
-    v-if='userData.user.profilePicture'
-    v-lazy='userData.user.profilePicture'
+    v-if='profilePicture'
+    v-lazy='profilePicture'
     class='avatar__img'
   )
   img(
-    v-if='userData.user.profilePicture'
-    v-lazy='userData.user.profilePicture'
+    v-if='profilePicture'
+    v-lazy='profilePicture'
     class='avatar__img avatar__img--shadow'
   )
   span(
@@ -35,8 +35,16 @@ export default {
   },
   computed: {
     initial () {
-      const displayName = this.userData.user.displayName
+      console.log(this.userData)
+      const displayName = this.userData.displayName || this.userData.user.displayName
       return displayName ? displayName[0] : '?'
+    },
+
+
+    profilePicture () {
+      const user = this.userData.user
+      const profilePicture = user ? user.profilePicture : this.userData.profilePicture
+      return profilePicture ? profilePicture : ''
     },
 
 
@@ -69,7 +77,7 @@ export default {
       left: 0
       filter: blur($unit)
       opacity: 0.95
-      transform: translateY(0.25) scale(0.75) 
+      transform: translateY(0.25) scale(0.75)
 
   &__text
     @extend %flex--row-center

@@ -76,6 +76,7 @@ export default {
   display: grid
   grid-template-rows: auto auto 1fr
   grid-template-columns: auto 1fr
+  align-items: stretch
 
 .messenger
   background: $pri-cl

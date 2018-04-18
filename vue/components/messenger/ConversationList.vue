@@ -61,9 +61,10 @@ section.conversation-list
         class='users__modal'
       )
         a(
+          @click='confirmMemberQueue'
           class='users__confirm'
         ) Confirm
-        
+
       ul(
         v-show='activeList === "users" || activeList === "search"'
         class='list'
