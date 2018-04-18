@@ -1,26 +1,33 @@
 <template lang='pug'>
 a(
   @click='toggleMember(user.uid)'
+  :class='{ active }'
   class='card'
 )
-  div(
+  User(
+    :propData='userData'
+    class='card__user'
+  )
+  span(
+    :class='{ active: !active }'
+    class='card__check'
+  ) +
+  span(
     :class='{ active }'
     class='card__check'
-  )
-  div.card__avatar
-    img(
-      v-lazy='user.profilePicture'
-      class='card__img'
-    )
-  p.card__name {{ user.displayName }}
+  ) -
 
 </template>
 
 
 <script>
 import { mapState } from 'vuex'
+import User from '~comp/User.vue'
 
 export default {
+  components: {
+    User
+  },
   props: {
     user: {
       type: Object,
@@ -30,6 +37,17 @@ export default {
   computed: {
     active () {
       return this.newMembers[this.user.uid]
+    },
+
+
+    userData () {
+      return {
+        timestamp: '',
+        user: {
+          profilePicture: this.user.profilePicture,
+          displayName: this.user.displayName
+        }
+      }
     },
 
 
@@ -49,66 +67,36 @@ export default {
 <style lang='sass' scoped>
 
 .card
-  height: $fs*4
   display: grid
-  grid-template-rows: repeat(2, auto)
-  grid-template-columns: auto auto 1fr
+  grid-template-rows: 1fr
+  grid-template-columns: 1fr auto
   grid-gap: $unit/2 $unit
+  align-items: center
+  padding: $unit*2 $unit*3
+  border-radius: $unit/2
   background: $white
-  padding: $unit $unit*2
+  box-shadow: 0px 4px 24px rgba(34, 34, 34, 0.05)
+  transition: box-shadow 250ms, background 500ms
+
+  // TO DO: transitioning box-shadow, background is a performance issue
+
+  &.active
+    background: rgba(243, 198, 218, 1)
+    box-shadow: 0px 4px 24px rgba(243, 198, 218, 1)
+
+  &__user
+    grid-row: 1 / 2
+    grid-column: 1 / 2
 
   &__check
-    grid-row: 1 / 3
-    grid-column: 1 / 2
-    width: calc(#{$fs} / 2 + 1px)
-    height: calc(#{$fs} / 2 + 1px)
-    align-self: center
-    position: relative
-
-    &::before,
-    &::after
-      content: ''
-      position: absolute
-      top: 0
-      left: 0
-      width: 100%
-      height: 100%
-      border-radius: 50%
-
-    &::before
-      border: 1px solid $dark
-
-    &::after
-      opacity: 0
-      background: rgba(50, 132, 255, 1)
+    @extend %flex--row-center
+    grid-row: 1 / 2
+    grid-column: 2 / 3
+    width: $unit*6
+    height: $unit*6
+    opacity: 0
 
     &.active
-      &::before
-        opacity: 0
-
-      &::after
-        opacity: 1
-
-
-  &__avatar
-    @extend %avatar
-    grid-row: 1 / 3
-    grid-column: 2 / 3
-    width: 48px
-    height: 48px
-
-  &__name
-    grid-row: 1 / 2
-    grid-column: 3 / 4
-    font-weight: 900
-
-  &__text
-    grid-row: 2 / 3
-    grid-column: 3 / 4
-    color: $dark
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-
+      opacity: 1
 
 </style>

@@ -13,7 +13,10 @@ section.conversation-list
   div(class='lists-container')
 
     //- active users list
-    div(class='active-users')
+    div(
+      v-show='activeList === "messages"'
+      class='active-users'
+    )
       h3(class='active-users__title list__title') Online
       ul(
         class='active-users__list'
@@ -31,10 +34,12 @@ section.conversation-list
 
 
     //- conversations list
-    div(class='conversations')
+    div(
+      v-show='activeList === "messages"'
+      class='conversations'
+    )
       h3(class='list__title') Conversations
       ul(
-        v-show='activeList === "messages"'
         class='list'
       )
         li(
@@ -49,21 +54,32 @@ section.conversation-list
 
 
     //- users / search list
-    ul(
-      v-show='activeList === "users" || activeList === "search"'
-      class='list'
-    )
-      li(
-        v-for='(item, index) in users'
-        :key='"users"+index'
-        class='list__item'
+    div(class='users')
+      //- confirm member queue
+      div(
+        v-show='!isMemberQueueEmpty'
+        class='users__modal'
       )
-        add-user-card(
-          :user='item'
-          @addNewMember='addNewMember'
-          @removeNewMember='removeNewMember'
-          class='list__card'
+        a(
+          class='users__confirm'
+        ) Confirm
+        
+      ul(
+        v-show='activeList === "users" || activeList === "search"'
+        class='list'
+      )
+        li(
+          v-for='(item, index) in users'
+          :key='"users"+index'
+          class='list__item'
         )
+          add-user-card(
+            :user='item'
+            @addNewMember='addNewMember'
+            @removeNewMember='removeNewMember'
+            class='list__card'
+          )
+
 
 </template>
 
@@ -114,6 +130,12 @@ export default {
       })
       console.log('wrapUsers: ', wrapUsers)
       return wrapUsers
+    },
+
+
+    isMemberQueueEmpty () {
+      // console.log('memberQueue: ', this.memberQueue)
+      return _.isEmpty(this.memberQueue)
     },
 
 
@@ -195,13 +217,30 @@ export default {
 
 .conversations
 
+.users
+
+  &__modal
+    @extend %flex--column-center
+    width: 100%
+    height: 104px
+    position: sticky
+    bottom: 0
+
+  &__confirm
+    padding: $unit $unit*3
+    border-radius: $unit*2
+    color: $white
+    background: rgba(243, 198, 218, 1)
+    box-shadow: 0px 8px 24px rgba(243, 198, 218, 1)
+
+
 
 .list
   padding: $unit*3 0 $unit*6 0
 
 
   &__item
-    margin: $unit*2 0
+    margin: $unit*3 0
 
     &:first-child
       margin-top: 0
@@ -236,6 +275,5 @@ export default {
   &__avatar
     width: 48px
     height: 48px
-
 
 </style>

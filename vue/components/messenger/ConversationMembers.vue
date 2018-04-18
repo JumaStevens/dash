@@ -109,6 +109,7 @@ export default {
 <style lang='sass' scoped>
 
 .members
+  display: none
   position: relative
   height: 25vmin
   margin-bottom: 1px

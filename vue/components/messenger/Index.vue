@@ -19,7 +19,6 @@ div(class='container messenger')
     class='messenger__conversation-members'
   )
 
-
   //- media
   ConversationMedia(
     class='messenger__conversation-media'
@@ -76,14 +75,14 @@ export default {
   height: 100%
   display: grid
   grid-template-rows: auto auto 1fr
-  grid-template-columns: 1fr 2fr 1fr
+  grid-template-columns: auto 1fr
 
 .messenger
   background: $pri-cl
 
   &__conversation-header
     grid-row: 1 / 2
-    grid-column: 1 / 4
+    grid-column: 1 / -1
 
   &__conversation-list
     grid-row: 2 / 4
@@ -91,11 +90,11 @@ export default {
 
   &__conversation
     grid-row: 2 / 4
-    grid-column: 2 / 3
+    grid-column: 2 / -1
 
   &__conversation-members
-    grid-row: 2 / 3
-    grid-column: 3 / 4
+    grid-row: 2 / 4
+    grid-column: 1 / 2
 
   &__conversation-media
     grid-row: 3 / 4
