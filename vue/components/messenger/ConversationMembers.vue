@@ -286,9 +286,9 @@ export default {
 
   &__list
     display: grid
-    grid-template-columns: min-content
+    grid-gap: $unit*3
     grid-auto-flow: column
-    grid-gap: 0 $unit*2
+    grid-auto-columns: min-content
     padding: $unit*3 0 $unit*7 0
 
   &__item
@@ -311,13 +311,15 @@ export default {
     margin-right: $unit*2
     border-radius: 50%
     background: lightblue
+    box-shadow: 0px 8px 24px rgba(173, 216, 230, 0.5)
 
     &:last-child
       margin-right: unset
 
+
   &__more
     background: unset
-    border: 1px solid $grey
+    box-shadow: unset
 
 
 </style>
