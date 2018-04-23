@@ -83,6 +83,13 @@ export default {
       if (members[id].length === 1 && value.uid === authUid) {
         data[id] = { id, ...value, ...user }
       }
+
+      // if (value.uid === authUid) {
+      //   const otherUser = members[id].find(member => member.uid !== authUid)
+      //   console.log('otherUser: ', otherUser)
+      //   data[id] = { id, ...value, message: `You: ${value.message}`, ...otherUser }
+      // }
+
       // if (members[id].length === 2) {
       //   const otherUser = members[id].find(member => member.uid !== authUid)
       //   console.log('otherUser: ', otherUser)
