@@ -164,7 +164,9 @@ export default {
 
 .controller
   display: grid
+  grid-template-rows: repeat(2, auto)
   grid-template-columns: 48px 1fr 48px
+  grid-gap: $unit*2 0
   align-items: center
   margin-bottom: $unit*5
 
@@ -191,8 +193,8 @@ export default {
 
 .search-form
   @extend %flex
-  grid-row: 1 / 2
-  grid-column: 1 / 3
+  grid-row: 2 / 3
+  grid-column: 1 / -1
   height: $unit*4
   align-items: stretch
   border-radius: $unit

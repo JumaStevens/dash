@@ -40,7 +40,7 @@ export default {
         timestamp: this.item.timestamp,
         user: {
           profilePicture: this.item.profilePicture,
-          displayName: this.displayName
+          displayName: this.item.displayName
         }
       }
     },

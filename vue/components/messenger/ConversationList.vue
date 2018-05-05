@@ -2,7 +2,7 @@
 section.conversation-list
 
   //- list controller
-  list-controller(
+  Header(
     @confirmMemberQueue='confirmMemberQueue'
     @cancelMemberQueue='cancelMemberQueue'
     class='controller'
@@ -55,15 +55,6 @@ section.conversation-list
 
     //- users / search list
     div(class='users')
-      //- confirm member queue
-      div(
-        v-show='!isMemberQueueEmpty'
-        class='users__modal'
-      )
-        a(
-          @click='confirmMemberQueue'
-          class='users__confirm'
-        ) Confirm
 
       ul(
         v-show='activeList === "users" || activeList === "search"'
@@ -89,6 +80,7 @@ section.conversation-list
 import ListController from '~comp/messenger/ListController.vue'
 import MessageMetaCard from '~comp/messenger/MessageMetaCard.vue'
 import AddUserCard from '~comp/messenger/AddUserCard.vue'
+import Header from '~comp/messenger/Header.vue'
 import Avatar from '~comp/Avatar.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import _ from 'lodash'
@@ -99,6 +91,7 @@ export default {
     ListController,
     MessageMetaCard,
     AddUserCard,
+    Header,
     Avatar
   },
   data () {
@@ -117,7 +110,7 @@ export default {
 
       _.forEach(friends, (value, key) => this.fetchUser(key))
 
-      return users.filter(user => user.displayName.match(new RegExp(this.search, 'i')))
+      return users //.filter(user => user.displayName.match(new RegExp(this.search, 'i')))
     },
 
 
@@ -207,33 +200,17 @@ export default {
 <style lang='sass' scoped>
 
 .conversation-list
-  @extend %flex--column
   padding: $unit*5
-  overflow-y: auto
   background: $white
   min-width: 400px
 
+.header
+
+
 .lists-container
   height: 100%
-
-.conversations
-
-.users
-
-  &__modal
-    @extend %flex--column-center
-    width: 100%
-    height: 104px
-    position: sticky
-    bottom: 0
-
-  &__confirm
-    padding: $unit $unit*3
-    border-radius: $unit*2
-    color: $white
-    background: rgba(243, 198, 218, 1)
-    box-shadow: 0px 8px 24px rgba(243, 198, 218, 1)
-
+  overflow-y: auto
+  padding: 0 $unit*2
 
 
 .list

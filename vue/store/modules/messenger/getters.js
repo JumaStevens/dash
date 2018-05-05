@@ -80,15 +80,18 @@ export default {
       const user = members[id].find(member => member.uid === value.uid)
       if (!user) return
 
-      if (members[id].length === 1 && value.uid === authUid) {
-        data[id] = { id, ...value, ...user }
-      }
-
-      // if (value.uid === authUid) {
-      //   const otherUser = members[id].find(member => member.uid !== authUid)
-      //   console.log('otherUser: ', otherUser)
-      //   data[id] = { id, ...value, message: `You: ${value.message}`, ...otherUser }
+      // if (members[id].length === 1 && value.uid === authUid) {
+      //   data[id] = { id, ...value, ...user }
       // }
+
+      if (members[id].length === 1) data[id] = { id, ...value, ...user }
+
+
+      else if (value.uid === authUid) {
+        const otherUser = members[id].find(member => member.uid !== authUid)
+        console.log('otherUser: ', otherUser)
+        data[id] = { id, ...value, message: `You: ${value.message}`, ...otherUser }
+      }
 
       // if (members[id].length === 2) {
       //   const otherUser = members[id].find(member => member.uid !== authUid)
@@ -96,8 +99,10 @@ export default {
       //   data[id] = { id, ...value, message: `${user.displayName}: ${value.message}`, ...otherUser }
       // }
       else {
-        data[id] = { id, ...value, message: `${user.displayName}: ${value.message}`, ...user }
+        data[id] = { id, ...value, ...user }
       }
+
+      if (members[id].length > 1) data[id] = { ...data[id], displayName: `${data[id].displayName} +${members[id].length - 2}` }
 
     })
 
