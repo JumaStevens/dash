@@ -10,6 +10,7 @@ header.header
   )
     IconPlus(class='header__svg header__svg--primary')
 
+
   //- edit
   a(
     v-show='!isActive.users'
@@ -106,10 +107,13 @@ export default {
 <style lang='sass' scoped>
 
 .header
+  position: relative
+  z-index: 50
   display: grid
   grid-gap: $unit*2 0
   align-items: center
   grid-template-columns: auto 1fr auto
+  box-shadow: 0px 4px 24px rgba(34, 34, 34, 0.03)
 
   &__icon
     min-width: $unit*6

@@ -1,5 +1,8 @@
 <template lang='pug'>
-section.conversation-list
+section(
+  v-show='activeList === "users" || activeList === "search"'
+  class='conversation-list'
+)
 
   //- list controller
   Header(
@@ -12,43 +15,21 @@ section.conversation-list
   //- lists container
   div(class='lists-container')
 
-    //- active users list
-    div(
-      v-show='activeList === "messages"'
-      class='active-users'
-    )
-      h3(class='active-users__title list__title') Online
-      ul(
-        class='active-users__list'
-      )
-        li(
-          v-for='(item, index) in activeUsers'
-          :key='"activeUsers" + index'
-          class='active-users__item'
-        )
-          Avatar(
-            :userData='item'
-            class='active-users__avatar'
-          )
+    //- users / search list
+    div(class='users')
 
-
-
-    //- conversations list
-    div(
-      v-show='activeList === "messages"'
-      class='conversations'
-    )
-      h3(class='list__title') Conversations
       ul(
         class='list'
       )
         li(
-          v-for='(item, index) in conversations'
-          :key='"conversations" + index'
+          v-for='(item, index) in users'
+          :key='"users"+index'
           class='list__item'
         )
-          message-meta-card(
-            :item='item'
+          add-user-card(
+            :user='item'
+            @addNewMember='addNewMember'
+            @removeNewMember='removeNewMember'
             class='list__card'
           )
 
@@ -192,6 +173,7 @@ export default {
   height: calc(100vh - (48px + 48px))
   overflow-y: auto
   padding: 0 $unit*2
+  background: $grey
 
 
 .list

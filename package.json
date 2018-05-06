@@ -5,10 +5,11 @@
   "author": "Juma Stevens <jumastevens@gmail.com>",
   "license": "ISC",
   "scripts": {
-    "dev": "webpack-dashboard -- cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --watch",
     "start": "node server",
-    "server": "nodemon server"
+    "server": "nodemon server",
+    "dev2": "webpack-dashboard -- cross-env NODE_ENV=development webpack-dev-server --open --hot"
   },
   "dependencies": {
     "axios": "^0.17.0",

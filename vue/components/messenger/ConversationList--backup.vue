@@ -53,6 +53,26 @@ section.conversation-list
           )
 
 
+    //- users / search list
+    div(class='users')
+
+      ul(
+        v-show='activeList === "users" || activeList === "search"'
+        class='list'
+      )
+        li(
+          v-for='(item, index) in users'
+          :key='"users"+index'
+          class='list__item'
+        )
+          add-user-card(
+            :user='item'
+            @addNewMember='addNewMember'
+            @removeNewMember='removeNewMember'
+            class='list__card'
+          )
+
+
 </template>
 
 

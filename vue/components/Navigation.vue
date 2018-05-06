@@ -40,25 +40,29 @@ export default {
 
 <style lang='sass' scoped>
 .nav
-  @extend %flex--column-center
-  justify-content: center
-  position: fixed
-  top: 0
-  left: 0
-  width: 64px
-  height: 100%
-  padding: 24px 0
+  @extend %flex--row-center
+  justify-content: space-around
+  position: relative
+  z-index: 51
   background: $white
+  box-shadow: 0px -4px 24px rgba(34, 34, 34, 0.03)
+  +mq-l
+    display: flex
+    justify-content: center
+    position: fixed
+    top: 0
+    left: 0
+    width: 64px
+    height: 100%
+
 
   &__avatar
-    margin-bottom: 16px
 
   &__link
-    margin-top: 24px
-    display: none // temp
+    @extend %flex--row-center
 
   &__logo
-    width: 24px
+    height: 24px
 
   & .container-dot
     display: grid

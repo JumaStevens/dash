@@ -49,29 +49,36 @@ export default {
 @import './assets/sass/main.sass'
 
 .vue-app
-  width: 100vw
-  height: 100vh
-  background: $pri-cl
   display: grid
-  // grid-template-columns: $border-offset 1fr
-  grid-template-columns: 64px 1fr
+  grid-template-rows: calc(100vh - 48px) 48px
+  align-items: stretch
+  background: $pri-cl
+  +mq-l
+    grid-template-rows: 100vh
+    grid-template-columns: 64px 1fr
+
 
   &__error,
   &__view
-    width: 100%
-    min-height: 100%
-    grid-column: 2 / 3
+    grid-row: 1 / 2
+    +mq-l
+      grid-row: 1 / 2
+      grid-column: 2 / 3
+
 
   &__nav
-    grid-column: 1 / 2
+    grid-row: 2 / 3
+    +mq-l
+      grid-row: 1 / 2
+      grid-column: 1 / 2
+
 
 .fade-enter-active, .fade-leave-active
   transition: opacity 150ms, transform 150ms
 
+
 .fade-enter, .fade-leave-to
   transform: translateY(5vmin)
   opacity: 0
-
-
 
 </style>

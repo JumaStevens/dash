@@ -5,7 +5,15 @@ div(class='container messenger')
   //- ConversationHeader(class='messenger__conversation-header')
 
   //- conversation list
-  ConversationList(
+  //- ConversationList(
+  //-   class='messenger__conversation-list'
+  //- )
+
+  ListMessages(
+    class='messenger__conversation-list'
+  )
+
+  ListUsers(
     class='messenger__conversation-list'
   )
 
@@ -34,6 +42,8 @@ import Conversation from './Conversation.vue'
 import ConversationList from './ConversationList.vue'
 import ConversationMembers from './ConversationMembers.vue'
 import ConversationMedia from './ConversationMedia.vue'
+import ListUsers from './ListUsers.vue'
+import ListMessages from './ListMessages.vue'
 import { mapActions } from 'vuex'
 
 export default {
@@ -42,7 +52,9 @@ export default {
     Conversation,
     ConversationList,
     ConversationMembers,
-    ConversationMedia
+    ConversationMedia,
+    ListUsers,
+    ListMessages
   },
   data () {
     return {}
@@ -72,35 +84,64 @@ export default {
 <style lang='sass' scoped>
 
 .container
-  height: 100%
   display: grid
-  grid-template-rows: auto auto 1fr
-  grid-template-columns: auto 1fr
-  align-items: stretch
+  grid-template-rows: 1fr
+  grid-template-columns: 1fr
+  height: 100%
+  +mq-l
+    grid-template-rows: auto auto 1fr
+    grid-template-columns: auto 1fr
+    align-items: stretch
 
 .messenger
   background: $pri-cl
 
   &__conversation-header
-    grid-row: 1 / 2
+    position: relative
+    grid-row: 1 / -1
     grid-column: 1 / -1
+    +mq-l
+      grid-row: 1 / 2
+      grid-column: 1 / -1
 
   &__conversation-list
-    grid-row: 2 / 4
-    grid-column: 1 / 2
+    position: relative
+    z-index: 2
+    grid-row: 1 / -1
+    grid-column: 1 / -1
+    +mq-l
+      grid-row: 2 / 4
+      grid-column: 1 / 2
 
   &__conversation
-    grid-row: 2 / 4
-    grid-column: 2 / -1
+    position: relative
+    z-index: 4
+    display: none !important
+    grid-row: 1 / -1
+    grid-column: 1 / -1
+    +mq-l
+      grid-row: 2 / 4
+      grid-column: 2 / -1
 
   &__conversation-members
-    grid-row: 2 / 4
-    grid-column: 1 / 2
+    position: relative
+    z-index: 5
+    grid-row: 1 / -1
+    grid-column: 1 / -1
+    +mq-l
+      grid-row: 2 / 4
+      grid-column: 1 / 2
 
   &__conversation-media
-    grid-row: 3 / 4
-    grid-column: 3 / 4
-    background: pink
+    position: relative
+    z-index: 10
+    display: none !important
+    grid-row: 1 / -1
+    grid-column: 1 / -1
+    +mq-l
+      grid-row: 3 / 4
+      grid-column: 3 / 4
+      background: pink
 
 
 </style>
