@@ -201,6 +201,7 @@ export default {
   padding: $unit*5
   @extend %flex--column
   background: $white
+  display: none !important
 
   &.active
     display: flex

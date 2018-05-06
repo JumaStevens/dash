@@ -38,7 +38,12 @@ export default {
     IconSearch,
     IconCancel
   },
-  props: {},
+  props: {
+    SearchData: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {}
   },

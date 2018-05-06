@@ -1,20 +1,35 @@
 <template lang='pug'>
-section.conversation-list
+section(
+  v-show='!routeId'
+  class='inbox'
+)
 
-  //- list controller
-  Header(
-    @confirmMemberQueue='confirmMemberQueue'
-    @cancelMemberQueue='cancelMemberQueue'
-    class='controller'
+
+  //- header
+  header(
+    class='inbox__header header'
   )
 
+    //- edit
+    a(
+      @click=''
+      class='header__icon header__edit'
+    ) Edit
 
-  //- lists container
-  div(class='lists-container')
+    //- new message
+    router-link(
+      @click.native='setList("users")'
+      :to='{ name: "chatId", params: { id: "new" } }'
+      class='header__icon header__new-message'
+    )
+      IconPlus(class='header__svg header__svg--primary')
 
-    //- active users list
+
+  //- view
+  div(class='inbox__view')
+
+    //- users
     div(
-      v-show='activeList === "messages"'
       class='active-users'
     )
       h3(class='active-users__title list__title') Online
@@ -31,17 +46,12 @@ section.conversation-list
             class='active-users__avatar'
           )
 
-
-
-    //- conversations list
+    //- conversations
     div(
-      v-show='activeList === "messages"'
       class='conversations'
     )
       h3(class='list__title') Conversations
-      ul(
-        class='list'
-      )
+      ul(class='list')
         li(
           v-for='(item, index) in conversations'
           :key='"conversations" + index'
@@ -57,22 +67,22 @@ section.conversation-list
 
 
 <script>
-import ListController from '~comp/messenger/ListController.vue'
 import MessageMetaCard from '~comp/messenger/MessageMetaCard.vue'
-import AddUserCard from '~comp/messenger/AddUserCard.vue'
 import Header from '~comp/messenger/Header.vue'
 import Avatar from '~comp/Avatar.vue'
+import IconPlus from '~/assets/svg/icon-plus.svg'
+import Search from '~comp/Search.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import _ from 'lodash'
 
 
 export default {
   components: {
-    ListController,
     MessageMetaCard,
-    AddUserCard,
     Header,
-    Avatar
+    Avatar,
+    IconPlus,
+    Search
   },
   data () {
     return {}
@@ -107,12 +117,6 @@ export default {
     },
 
 
-    isMemberQueueEmpty () {
-      // console.log('memberQueue: ', this.memberQueue)
-      return _.isEmpty(this.memberQueue)
-    },
-
-
     ...mapGetters({
       getMeta: 'messenger/getMeta',
       getUsers: 'users/getUsers',
@@ -126,51 +130,22 @@ export default {
       friends: state => state.friends.friends,
       activeList: state => state.messenger.app.activeList,
       search: state => state.messenger.app.search,
-      memberQueue: state => state.messenger.app.newMembers
+      routeId: state => state.route.params.id
     })
   },
   methods: {
-    cancelNewMembers () {
-      const data = { value: 'messages' }
-      this.$router.go(-1)
-      this.clearNewMembers()
-      this.setActiveList(data)
+    setList (value) {
+      if (!value) return
+      this.setActiveList(value)
     },
-
-
-    addNewMember (uid) { // queue member
-      const data = { key: uid, value: true }
-      this.setNewMember(data)
-    },
-
-
-    removeNewMember (uid) {
-      const data = { key: uid, value: true }
-      this.deleteNewMember(data)
-    },
-
-
-    cancelMemberQueue () {
-      _.forEach(this.memberQueue, (value, key) => this.deleteNewMember({ key }))
-    },
-
-
-    confirmMemberQueue () {
-      _.forEach(this.memberQueue, (value, key) => this.writeMembers({ uid: key }) )
-    },
-
 
     ...mapMutations({
-      setNewMember: 'messenger/setNewMember',
-      deleteNewMember: 'messenger/deleteNewMember',
-      clearNewMembers: 'messenger/clearNewMembers',
       setActiveList: 'messenger/SET_ACTIVE_LIST'
     }),
 
 
     ...mapActions({
-      fetchUser: 'users/fetchUser',
-      writeMembers: 'messenger/writeMembers'
+      fetchUser: 'users/fetchUser'
     })
   }
 }
@@ -179,16 +154,52 @@ export default {
 
 <style lang='sass' scoped>
 
-.conversation-list
+.inbox
   background: $white
   +mq-l
     min-width: 400px
 
 
+.inbox__header
+
 .header
+  position: relative
+  z-index: 50
+  display: grid
+  grid-gap: $unit*2 0
+  align-items: center
+  grid-template-columns: auto 1fr auto
+  box-shadow: 0px 4px 24px rgba(34, 34, 34, 0.03)
+
+  &__icon
+    min-width: $unit*6
+    height: $unit*6
+    padding: $unit*2
+
+  &__svg
+    width: auto
+    height: $fs
+    fill: $dark
+
+    &--primary
+      fill: rgba(110, 188, 228, 1)
+
+  &__edit,
+  &__back
+    grid-row: 1 / 2
+    grid-column: 1 / 2
+
+  &__new-message
+    grid-row: 1 / 2
+    grid-column: 3 / 4
+
+  &__edit
+
+  &__back
+    transform: rotate(-90deg)
 
 
-.lists-container
+.inbox__view
   height: calc(100vh - (48px + 48px))
   overflow-y: auto
   padding: 0 $unit*2

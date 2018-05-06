@@ -38,6 +38,7 @@ export default {
   justify-content: center
   align-items: center
   background: white
+  display: none
 
   &__list
     display: none

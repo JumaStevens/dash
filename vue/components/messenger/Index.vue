@@ -1,14 +1,6 @@
 <template lang='pug'>
 div(class='container messenger')
 
-  //- conversation header
-  //- ConversationHeader(class='messenger__conversation-header')
-
-  //- conversation list
-  //- ConversationList(
-  //-   class='messenger__conversation-list'
-  //- )
-
   ListMessages(
     class='messenger__conversation-list'
   )
@@ -27,11 +19,6 @@ div(class='container messenger')
     class='messenger__conversation-members'
   )
 
-  //- media
-  ConversationMedia(
-    class='messenger__conversation-media'
-  )
-
 
 </template>
 
@@ -39,9 +26,7 @@ div(class='container messenger')
 <script>
 import ConversationHeader from './ConversationHeader.vue'
 import Conversation from './Conversation.vue'
-import ConversationList from './ConversationList.vue'
 import ConversationMembers from './ConversationMembers.vue'
-import ConversationMedia from './ConversationMedia.vue'
 import ListUsers from './ListUsers.vue'
 import ListMessages from './ListMessages.vue'
 import { mapActions } from 'vuex'
@@ -50,9 +35,7 @@ export default {
   components: {
     ConversationHeader,
     Conversation,
-    ConversationList,
     ConversationMembers,
-    ConversationMedia,
     ListUsers,
     ListMessages
   },
@@ -116,7 +99,7 @@ export default {
   &__conversation
     position: relative
     z-index: 4
-    display: none !important
+    // display: none !important
     grid-row: 1 / -1
     grid-column: 1 / -1
     +mq-l

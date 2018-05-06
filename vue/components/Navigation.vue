@@ -1,5 +1,8 @@
 <template lang='pug'>
-div.nav
+div(
+  v-show='!routeId || routeId === "new"'
+  class='nav'
+)
   //- avatar.nav__avatar
   //- nav-menu.nav__nav-menu
   //- logo.nav__logo
@@ -23,6 +26,7 @@ import Avatar from './Avatar.vue'
 import NavMenu from './NavMenu.vue'
 import Logo from './Logo.vue'
 import LogoMessenger from '~/assets/svg/logo-messenger.svg'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -33,6 +37,11 @@ export default {
   },
   data () {
     return {}
+  },
+  computed: {
+    ...mapState({
+      routeId: state => state.route.params.id
+    })
   }
 }
 </script>
