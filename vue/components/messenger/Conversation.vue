@@ -15,6 +15,13 @@ section(
     )
       IconChevron(class='header__svg')
 
+    //- back
+    a(
+      @click='setList("members")'
+      class='header__icon header__members'
+    )
+      IconChevron(class='header__svg')
+
 
   //- lists container
   div(class='lists-container')
@@ -73,11 +80,23 @@ export default {
     })
   },
   methods: {
+    setList (value) {
+      console.log('value --> ', value)
+      if (!value) return
+      this.setActiveList({ value })
+    },
+
+
     addMessage () {
       const data = { message: this.newMessage }
       this.$route.params.id === 'new' ? this.addNewConversation(data) : this.addNewMessage(data)
       this.newMessage = ''
     },
+
+
+    ...mapMutations({
+      setActiveList: 'messenger/SET_ACTIVE_LIST'
+    }),
 
 
     ...mapActions({
@@ -93,7 +112,6 @@ export default {
 
 .conversation
   @extend %flex--column
-  margin: 0 1px
   display: none
   background: $white
 
@@ -147,6 +165,10 @@ export default {
   &__back
     grid-row: 1 / 2
     grid-column: 1 / 2
+
+  &__members
+    grid-row: 1 / 2
+    grid-column: 3 / -1
 
 
   &__back

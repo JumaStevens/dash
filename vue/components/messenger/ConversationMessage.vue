@@ -66,7 +66,6 @@ export default {
 
 <style lang='sass' scoped>
 .message
-  overflow-y: auto
   background: $white
 
   &__list
@@ -74,7 +73,7 @@ export default {
 
   &__item
     width: 100%
-    padding: $unit*2 $unit*4
+    padding: $unit*2 $unit
 
 
 </style>

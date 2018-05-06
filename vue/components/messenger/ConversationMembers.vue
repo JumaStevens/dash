@@ -5,97 +5,108 @@ section(
   class='members'
 )
 
-  //- handlebar icon
-  router-link(
-    :to='{ name: "chat" }'
-    class='members__handlebar'
-  )
+  //- header
+  header(class='controller header')
+    //- back
+    a(
+      @click='back'
+      class='header__icon header__back'
+    )
+      IconChevron(class='header__svg')
 
+    //- more features
+    a(
+      @click=''
+      class='header__icon header__actions'
+    )
+      icon-actions(class='header__svg')
 
   //- user
   //- User(
   //-   :propData='userData'
   //-   class='members__user'
   //- )
+  //- lists container
+  div(class='lists-container')
 
-  //- user
-  div(
-    class='members__user'
-  )
-    Avatar(
-      :userData='userData'
-      class='members__user-avatar'
-    )
-    p(
-      class='members__user-name'
-    ) {{ userData.user.displayName }}
-
-
-  //- actions
-  div(class='actions')
-    a(class='actions__button')
-    a(class='actions__button')
-    a(class='actions__button')
-    //- more features
-    a(
-      @click='toggleActions'
-      class='members__icon actions__button actions__more'
-    )
-      icon-actions.members__svg
-
+    //- user
     div(
-      v-show='showActions'
-      class='members__actions-container'
+      class='members__user'
     )
-      //- add member button
+      Avatar(
+        :userData='userData'
+        class='members__user-avatar'
+      )
+      p(
+        class='members__user-name'
+      ) {{ userData.user.displayName }}
+
+
+    //- actions
+    div(class='actions')
+      a(class='actions__button')
+      a(class='actions__button')
+      a(class='actions__button')
+      //- more features
       a(
-        @click='setList("users")'
-        class='members__icon'
+        @click='toggleActions'
+        class='members__icon actions__button actions__more'
       )
-        IconPlus.members__svg
+        icon-actions.members__svg
 
-      //- remove member button
-      a(
-        @click='removeMember()'
-        class='members__icon'
+      div(
+        v-show='showActions'
+        class='members__actions-container'
       )
-        IconBan.members__svg
-
-
-
-  //- active users list
-  div(
-    class='active-users'
-  )
-    h3(class='active-users__title list__title') Members
-    ul(
-      class='active-users__list'
-    )
-      li(
-        v-for='(item, index) in members'
-        :key='"activeUsers" + index'
-        class='active-users__item'
-      )
-        Avatar(
-          :userData='item'
-          class='active-users__avatar'
+        //- add member button
+        a(
+          @click='setList("users")'
+          class='members__icon'
         )
+          IconPlus.members__svg
+
+        //- remove member button
+        a(
+          @click='removeMember()'
+          class='members__icon'
+        )
+          IconBan.members__svg
 
 
-  //- //- active conversation members
-  //- ul(class='members__list')
-  //-   li(
-  //-     v-for='(user, index) in members'
-  //-     :key='index'
-  //-     class='members__item'
-  //-   )
-  //-     MemberCard(
-  //-       :item='user'
-  //-       :index='index'
-  //-       :activeMemberIndex='activeMemberIndex'
-  //-       @selectMember='setActiveMember(index)'
-  //-       class='members__card'
-  //-     )
+
+    //- active users list
+    div(
+      class='active-users'
+    )
+      h3(class='active-users__title list__title') Members
+      ul(
+        class='active-users__list'
+      )
+        li(
+          v-for='(item, index) in members'
+          :key='"activeUsers" + index'
+          class='active-users__item'
+        )
+          Avatar(
+            :userData='item'
+            class='active-users__avatar'
+          )
+
+
+    //- //- active conversation members
+    //- ul(class='members__list')
+    //-   li(
+    //-     v-for='(user, index) in members'
+    //-     :key='index'
+    //-     class='members__item'
+    //-   )
+    //-     MemberCard(
+    //-       :item='user'
+    //-       :index='index'
+    //-       :activeMemberIndex='activeMemberIndex'
+    //-       @selectMember='setActiveMember(index)'
+    //-       class='members__card'
+    //-     )
 
 </template>
 
@@ -108,6 +119,7 @@ import IconBan from '~/assets/svg/icon-ban.svg'
 import MemberCard from './MemberCard.vue'
 import User from '~comp/User.vue'
 import Avatar from '~comp/Avatar.vue'
+import IconChevron from '~/assets/svg/icon-chevron.svg'
 
 
 export default {
@@ -117,7 +129,8 @@ export default {
     IconActions,
     IconBan,
     User,
-    Avatar
+    Avatar,
+    IconChevron
   },
   data () {
     return {
@@ -128,7 +141,7 @@ export default {
   computed: {
     isActive () {
       console.log('isActive: ', !this.$route.params.id || this.$route.params.id === 'new' ? false : true)
-      return !this.$route.params.id || this.$route.params.id === 'new' ? false : true
+      return !this.$route.params.id || this.$route.params.id === 'new' ? false : this.activeMenu === 'members' ? true : false
     },
 
 
@@ -179,6 +192,14 @@ export default {
     },
 
 
+    back () {
+      const convoId = this.$route.params.id
+      console.log('convoId: --> > > ', convoId)
+      this.$router.push({ name: 'chatId', params: { id: convoId } })
+      this.setList('conversation')
+    },
+
+
     ...mapMutations({
       setActiveList: 'messenger/SET_ACTIVE_LIST',
     }),
@@ -198,10 +219,9 @@ export default {
   z-index: 99 // temp
   display: none
   position: relative
-  padding: $unit*5
   @extend %flex--column
   background: $white
-  display: none !important
+
 
   &.active
     display: flex
@@ -321,6 +341,41 @@ export default {
   &__more
     background: unset
     box-shadow: unset
+
+
+.lists-container
+  height: calc(100vh - (48px + 48px))
+  overflow-y: auto
+  padding: 0 $unit*2
+
+
+.header
+  position: relative
+  z-index: 50
+  display: grid
+  grid-gap: $unit*2 0
+  align-items: center
+  grid-template-columns: auto 1fr auto
+  box-shadow: 0px 4px 24px rgba(34, 34, 34, 0.03)
+
+  &__icon
+    min-width: $unit*6
+    height: $unit*6
+    padding: $unit*2
+
+  &__svg
+    width: auto
+    height: $fs
+    fill: rgba(110, 188, 228, 1)
+
+  &__back
+    grid-row: 1 / 2
+    grid-column: 1 / 2
+    transform: rotate(-90deg)
+
+  &__actions
+    grid-row: 1 / 2
+    grid-column: 3 / 4
 
 
 </style>
