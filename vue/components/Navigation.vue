@@ -1,6 +1,6 @@
 <template lang='pug'>
 div(
-  v-show='!routeId || routeId === "new"'
+  :class='{ active: !routeId || routeId === "new" }'
   class='nav'
 )
   //- avatar.nav__avatar
@@ -50,25 +50,29 @@ export default {
 <style lang='sass' scoped>
 .nav
   @extend %flex--row-center
-  justify-content: space-around
+  display: none
   position: relative
   z-index: 51
+  justify-content: space-around
   background: $white
   box-shadow: 0px -4px 24px rgba(34, 34, 34, 0.03)
   +mq-l
     display: flex
+    flex-direction: column
     justify-content: center
-    position: fixed
-    top: 0
-    left: 0
-    width: 64px
-    height: 100%
+    box-shadow: unset
+
+  &.active
+    display: flex
+
 
 
   &__avatar
 
   &__link
     @extend %flex--row-center
+    +mq-l
+      margin-top: $unit*4
 
   &__logo
     height: 24px

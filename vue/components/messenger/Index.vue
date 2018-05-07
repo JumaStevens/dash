@@ -115,16 +115,6 @@ export default {
       grid-row: 2 / 4
       grid-column: 1 / 2
 
-  &__conversation-media
-    position: relative
-    z-index: 10
-    display: none !important
-    grid-row: 1 / -1
-    grid-column: 1 / -1
-    +mq-l
-      grid-row: 3 / 4
-      grid-column: 3 / 4
-      background: pink
 
 
 </style>

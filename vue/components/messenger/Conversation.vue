@@ -120,15 +120,15 @@ export default {
 
   &__message
     flex: 1
+    padding: 0 $unit*2
+    height: calc(100vh - (48px + 48px))
+    overflow-y: auto
 
   &__message-form
     @extend %flex
-    position: fixed
-    left: 0
-    bottom: 0
-    width: 100%
     height: $unit*6
     background: $white
+
 
 .message-form
   width: 100%
@@ -176,9 +176,6 @@ export default {
 
 
 .lists-container
-  height: calc(100vh - (48px + 48px))
-  overflow-y: auto
-  padding: 0 $unit*2
 
 
 </style>

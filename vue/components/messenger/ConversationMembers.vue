@@ -216,12 +216,11 @@ export default {
 <style lang='sass' scoped>
 
 .members
+  @extend %flex--column
+  position: relative
   z-index: 99 // temp
   display: none
-  position: relative
-  @extend %flex--column
   background: $white
-
 
   &.active
     display: flex
@@ -344,7 +343,7 @@ export default {
 
 
 .lists-container
-  height: calc(100vh - (48px + 48px))
+  height: calc(100vh - (48px))
   overflow-y: auto
   padding: 0 $unit*2
 
