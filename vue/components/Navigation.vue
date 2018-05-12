@@ -1,6 +1,6 @@
 <template lang='pug'>
 div(
-  :class='{ active: !routeId || routeId === "new" }'
+  :class='{ active: !routeId || routeId === "new", hide: route.name === "auth" }'
   class='nav'
 )
   //- avatar.nav__avatar
@@ -40,6 +40,7 @@ export default {
   },
   computed: {
     ...mapState({
+      route: state => state.route,
       routeId: state => state.route.params.id
     })
   }
@@ -64,6 +65,9 @@ export default {
 
   &.active
     display: flex
+
+  &.hide
+    display: none
 
 
 

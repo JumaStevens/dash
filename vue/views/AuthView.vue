@@ -25,17 +25,19 @@ main.auth
 
     //- login
     input(
+      class='auth__submit auth__signin'
       type='submit'
       value='Login'
       @click='signInWithEmailAndPassword'
-    ).auth__submit
+    )
 
     //- create user
     input(
+      class='auth__submit auth__signup'
       type='submit'
       value='+ create account'
       @click='createUserWithEmailAndPassword'
-    ).auth__submit
+    )
 </template>
 
 
@@ -74,7 +76,7 @@ export default {
 <style lang='sass' scoped>
 
 .auth
-  background: $pri-cl
+  background: $white
   display: flex
   justify-content: center
   align-items: center
@@ -90,16 +92,25 @@ export default {
     padding: .1rem 0
     margin-bottom: 2rem
     border-bottom: 1px solid $dark
-    background: $pri-cl
-
-  &__submit
-    padding: .15rem 1rem
-    border-radius: 2rem
-    border: 1px solid $black
     background: transparent
 
-    &:last-child
-      margin-top: 0.5rem
-      border: none
+    &:nth-child(2)
+      margin-bottom: 1rem
+
+  &__submit
+
+
+  &__signin
+    width: min-content
+    background: transparent
+
+
+  &__signup
+    margin: $unit*5 0
+    padding: $unit*2
+    border-radius: $unit/2
+    background: rgba(46, 54, 63, 1)
+    color: white
+    box-shadow: 0px 8px 24px rgba(34, 34, 34, 0.4)
 
 </style>
