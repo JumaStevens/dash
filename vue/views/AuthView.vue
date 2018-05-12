@@ -1,5 +1,11 @@
 <template lang='pug'>
 main.auth
+
+  header(class='header')
+    h1(class='title') DASH
+    p(class='copy') Simply connect
+
+
   form(
     @submit.prevent=''
   ).auth__form
@@ -23,19 +29,31 @@ main.auth
       required
     ).auth__input
 
-    //- login
-    input(
-      class='auth__submit auth__signin'
-      type='submit'
-      value='Login'
-      @click='signInWithEmailAndPassword'
-    )
+    div(class='auth__inner')
+
+      //- login
+      input(
+        class='auth__submit auth__signin'
+        type='submit'
+        value='Login'
+        @click='signInWithEmailAndPassword'
+      )
+
+      //- forgot password
+      input(
+        class='auth__submit auth__forgot'
+        type='submit'
+        value='Forgot password?'
+        @click=''
+      )
+
+
 
     //- create user
     input(
       class='auth__submit auth__signup'
       type='submit'
-      value='+ create account'
+      value='Signup'
       @click='createUserWithEmailAndPassword'
     )
 </template>
@@ -74,43 +92,66 @@ export default {
 </script>
 
 <style lang='sass' scoped>
+.header
+  @extend %flex--column-center
+  width: 75%
+  max-width: 600px
+  align-items: unset
+  margin: $unit*5 0
+
+.title
+  font-size: $fs2
+  color: rgba(46, 54, 63, 1)
+  line-height: 1
+
+.copy
+  color: rgba(46, 54, 63, 1)
+  padding-left: .25rem
+  font-size: 12px
 
 .auth
+  display: grid
+  grid-template-rows: 1.5fr 3fr
+  justify-items: center
+  margin-top: $unit*2
   background: $white
-  display: flex
-  justify-content: center
-  align-items: center
 
   &__form
     @extend %flex--column
+    width: 75%
+    max-width: 600px
     justify-content: center
-    max-width: 14rem
-    min-width: 8rem
-    width: 25vmax
 
   &__input
     padding: .1rem 0
-    margin-bottom: 2rem
+    margin-bottom: $unit*6
     border-bottom: 1px solid $dark
     background: transparent
 
     &:nth-child(2)
-      margin-bottom: 1rem
+      margin-bottom: $unit*4
+
+  &__inner
+    @extend %flex
+    justify-content: space-between
 
   &__submit
-
-
-  &__signin
     width: min-content
     background: transparent
+    color: rgba(46, 54, 63, 1)
 
+  &__signin
+
+  &__forgot
+    margin-left: auto
 
   &__signup
-    margin: $unit*5 0
+    width: unset
+    margin: $unit*6 0
     padding: $unit*2
     border-radius: $unit/2
     background: rgba(46, 54, 63, 1)
-    color: white
     box-shadow: 0px 8px 24px rgba(34, 34, 34, 0.4)
+    color: $white
 
 </style>

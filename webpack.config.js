@@ -1,7 +1,8 @@
 const webpack = require('webpack')
 const path = require('path')
 const Dotenv = require('dotenv-webpack')
-const webpackDashboard = require('webpack-dashboard/plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+// const webpackDashboard = require('webpack-dashboard/plugin')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 require('babel-polyfill')
 
@@ -17,16 +18,31 @@ const config = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            scss: 'vue-style-loader!css-loader!sass-loader',
-            sass: [
-              { loader: 'vue-style-loader!css-loader!sass-loader?indentedSyntax' },
-              { loader: 'sass-resources-loader', options: { resources: path.resolve(__dirname, 'vue/assets/sass/global.sass') } }
-            ]
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug-plain-loader'
+      },
+      {
+        test: /\.sass$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              indentedSyntax: true
+            }
+          },
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: path.resolve(__dirname, 'vue/assets/sass/global.sass')
+            }
           }
-        }
+        ]
       },
       {
         test: /\.js$/,
@@ -56,7 +72,8 @@ const config = {
   },
   plugins: [
     new Dotenv(),
-    new webpackDashboard(),
+    new VueLoaderPlugin()
+    // new webpackDashboard(),
     // new BundleAnalyzerPlugin()
   ],
   resolve: {

@@ -52,7 +52,7 @@ export default {
   display: grid
   grid-template-rows: calc(100vh - 48px) 48px
   align-items: stretch
-  background: $pri-cl
+  background: $white
   +mq-l
     grid-template-rows: 100vh
     grid-template-columns: 64px 1fr
