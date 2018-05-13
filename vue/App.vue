@@ -6,7 +6,7 @@
     class='vue-app__nav'
   )
 
-  transition(name='fade')
+  transition(name='swipe')
     error-404-view(
       v-if='error.isError && error.type == "404"'
       class='vue-app__error'
@@ -73,12 +73,14 @@ export default {
       grid-column: 1 / 2
 
 
-.fade-enter-active, .fade-leave-active
-  transition: opacity 150ms, transform 150ms
-
-
-.fade-enter, .fade-leave-to
-  transform: translateY(5vmin)
-  opacity: 0
+// .swipe-enter-active
+//   transition: opacity 250ms 250ms
+//
+// .swipe-leave-active
+//   transition: opacity 250ms
+//
+//
+// .swipe-enter, .swipe-leave-to
+//   opacity: 0
 
 </style>

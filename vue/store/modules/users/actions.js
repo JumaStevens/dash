@@ -52,17 +52,20 @@ export default {
   },
 
 
-  async updateCurrentUser ({ commit, rootGetters }, data) {
+  async updateCurrentUser ({ commit, rootState, rootGetters }, data) {
     const uid = currentUser(rootGetters).uid
+    const user = rootState.auth.currentUser
+    console.log('user: , ', user)
     const updateData = {}
+    console.log('data: ', data)
 
-    updateData[`users/${uid}`] = {
-      firstName: '',
-      lastName: '',
-      displayName: currentUser(rootGetters).displayName,
-      email: currentUser(rootGetters).email,
-      profilePicture: currentUser(rootGetters).photoURL,
-      bio: ''
+    updateData[`users/${user.uid}`] = {
+      // firstName: '',
+      // lastName: '',
+      displayName: data.displayName || user.displayName,
+      // email: data.email || '',
+      profilePicture: data.photoURL || user.photoURL,
+      // bio: ''
     }
     console.log('>>>--->>> ', updateData)
 

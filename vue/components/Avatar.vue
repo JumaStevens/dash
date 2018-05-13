@@ -35,7 +35,6 @@ export default {
   },
   computed: {
     initial () {
-      console.log(this.userData)
       const displayName = this.userData.displayName || this.userData.user.displayName
       return displayName ? displayName[0] : '?'
     },

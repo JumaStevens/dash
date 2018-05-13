@@ -6,14 +6,14 @@ export default {
   },
 
 
-  getCurrentUser (state, getters) {
-    const currentUser = {
-      uid: '',
-      displayName: '',
-      photoURL: ''
+  getCurrentUser ({ currentUser }, getters) {
+    const user = {
+      uid: `${ currentUser.uid || '' }`,
+      displayName: `${ currentUser.displayName || '' }`,
+      profilePicture: `${ currentUser.photoURL || '' }`
     }
-    console.log('getter --> ', state.currentUser)
-    return getters.isCurrentUser ? state.currentUser : this.currentUser
+
+    return user
   },
 
 

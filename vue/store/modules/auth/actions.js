@@ -44,7 +44,7 @@ export default {
     try {
       await currentUser().updateProfile(payload)
 
-      await dispatch('users/updateCurrentUser', {}, { root: true })
+      await dispatch('users/updateCurrentUser', payload, { root: true })
       console.log('auth ---> ', payload)
     }
     catch (e) { console.error(e) }

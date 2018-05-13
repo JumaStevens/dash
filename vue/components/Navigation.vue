@@ -17,7 +17,13 @@ div(
     to='/chat'
     class='nav__link'
   )
-    LogoMessenger.nav__logo
+    LogoMessenger(class='nav__logo')
+
+  router-link(
+    to='/account'
+    class='nav__link'
+  )
+    LogoAccount(class='nav__logo')
 </template>
 
 
@@ -26,6 +32,7 @@ import Avatar from './Avatar.vue'
 import NavMenu from './NavMenu.vue'
 import Logo from './Logo.vue'
 import LogoMessenger from '~/assets/svg/logo-messenger.svg'
+import LogoAccount from '~/assets/svg/logo-account.svg'
 import { mapState } from 'vuex'
 
 export default {
@@ -33,7 +40,8 @@ export default {
     Logo,
     Avatar,
     NavMenu,
-    LogoMessenger
+    LogoMessenger,
+    LogoAccount
   },
   data () {
     return {}
@@ -79,12 +87,14 @@ export default {
       margin-top: $unit*4
 
   &__logo
-    height: 24px
+    width: $unit*3
+    height: $unit*3
 
   & .container-dot
     display: grid
     grid-template-rows: repeat(2, 1fr)
     grid-template-columns: repeat(2, 1fr)
+    display: none // temp
 
   & .dot
     width: 8px

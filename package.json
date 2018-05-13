@@ -5,8 +5,8 @@
   "author": "Juma Stevens <jumastevens@gmail.com>",
   "license": "ISC",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --watch",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --hot",
+    "build": "cross-env NODE_ENV=production webpack --mode production --progress --hide-modules --watch",
     "start": "node server",
     "server": "nodemon server"
   },

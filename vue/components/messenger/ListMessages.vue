@@ -203,6 +203,8 @@ export default {
   height: calc(100vh - (48px + 48px))
   overflow-y: auto
   padding: 0 $unit*2
+  overflow-y: scroll
+  -webkit-overflow-scrolling: touch
 
 
 .list
