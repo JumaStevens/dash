@@ -1,40 +1,40 @@
-import IndexView from '~/views/IndexView.vue'
-import AuthView from '~/views/AuthView.vue'
-import ChatView from '~/views/ChatView.vue'
-import FriendsView from '~/views/FriendsView.vue'
-import AccountView from '~/views/AccountView.vue'
+import Index from '~/views/Index.vue'
+import Auth from '~/views/Auth.vue'
+import Chat from '~/views/Chat.vue'
+import Friends from '~/views/Friends.vue'
+import Account from '~/views/Account.vue'
 
 export const routes = [
   {
     path: '/',
     name: 'index',
-    component: IndexView
+    component: Index
   },
   {
     path: '/auth',
     name: 'auth',
-    component: AuthView
+    component: Auth
   },
   {
     path: '/chat',
     name: 'chat',
-    component: ChatView,
+    component: Chat,
     children: [
       {
         path: ':id',
         name: 'chatId',
-        component: ChatView
+        component: Chat
       }
     ]
   },
   {
     path: '/friends',
     name: 'friends',
-    component: FriendsView
+    component: Friends
   },
   {
     path: '/account',
     name: 'account',
-    component: AccountView
+    component: Account
   }
 ]

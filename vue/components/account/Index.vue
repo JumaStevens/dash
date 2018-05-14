@@ -28,7 +28,7 @@ main(class='')
 
     //- logout
     a(
-      @click='signOut()'
+      @click='logout()'
       class='logout'
     ) Log Out
 
@@ -59,6 +59,15 @@ export default {
     })
   },
   methods: {
+    async logout () {
+      try {
+        await this.signOut()
+        this.$router.push({ name: 'auth' })
+      }
+      catch (e) { console.error(e) }
+    },
+
+
     ...mapActions({
       signOut: 'auth/signOut'
     })

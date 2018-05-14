@@ -14,8 +14,8 @@ $ npm install ...placeholder
 
 Firebase functions - deleting member logic wip
 
-TO DO:
+## Road Map ##
 
--- conversation meta cards // display correct name logic
--- style message component
--- 
+*  Auth
+  - [ ] Test
+  - [x] Redirect active/inactive users

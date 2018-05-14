@@ -7,7 +7,7 @@
   )
 
   transition(name='swipe')
-    error-404-view(
+    Error404(
       v-if='error.isError && error.type == "404"'
       class='vue-app__error'
     )
@@ -19,12 +19,12 @@
 
 
 <script>
-import Error404View from './views/Error404View.vue'
+import Error404 from './views/Error404.vue'
 import Navigation from './components/Navigation.vue'
 
 export default {
   components: {
-    Error404View,
+    Error404,
     Navigation
   },
   data () {

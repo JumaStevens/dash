@@ -4,10 +4,11 @@ const currentUser = (rootGetters) => rootGetters['auth/getCurrentUser']
 
 export default {
   initUsers ({ dispatch }) {
+    console.log('initUsers called')
     dispatch('watchUsersAdded')
     dispatch('watchUsersRemoved')
     dispatch('fetchUsers')
-    dispatch('updateCurrentUser')
+    // dispatch('updateCurrentUser')
   },
 
 

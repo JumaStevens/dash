@@ -60,6 +60,8 @@ main.auth
 
 
 <script>
+import { mapGetters } from 'vuex'
+import firebase from '~/firebase'
 
 export default {
   data () {
@@ -76,6 +78,7 @@ export default {
         this.$validator.validateAll()
         if (this.errors.any()) throw this.errors // $validator provided object
         this.$store.dispatch('auth/signInWithEmailAndPassword', this.form)
+        this.$router.replace({ name: 'index' })
       }
       catch (e) { console.error(e) }
     },
@@ -84,9 +87,14 @@ export default {
         this.$validator.validateAll()
         if (this.errors.any()) throw this.errors // $validator provided object
         this.$store.dispatch('auth/createUserWithEmailAndPassword', this.form)
+        this.$router.replace({ name: 'index' })
       }
       catch (e) { console.error(e) }
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    const currentUser = firebase.auth().currentUser
+    currentUser ? next({ name: 'index' }) : next()
   }
 }
 </script>
