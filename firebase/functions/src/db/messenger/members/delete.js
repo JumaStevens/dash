@@ -31,6 +31,7 @@ export const listener = functions.database.ref('/messenger/members/{convoId}/{ui
     console.log('userRecord: ', userRecord)
 
 
+    // auth leave conversation
     if (authUid === uid) {
 
       const membersSnapshot = await adminMembersRef.child(convoId).once('value')
@@ -52,6 +53,8 @@ export const listener = functions.database.ref('/messenger/members/{convoId}/{ui
       }
 
     }
+
+    // auth remove member
     else {
 
       const conversationsSnapshot = await adminConversationsRef.child(uid).once('value')
@@ -64,7 +67,6 @@ export const listener = functions.database.ref('/messenger/members/{convoId}/{ui
       }
       else if (pendingSnapshot.hasChild(convoId)) {
         await adminPendingRef.child(`${uid}/${convoId}`).set(null)
-
       }
 
       // add bot message to conversation

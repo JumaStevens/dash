@@ -76,7 +76,7 @@ export default {
       left: 0
       filter: blur($unit)
       opacity: 0.95
-      transform: translateY(0.25) scale(0.75)
+      transform: translateY(5%) scale(0.75)
 
   &__text
     @extend %flex--row-center

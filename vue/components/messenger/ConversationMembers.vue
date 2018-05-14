@@ -140,7 +140,7 @@ export default {
   },
   computed: {
     isActive () {
-      console.log('isActive: ', !this.$route.params.id || this.$route.params.id === 'new' ? false : true)
+
       return !this.$route.params.id || this.$route.params.id === 'new' ? false : this.activeMenu === 'members' ? true : false
     },
 
@@ -148,7 +148,7 @@ export default {
     userData () {
       const user = this.members[this.activeMemberIndex]
 
-      console.log('activeUser --> ', user)
+
       return {
         timestamp: '',
         user: {
@@ -175,7 +175,7 @@ export default {
 
 
     setList (value) {
-      console.log('value: ', value)
+
       this.setActiveList({ value })
     },
 
@@ -187,14 +187,14 @@ export default {
 
     removeMember () {
       const member = this.members[this.activeMemberIndex]
-      console.log('memeber: ', member)
+
       this.deleteMembers({ uid: member.uid })
     },
 
 
     back () {
       const convoId = this.$route.params.id
-      console.log('convoId: --> > > ', convoId)
+      
       this.$router.push({ name: 'chatId', params: { id: convoId } })
       this.setList('conversation')
     },

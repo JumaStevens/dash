@@ -96,7 +96,6 @@ export default {
       const convoId = data.id
 
       if (!state.conversations[convoId]) return
-      console.log('data: ', data)
 
       const updateData = {}
 
@@ -183,7 +182,6 @@ export default {
   async writeMembers ({ commit, state, rootState }, data) {
     try {
       const convoId = rootState.route.params.id
-      console.log('???: ', state.members[convoId][data.uid])
       if (state.members[convoId][data.uid]) return
 
       await db.members.child(`${convoId}/${data.uid}`).set(true)
@@ -334,7 +332,6 @@ export default {
 
   async deleteMessages ({ commit }, data) {
     try {
-      console.log('deleteMessages data ---> ', data)
       if (!data.convoId || !data.messageId) return
       const removed = await db.messages.child(`${data.convoId}/${data.messageId}`).set(null)
     }

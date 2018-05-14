@@ -24,7 +24,7 @@ export default {
       })
     })
 
-    console.log('activeConvo: --> ', messagesArray)
+
 
     return messagesArray
   },
@@ -65,7 +65,7 @@ export default {
       })
     })
 
-    console.log('members data: ', data)
+
     return data
   },
 
@@ -89,7 +89,6 @@ export default {
 
       else if (value.uid === authUid) {
         const otherUser = members[id].find(member => member.uid !== authUid)
-        console.log('otherUser: ', otherUser)
         data[id] = { id, ...value, message: `You: ${value.message}`, ...otherUser }
       }
 
@@ -106,7 +105,6 @@ export default {
 
     })
 
-    console.log('meta data: ', data)
     return data
   },
 
@@ -114,7 +112,6 @@ export default {
   //
   getPendingMeta ({ pending, members, meta }, getters, { users }, rootGetters) {
     // const pending = state.pending
-    console.log('-->>><<<>>>> ', users)
     const pendingArray = []
 
     // _.forEach(pending, (value, key) => {

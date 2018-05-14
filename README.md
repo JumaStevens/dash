@@ -41,3 +41,4 @@ Roadmap will be released as project matures.
 - [ ] Convert "Members" avatar area into list -- add actions (call, kick, etc) on it's card
 - [ ] Add "Attachment" section to conversation details
 - [ ] Fix timestamp issue
+- [x] Create Search component, add to lists

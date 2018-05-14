@@ -16,6 +16,11 @@ section(
       class='header__icon header__edit'
     ) Edit
 
+    //- title
+    a(
+      class='header__title'
+    ) Messages
+
     //- new message
     router-link(
       @click.native='setList("users")'
@@ -27,6 +32,9 @@ section(
 
   //- view
   div(class='inbox__view')
+
+    //- search
+    Search(class='search')
 
     //- users
     div(
@@ -105,14 +113,12 @@ export default {
 
 
     activeUsers () {
-      console.log('activeUsers: ', this.onlineUsers)
       const users = Object.values(this.onlineUsers)
       const wrapUsers = users.map(user => {
         const obj = {}
         obj.user = user
         return obj
       })
-      console.log('wrapUsers: ', wrapUsers)
       return wrapUsers
     },
 
@@ -184,8 +190,8 @@ export default {
     &--primary
       fill: rgba(110, 188, 228, 1)
 
-  &__edit,
-  &__back
+  &__edit
+    @extend %flex--row-center
     grid-row: 1 / 2
     grid-column: 1 / 2
 
@@ -193,10 +199,10 @@ export default {
     grid-row: 1 / 2
     grid-column: 3 / 4
 
-  &__edit
-
-  &__back
-    transform: rotate(-90deg)
+  &__title
+    grid-row: 1 / 2
+    grid-column: 1 / -1
+    margin: 0 auto
 
 
 .inbox__view
@@ -206,6 +212,8 @@ export default {
   overflow-y: scroll
   -webkit-overflow-scrolling: touch
 
+.search
+  margin: $unit*5 0
 
 .list
   padding: $unit*3 0 $unit*6 0

@@ -25,6 +25,9 @@ section(
   //- lists container
   div(class='lists-container')
 
+    //- search
+    Search(class='search')
+
     //- users / search list
     div(class='users')
       h3(class='active-users__title list__title') Suggested
@@ -51,6 +54,7 @@ import MessageMetaCard from '~comp/messenger/MessageMetaCard.vue'
 import AddUserCard from '~comp/messenger/AddUserCard.vue'
 import Header from '~comp/messenger/Header.vue'
 import Avatar from '~comp/Avatar.vue'
+import Search from '~comp/Search.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import _ from 'lodash'
 import IconChevron from '~/assets/svg/icon-chevron.svg'
@@ -63,7 +67,8 @@ export default {
     AddUserCard,
     Header,
     Avatar,
-    IconChevron
+    IconChevron,
+    Search
   },
   data () {
     return {}
@@ -222,7 +227,9 @@ export default {
   overflow-y: auto
   padding: 0 $unit*2
 
-
+.search
+  margin: $unit*5 0
+  
 .list
   padding: $unit*3 0 $unit*6 0
 
