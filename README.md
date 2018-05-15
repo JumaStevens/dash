@@ -29,9 +29,12 @@ Roadmap will be released as project matures.
 
 #### Account
 - [ ] Update profilePicture Avatar after img change
+- [ ] Style for desktop viewport
 
 #### Auth
 - [ ] Redirect active/inactive users
+- [ ] Style for desktop viewport
+- [ ] Add a "Learn more" section
 
 #### Chat
 - [ ] Clean up after conversation deletion
@@ -40,5 +43,6 @@ Roadmap will be released as project matures.
 - [ ] Add header titles
 - [ ] Convert "Members" avatar area into list -- add actions (call, kick, etc) on it's card
 - [ ] Add "Attachment" section to conversation details
-- [ ] Fix timestamp issue
+- [ ] Style for desktop viewport
+- [x] Fix timestamp issue
 - [x] Create Search component, add to lists
