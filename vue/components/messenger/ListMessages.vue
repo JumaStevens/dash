@@ -98,7 +98,7 @@ export default {
   computed: {
     conversations () {
       const conversationsMeta = Object.values(this.getMeta)
-      return conversationsMeta.filter(meta => meta.displayName && meta.displayName.match(new RegExp(this.search, 'i')))
+      return conversationsMeta.filter(meta => meta.displayName && meta.displayName.match(new RegExp(this.search, 'i'))).sort( (a, b) => new Date(b.timestamp) - new Date(a.timestamp) )
     },
 
 
